@@ -132,3 +132,8 @@ alias cht="cd ~/projects/chukinas/lib/chukinas_web/templates/skies"
 
 # Use Vim Editing Mode
 set -o vi
+export PATH="$HOME/.local/bin:$PATH"
+export vrc=~/.vim/vimrc
+export brc=~/.bashrc
+export VIMCONFIG=~/.vim
+export VIMDATA=$VIMCONFIG

@@ -14,7 +14,6 @@
 "    -> Visual mode related
 "    -> Moving around, tabs and buffers
 "    -> Status line
-"    -> Command Window
 "    -> Editing mappings
 "    -> Search
 "    -> Spell checking
@@ -23,23 +22,27 @@
 "
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" https://github.com/junegunn/vim-plug
-" install / update all plugs in vim with command :PlugInstall
-set nocompatible
-" call plug#begin()
-" Plug 'sheerun/vim-polyglot'
-" Plug 'preservim/nerdtree'
-" Plug 'gryf/wombat256grf'
-" Plug 'rafi/awesome-vim-colorschemes'
-" Plug 'NLKNguyen/papercolor-theme'
+
+packadd minpac
+call minpac#init()
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-projectionist')
+call minpac#add('tpope/vim-abolish')
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('junegunn/fzf')
+call minpac#add('sheerun/vim-polyglot')
+call minpac#add('mhinz/vim-grepper')
+  " Plugin 'MarcWeber/vim-addon-mw-utils'
+    " Plugin 'tomtom/tlib_vim'
+      " Plugin 'garbas/vim-snipmate'
+
+command! PackUpdate call minpac#update()
+command! PackClean call minpac#clean()
+
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
-" Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-" Plug 'mileszs/ack.vim'
-" call plug#end()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -55,6 +58,7 @@ filetype indent on
 set autoread
 autocmd FocusGained,BufEnter * checktime
 
+set nocompatible
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
@@ -74,6 +78,9 @@ set hlsearch
 
 " Makes search act like search in modern browsers
 set incsearch 
+
+" Shortcut to start FZF fuzzy finder search
+nnoremap <C-p> :FZF<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -131,6 +138,17 @@ set noswapfile
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Windows
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Make it easier to move windows around
+" Directional window selection is still done via e.g. <C-WH>
+nnoremap <C-H>  <C-W>H
+nnoremap <C-J>  <C-W>J
+nnoremap <C-K>  <C-W>K
+nnoremap <C-L>  <C-W>L
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -176,3 +194,4 @@ nnoremap ; :
 nnoremap : ;
 
 set path+=app**
+nnoremap oo <C-]>
