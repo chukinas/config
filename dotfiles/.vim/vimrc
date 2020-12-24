@@ -1,0 +1,197 @@
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"
+" Notes:
+"   - On getting the clipboard to work in WSL:
+"   https://gist.github.com/necojackarc/02c3c81e1525bb5dc3561f378e921541
+"
+" Sections:
+"    -> Plugins
+"    -> General
+"    -> VIM user interface
+"    -> Colors and Fonts
+"    -> Files and backups
+"    -> Text, tab and indent related
+"    -> Visual mode related
+"    -> Moving around, tabs and buffers
+"    -> Status line
+"    -> Editing mappings
+"    -> Search
+"    -> Spell checking
+"    -> Misc
+"    -> Helper functions
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+packadd minpac
+call minpac#init()
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-projectionist')
+call minpac#add('tpope/vim-abolish')
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('junegunn/fzf')
+call minpac#add('sheerun/vim-polyglot')
+call minpac#add('mhinz/vim-grepper')
+  " Plugin 'MarcWeber/vim-addon-mw-utils'
+    " Plugin 'tomtom/tlib_vim'
+      " Plugin 'garbas/vim-snipmate'
+
+command! PackUpdate call minpac#update()
+command! PackClean call minpac#clean()
+
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => General
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Sets how many lines of history VIM has to remember
+set history=500
+
+" Enable filetype plugins
+filetype plugin on
+filetype indent on
+
+" Set to auto read when a file is changed from the outside
+set autoread
+autocmd FocusGained,BufEnter * checktime
+
+set nocompatible
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Search
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" For regular expressions turn magic on
+set magic
+
+" Ignore case when searching
+set ignorecase
+
+" When searching try to be smart about cases 
+set smartcase
+
+" Highlight search results
+set hlsearch
+
+" Makes search act like search in modern browsers
+set incsearch 
+
+" Shortcut to start FZF fuzzy finder search
+nnoremap <C-p> :FZF<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"Always show current position
+set ruler
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" Show matching brackets when text indicator is over them
+set showmatch 
+" How many tenths of a second to blink when matching brackets
+set mat=2
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Colors and Fonts
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Enable syntax highlighting
+syntax enable 
+
+" colorscheme PaperColor
+" set background=dark
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" A buffer becomes hidden when it is abandoned
+set hidden
+
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowritebackup
+set nowb
+set noswapfile
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Windows
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Make it easier to move windows around
+" Directional window selection is still done via e.g. <C-WH>
+nnoremap <C-H>  <C-W>H
+nnoremap <C-J>  <C-W>J
+nnoremap <C-K>  <C-W>K
+nnoremap <C-L>  <C-W>L
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Tab
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set smarttab
+
+" Indenting of new lines
+set autoindent
+set smartindent
+
+" Wrap long lines at wordbreaks
+set wrap "Wrap lines
+set linebreak
+set whichwrap+=<,>,h,l
+
+
+""""""""""""""""""""""""""""""
+" => How VIM Looks
+""""""""""""""""""""""""""""""
+" Always show the status line
+set laststatus=2
+
+set cmdheight=2
+
+" Show line numbers
+set number
+
+"Always show current position
+set ruler
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" reload vimrc
+nnoremap <F1> :so ~/.vimrc<CR>
+
+" Make the colon easier to type in normal mode
+nnoremap ; :
+nnoremap : ;
+
+set path+=app**
+nnoremap oo <C-]>
