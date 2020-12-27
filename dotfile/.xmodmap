@@ -1,0 +1,18 @@
+! To get current .Xmodmap:
+! xmodmap -pke > .Xmodmap
+
+! To detect a key's keycode:
+! $ xev -event keyboard
+
+! To set these commands:
+! $ xmodmap .Xmodmap
+
+! Just in case I can't get the rest of this to work, this site details changing the Colemak layout itself:
+! https://forum.colemak.com/topic/922-switch-caps-lock-and-control-keys-emacs/
+
+! Right Alt now sends Esc (keycode 9)
+keycode 108 = Escape NoSymbol Escape
+
+! Caps Lock now sends Ctrl (keycode 37, 105)
+keycode  66 = Control_L NoSymbol Control_L
+add Control = Control_L

@@ -1,7 +1,6 @@
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
-# To set default shell: chsh /bin/bash
 
 # If not running interactively, don't do anything
 case $- in
@@ -89,7 +88,7 @@ fi
 #export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 
 # some more ls aliases
-alias ll='ls -alF'
+alias ll='ls -AlF'
 alias la='ls -A'
 alias l='ls -CF'
 
@@ -117,6 +116,9 @@ if ! shopt -oq posix; then
   fi
 fi
 
+# ABOVE: copy of standard .bashrc
+# BELOW: my additions
+
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
 set -o noclobber
@@ -125,15 +127,16 @@ set -o noclobber
 export EDITOR=vim
 
 # jonathan's aliases
-alias ch="cd ~/projects/chukinas"
 alias chl="cd ~/projects/chukinas/lib"
 alias chs="cd ~/projects/chukinas/lib/chukinas/skies"
 alias cht="cd ~/projects/chukinas/lib/chukinas_web/templates/skies"
 
-# Use Vim Editing Mode
-set -o vi
 export PATH="$HOME/.local/bin:$PATH"
 export vrc=~/.vim/vimrc
 export brc=~/.bashrc
 export VIMCONFIG=~/.vim
 export VIMDATA=$VIMCONFIG
+
+CDPATH=:~/projects
+# TODO can I turn this into an executable?
+. ~/projects/dotfiles/script/keyboard_overrides.sh
