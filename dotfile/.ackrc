@@ -1,0 +1,5 @@
+--type-set
+phoenix:ext:eex,leex
+
+--type-set
+liveview:ext:leex

@@ -28,13 +28,20 @@
 
 packadd minpac
 call minpac#init()
+call minpac#add('mattn/emmet-vim')
+" https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-projectionist')
 call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-surround')
 call minpac#add('junegunn/fzf')
+nnoremap <leader>f :FZF<CR>
 call minpac#add('sheerun/vim-polyglot')
-call minpac#add('mhinz/vim-grepper')
+" call minpac#add('mhinz/vim-grepper')
+call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
+call minpac#add('tpope/vim-rhubarb')
+call minpac#add('mileszs/ack.vim')
   " Plugin 'MarcWeber/vim-addon-mw-utils'
     " Plugin 'tomtom/tlib_vim'
       " Plugin 'garbas/vim-snipmate'
