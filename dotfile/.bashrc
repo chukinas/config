@@ -140,3 +140,8 @@ export VIMDATA=$VIMCONFIG
 CDPATH=:~/projects
 # TODO can I turn this into an executable?
 . ~/projects/dotfiles/script/keyboard_overrides.sh
+
+# Alias my common git commands
+alias gst="git status"
+alias gadcom="git add .;gcom"
+alias gcom="git commit -m "

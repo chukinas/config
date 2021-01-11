@@ -2,4 +2,10 @@
 phoenix:ext:eex,leex
 
 --type-set
+phx:ext:eex,leex
+
+--type-set
 liveview:ext:leex
+
+--type-set
+lv:ext:leex

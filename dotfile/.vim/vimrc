@@ -202,3 +202,31 @@ nnoremap : ;
 
 set path+=app**
 nnoremap oo <C-]>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => (L)EEX snippets
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" `class=""` add then edit
+nnoremap <leader>C 0f>i<Space>class=""<ESC>:noh<CR>i
+
+" `class=""` edit
+nnoremap <leader>c V/\%Vclass<CR><ESC>:noh<CR>f";i<Space>
+
+" `<% %> add then edit
+nnoremap <leader>e O<%<Space>%><ESC>F#a<Space>
+
+" `<%= %> add then edit (mneumonic: 'replace with result')
+nnoremap <leader>r O<%=<Space>%><ESC>F=a<Space>
+
+" `<%# %> add then edit
+nnoremap <leader>3 O<%#<Space>%><ESC>F#a<Space>
+
+" `=""` and drop into INSERT mode
+nnoremap <leader>" i=""<ESC>i
+
+" inline eex if statement
+nnoremap <leader>if i<%=<space>if<space>true<space>do<space>%><%<space>end<space>%><esc>F<i
+
+" inline eex statement
+nnoremap <leader>ei i<%<space>%><esc>F%;a
