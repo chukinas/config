@@ -128,10 +128,13 @@ export EDITOR=vim
 
 # jonathan's aliases
 alias chl="cd ~/projects/chukinas/lib"
-alias chs="cd ~/projects/chukinas/lib/chukinas/skies"
-alias cht="cd ~/projects/chukinas/lib/chukinas_web/templates/skies"
+alias chd="cd ~/projects/chukinas/lib/chukinas/dreadnought"
+alias cht="cd ~/projects/chukinas/lib/chukinas_web/templates/dreadnought"
+alias todo="vim ~/projects/chukinas/todo.md"
 
 export PATH="$HOME/.local/bin:$PATH"
+# Add yarn global bin to PATH:
+export PATH="$(yarn global bin):$PATH"
 export vrc=~/.vim/vimrc
 export brc=~/.bashrc
 export VIMCONFIG=~/.vim
