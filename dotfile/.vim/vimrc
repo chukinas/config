@@ -20,6 +20,9 @@
 "    -> Misc
 "    -> Helper functions
 "
+" Useful vimscript resources:
+" - https://learnvimscriptthehardway.stevelosh.com/
+" 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -35,13 +38,17 @@ call minpac#add('tpope/vim-projectionist')
 call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
+call minpac#add('tpope/vim-repeat')
 call minpac#add('junegunn/fzf')
 nnoremap <leader>f :FZF<CR>
+nnoremap <leader>fs :split<CR>:FZF<CR>
+nnoremap <leader>fv :vsplit<CR>:FZF<CR>
 call minpac#add('sheerun/vim-polyglot')
 " call minpac#add('mhinz/vim-grepper')
 call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
 call minpac#add('tpope/vim-rhubarb')
 call minpac#add('mileszs/ack.vim')
+call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
   " Plugin 'MarcWeber/vim-addon-mw-utils'
     " Plugin 'tomtom/tlib_vim'
       " Plugin 'garbas/vim-snipmate'
@@ -143,6 +150,9 @@ set nowritebackup
 set nowb
 set noswapfile
 
+" Remove trailing whitespace on write
+" https://vim.fandom.com/wiki/Remove_unwanted_spaces
+autocmd BufWritePre *.exs,*.ex,*.html,*.md %s/\s\+$//e
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Windows
@@ -186,9 +196,19 @@ set cmdheight=2
 " Show line numbers
 set number
 
-"Always show current position
+" Always show current position
 set ruler
 
+" Highlight (with an underline) the current line in each window
+set cursorline
+
+" Dim status line of inactive windows
+highlight StatusLine cterm=bold ctermfg=Black ctermbg=Cyan
+highlight StatusLineNC ctermfg=DarkGray ctermbg=White
+highlight VertSplit ctermfg=DarkGray ctermbg=Black
+
+" Always keep some lines between cursor and top/bottom of window
+set scrolloff=10
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -214,10 +234,7 @@ nnoremap <leader>C 0f>i<Space>class=""<ESC>:noh<CR>i
 nnoremap <leader>c V/\%Vclass<CR><ESC>:noh<CR>f";i<Space>
 
 " `<% %> add then edit
-nnoremap <leader>e O<%<Space>%><ESC>F#a<Space>
-
-" `<%= %> add then edit (mneumonic: 'replace with result')
-nnoremap <leader>r O<%=<Space>%><ESC>F=a<Space>
+nnoremap <leader>e O<%<Space>%><ESC>F%;a
 
 " `<%# %> add then edit
 nnoremap <leader>3 O<%#<Space>%><ESC>F#a<Space>
@@ -225,8 +242,24 @@ nnoremap <leader>3 O<%#<Space>%><ESC>F#a<Space>
 " `=""` and drop into INSERT mode
 nnoremap <leader>" i=""<ESC>i
 
-" inline eex if statement
-nnoremap <leader>if i<%=<space>if<space>true<space>do<space>%><%<space>end<space>%><esc>F<i
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => (L)EEX Abbreviations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" <% ... %>
+autocmd FileType eelixir :iabbrev <buffer> %% <% %><left><left><left>
+" <%#  %>
+autocmd FileType eelixir :iabbrev <buffer> ## <%# %><left><left><left>
+" <%= ... %>
+autocmd FileType eelixir :iabbrev <buffer> == <%= %><left><left><left>
+" <%= if ... do %>
+autocmd FileType eelixir :iabbrev <buffer> iff <%= if do %><left><left><left><left><left><left>
+" <% end %>
+autocmd FileType eelixir :iabbrev <buffer> end <% end %><esc>
+" <%= if @live_action == :dev do %>
+autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %><cr>
 
-" inline eex statement
-nnoremap <leader>ei i<%<space>%><esc>F%;a
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Elixir Abbreviations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" %{}
+autocmd FileType elixir,eelixir :iabbrev <buffer> mpp %{}<left>
