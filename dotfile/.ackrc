@@ -9,3 +9,5 @@ liveview:ext:leex
 
 --type-set
 lv:ext:leex
+
+--ignore-dir=deps

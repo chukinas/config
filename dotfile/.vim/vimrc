@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Notes:
 "   - On getting the clipboard to work in WSL:
@@ -46,6 +46,10 @@ nnoremap <leader>fv :vsplit<CR>:FZF<CR>
 call minpac#add('sheerun/vim-polyglot')
 " call minpac#add('mhinz/vim-grepper')
 call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
+hi Pmenu ctermbg=LightGray
+nnoremap <leader>d :CocDiagnostics<cr>
+" nmap <silent> <leader>cj :call CocAction('diagnosticNext')<cr>
+" nmap <silent> <leader>ck :call CocAction('diagnosticPrevious')<cr>
 call minpac#add('tpope/vim-rhubarb')
 call minpac#add('mileszs/ack.vim')
 call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
@@ -96,6 +100,12 @@ set incsearch
 " Shortcut to start FZF fuzzy finder search
 nnoremap <C-p> :FZF<CR>
 
+" Here are the steps to do a multi-file search and replace
+" (from Practical Vim, p.239)
+" /Pragmatic\ze Vim
+" :vimgrep // **/*.txt
+" :cfdo %s//Practical/gc
+" :cfdo update
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -250,9 +260,9 @@ autocmd FileType eelixir :iabbrev <buffer> %% <% %><left><left><left>
 " <%#  %>
 autocmd FileType eelixir :iabbrev <buffer> ## <%# %><left><left><left>
 " <%= ... %>
-autocmd FileType eelixir :iabbrev <buffer> == <%= %><left><left><left>
+autocmd FileType eelixir :iabbrev <buffer> exp <%= %><left><left><left>
 " <%= if ... do %>
-autocmd FileType eelixir :iabbrev <buffer> iff <%= if do %><left><left><left><left><left><left>
+autocmd FileType eelixir :iabbrev <buffer> ifdo <%= if do %><left><left><left><left><left><left>
 " <% end %>
 autocmd FileType eelixir :iabbrev <buffer> ndd <% end %><esc>
 " <%= if @live_action == :dev do %>
@@ -263,6 +273,8 @@ autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " %{}
 autocmd FileType elixir,eelixir :iabbrev <buffer> mpp %{}<left>
+" IO.inspect
+autocmd FileType elixir,eelixir :iabbrev <buffer> insp IO.inspect(label: "")<left><left>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Common Abbreviations
@@ -278,4 +290,18 @@ endfunc
 
 autocmd FileType * :iabbrev <silent> <buffer> dq ""<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> PP ()<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> BB {}<left><C-R>=Eatchar('\s')<CR>
 
+
+
+
+"""""""
+" CoC
+" Symbol renaming.
+" https://github.com/neoclide/coc.nvim
+nmap gd <Plug>(coc-definition)
+nmap gy <Plug>(coc-type-definition)
+nmap gi <Plug>(coc-implementation)
+nmap gr <Plug>(coc-references)
+
+noremap <leader>v :e~/.vim/vimrc<cr>
