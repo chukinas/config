@@ -25,46 +25,11 @@
 " 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Plugins
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-packadd minpac
-call minpac#init()
-call minpac#add('mattn/emmet-vim')
-" https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
-call minpac#add('tpope/vim-unimpaired')
-call minpac#add('tpope/vim-projectionist')
-call minpac#add('tpope/vim-abolish')
-call minpac#add('tpope/vim-fugitive')
-call minpac#add('tpope/vim-surround')
-call minpac#add('tpope/vim-repeat')
-call minpac#add('junegunn/fzf')
-nnoremap <leader>f :FZF<CR>
-nnoremap <leader>fs :split<CR>:FZF<CR>
-nnoremap <leader>fv :vsplit<CR>:FZF<CR>
-call minpac#add('sheerun/vim-polyglot')
-" call minpac#add('mhinz/vim-grepper')
-call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
-hi Pmenu ctermbg=LightGray
-nnoremap <leader>d :CocDiagnostics<cr>
-" nmap <silent> <leader>cj :call CocAction('diagnosticNext')<cr>
-" nmap <silent> <leader>ck :call CocAction('diagnosticPrevious')<cr>
-call minpac#add('tpope/vim-rhubarb')
-call minpac#add('mileszs/ack.vim')
-call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
-  " Plugin 'MarcWeber/vim-addon-mw-utils'
-    " Plugin 'tomtom/tlib_vim'
-      " Plugin 'garbas/vim-snipmate'
-
-command! PackUpdate call minpac#update()
-command! PackClean call minpac#clean()
-
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " Sets how many lines of history VIM has to remember
 set history=500
 
@@ -77,6 +42,50 @@ set autoread
 autocmd FocusGained,BufEnter * checktime
 
 set nocompatible
+
+let mapleader = "\<space>"
+let maplocalleader = "\\"
+
+" Make the colon easier to type in normal mode
+nnoremap ; :
+nnoremap : ;
+
+set path+=app**
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Plugins
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+packadd minpac
+call minpac#init()
+
+" FZF (Fuzzy Finder)
+call minpac#add('junegunn/fzf')
+nnoremap <leader>f :FZF<CR>
+nnoremap <leader>fs :split<CR>:FZF<CR>
+nnoremap <leader>fv :vsplit<CR>:FZF<CR>
+
+" Conquer of Completion
+call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
+hi Pmenu ctermbg=LightGray
+nnoremap <leader>d :CocDiagnostics<cr>
+
+call minpac#add('mattn/emmet-vim')
+" https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
+call minpac#add('tpope/vim-unimpaired')
+call minpac#add('tpope/vim-projectionist')
+call minpac#add('tpope/vim-abolish')
+call minpac#add('tpope/vim-fugitive')
+call minpac#add('tpope/vim-surround')
+call minpac#add('tpope/vim-repeat')
+call minpac#add('sheerun/vim-polyglot')
+call minpac#add('tpope/vim-rhubarb')
+call minpac#add('mileszs/ack.vim')
+call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
+command! PackUpdate call minpac#update()
+command! PackClean call minpac#clean()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
@@ -97,15 +106,14 @@ set hlsearch
 " Makes search act like search in modern browsers
 set incsearch 
 
-" Shortcut to start FZF fuzzy finder search
-nnoremap <C-p> :FZF<CR>
-
 " Here are the steps to do a multi-file search and replace
 " (from Practical Vim, p.239)
 " /Pragmatic\ze Vim
 " :vimgrep // **/*.txt
 " :cfdo %s//Practical/gc
 " :cfdo update
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -130,15 +138,8 @@ set novisualbell
 set t_vb=
 set tm=500
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Colors and Fonts
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Enable syntax highlighting
 syntax enable 
-
-" colorscheme PaperColor
-" set background=dark
 
 " Set utf8 as standard encoding and en_US as the standard language
 set encoding=utf8
@@ -146,58 +147,6 @@ set encoding=utf8
 " Use Unix as the standard file type
 set ffs=unix,dos,mac
 
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Files, backups and undo
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" A buffer becomes hidden when it is abandoned
-set hidden
-
-" Turn backup off, since most stuff is in SVN, git etc. anyway...
-set nobackup
-set nowritebackup
-set nowb
-set noswapfile
-
-" Remove trailing whitespace on write
-" https://vim.fandom.com/wiki/Remove_unwanted_spaces
-autocmd BufWritePre *.exs,*.ex,*.html,*.md %s/\s\+$//e
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Windows
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Make it easier to move windows around
-" Directional window selection is still done via e.g. <C-WH>
-nnoremap <C-H>  <C-W>H
-nnoremap <C-J>  <C-W>J
-nnoremap <C-K>  <C-W>K
-nnoremap <C-L>  <C-W>L
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Text, tab and indent related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Tab
-set shiftwidth=4
-set tabstop=4
-set expandtab
-set smarttab
-
-" Indenting of new lines
-set autoindent
-set smartindent
-
-" Wrap long lines at wordbreaks
-set wrap "Wrap lines
-set linebreak
-set whichwrap+=<,>,h,l
-
-
-""""""""""""""""""""""""""""""
-" => How VIM Looks
-""""""""""""""""""""""""""""""
 " Always show the status line
 set laststatus=2
 
@@ -219,22 +168,87 @@ highlight VertSplit ctermfg=DarkGray ctermbg=Black
 
 " Always keep some lines between cursor and top/bottom of window
 set scrolloff=10
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" reload vimrc
-nnoremap <F1> :so ~/.vimrc<CR>
-
-" Make the colon easier to type in normal mode
-nnoremap ; :
-nnoremap : ;
-
-set path+=app**
-nnoremap oo <C-]>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => (L)EEX snippets
+" => Files, backups and undo
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" A buffer becomes hidden when it is abandoned
+set hidden
+
+" Turn backup off, since most stuff is in SVN, git etc. anyway...
+set nobackup
+set nowritebackup
+set nowb
+set noswapfile
+
+" Remove trailing whitespace on write
+" https://vim.fandom.com/wiki/Remove_unwanted_spaces
+autocmd BufWritePre *.exs,*.ex,*.html,*.md %s/\s\+$//e
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Windows
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Make it easier to move windows around
+" Directional window selection is still done via e.g. <C-WH>
+nnoremap <C-H>  <C-W>H
+nnoremap <C-J>  <C-W>J
+nnoremap <C-K>  <C-W>K
+nnoremap <C-L>  <C-W>L
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Text, tab and indent related
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Tab
+set shiftwidth=4
+set tabstop=4
+set expandtab
+set smarttab
+
+" Indenting of new lines
+set autoindent
+set smartindent
+
+" Wrap long lines at wordbreaks
+set wrap "Wrap lines
+set linebreak
+set whichwrap+=<,>,h,l
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Elixir mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+augroup myElixir
+  au!
+
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " NORMAL
+  "
+  " pry
+  " Remember to run tests in iex, example:
+  " `iex -S mix test`
+  autocmd FileType elixir nnoremap <buffer> <localleader>r orequire IEx; IEx.pry<esc>
+
+  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+  " ABBREVIATIONS
+  "
+  " %__MODULE__{} = 
+  autocmd FileType elixir :iabbrev <buffer> mod %__MODULE__{} =
+  " %{}
+  autocmd FileType elixir :iabbrev <buffer> mpp %{}<left>
+  " IO.inspect
+  autocmd FileType elixir :iabbrev <buffer> insp IO.inspect(label: "")<left><left>
+augroup END
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => Embedded Elixir
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " `class=""` add then edit
@@ -252,9 +266,6 @@ nnoremap <leader>3 O<%#<Space>%><ESC>F#a<Space>
 " `=""` and drop into INSERT mode
 nnoremap <leader>" i=""<ESC>i
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => (L)EEX Abbreviations
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " <% ... %>
 autocmd FileType eelixir :iabbrev <buffer> %% <% %><left><left><left>
 " <%#  %>
@@ -266,15 +277,7 @@ autocmd FileType eelixir :iabbrev <buffer> ifdo <%= if do %><left><left><left><l
 " <% end %>
 autocmd FileType eelixir :iabbrev <buffer> ndd <% end %><esc>
 " <%= if @live_action == :dev do %>
-autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %><cr>
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Elixir Abbreviations
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" %{}
-autocmd FileType elixir,eelixir :iabbrev <buffer> mpp %{}<left>
-" IO.inspect
-autocmd FileType elixir,eelixir :iabbrev <buffer> insp IO.inspect(label: "")<left><left>
+autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %><!-- <cr> -->
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Common Abbreviations
