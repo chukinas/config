@@ -148,3 +148,9 @@ CDPATH=:~/projects
 alias gst="git status"
 alias gadcom="git add .;gcom"
 alias gcom="git commit -m "
+
+# Load private env vars
+source ~/.bashrc_private
+
+# have FZF respect .gitignore
+export FZF_DEFAULT_COMMAND='fd --type f'

@@ -1,4 +1,4 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 "
 " Notes:
 "   - On getting the clipboard to work in WSL:
@@ -63,8 +63,6 @@ call minpac#init()
 " FZF (Fuzzy Finder)
 call minpac#add('junegunn/fzf')
 nnoremap <leader>f :FZF<CR>
-nnoremap <leader>fs :split<CR>:FZF<CR>
-nnoremap <leader>fv :vsplit<CR>:FZF<CR>
 
 " Conquer of Completion
 call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
@@ -113,6 +111,11 @@ set incsearch
 " :cfdo %s//Practical/gc
 " :cfdo update
 
+" :cn goes to the next result
+" See the quickfix window
+" https://thevaluable.dev/vim-search-find-replace/
+" https://blog.jasonmeridth.com/posts/use-git-grep-to-replace-strings-in-files-in-your-git-repository/
+" https://superuser.com/questions/400078/how-can-i-search-a-file-by-its-name-and-partial-path
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -169,6 +172,93 @@ highlight VertSplit ctermfg=DarkGray ctermbg=Black
 " Always keep some lines between cursor and top/bottom of window
 set scrolloff=10
 
+" to bold the text, add cterm=bold
+highlight Folded ctermfg=LightGray ctermbg=DarkMagenta
+highlight FoldColumn ctermfg=LightGray ctermbg=DarkMagenta
+function ExFoldExpr(lnum)
+if IsAlias(a:lnum)
+  return IsLineBlank(a:lnum + 1)?'<1':1
+elseif (IsSectionLine(a:lnum) || IsSectionLine(a:lnum + 1))
+  return 0
+"elseif IsOnelineFunction(a:lnum)
+"  return 1
+elseif IsSectionTitle(a:lnum)
+  return 1
+elseif IsSectionEnd(a:lnum)
+  return '<1'
+elseif HasDef(a:lnum)
+"elseif IsFunctionStartLine(a:lnum)
+  return 2
+elseif IsFoldEnd(a:lnum)
+  return '<2'
+else
+  return -1
+endif
+endfunction
+
+function IsAlias(lnum)
+return getline(a:lnum)=~'\v^alias'
+endfunction
+
+function IsFunctionStartLine(lnum)
+return getline(a:lnum)=~'\v^\s*defp?>.*do\s*$'
+endfunction
+
+function HasDef(lnum)
+return getline(a:lnum)=~'\v^ {2}def'
+endfunction
+
+function IsFoldEnd(lnum)
+return (IsEnd(a:lnum) && !IsLineBlank(a:lnum + 1)) ||
+     \ (IsEnd(a:lnum - 1) && IsLineBlank(a:lnum)) ||
+     \ (IsOnelineFunction(a:lnum - 1) && IsLineBlank(a:lnum))
+endfunction
+
+function IsEnd(lnum)
+return getline(a:lnum)=~'\v^ {2}end\s*$'
+endfunction
+
+function IsLineBlank(lnum)
+return getline(a:lnum)=~'\v^\s*$'
+endfunction
+
+function IsSectionLine(lnum)
+return getline(a:lnum)=~'\v^  # \*{3} \**\s*$'
+endfunction
+
+function IsSectionTitle(lnum)
+return getline(a:lnum)=~'\v^  # \*{3} \u'
+endfunction
+
+function IsSectionEnd(lnum)
+return IsSectionLine(a:lnum + 2) || IsLineBeforeLastEnd(a:lnum)
+endfunction
+
+function IsModuleEnd(lnum)
+return getline(a:lnum)=~'\v^end\s*$'
+endfunction
+
+function IsLineBeforeLastEnd(lnum)
+return IsModuleEnd(a:lnum + 1)
+endfunction
+
+function IsOnelineFunction(lnum)
+return getline(a:lnum)=~'\v^\s*defp?>.*do\:'
+endfunction
+
+
+augroup folds
+autocmd!
+autocmd InsertEnter * let w:oldfdm = &l:foldmethod | setlocal foldmethod=manual
+autocmd InsertLeave *
+        \ if exists('w:oldfdm') |
+        \   let &l:foldmethod = w:oldfdm |
+        \   unlet w:oldfdm |
+        \ endif |
+        \ normal! zv
+augroup END
+
+nnoremap <leader>z zMgg<C-o>zozo
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Files, backups and undo
@@ -199,6 +289,13 @@ nnoremap <C-J>  <C-W>J
 nnoremap <C-K>  <C-W>K
 nnoremap <C-L>  <C-W>L
 
+" To change height of window:
+" :res(ize) 60     ...  to make it 60 rows high
+" :vertical resize 80 ..to make it 80 cols wide
+nnoremap <C-W>- :resize -5 <CR>
+nnoremap <C-W>+ :resize +5 <CR>
+nnoremap <silent> <leader>t <C-W>K :resize 15<CR>
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -224,6 +321,9 @@ set whichwrap+=<,>,h,l
 " => Elixir mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Shortcut to invalidate tailwind config hash to force reload
+"noremap <leader>w :e assets/tailwind.config.js<cr>
+
 augroup myElixir
   au!
 
@@ -233,7 +333,7 @@ augroup myElixir
   " pry
   " Remember to run tests in iex, example:
   " `iex -S mix test`
-  autocmd FileType elixir nnoremap <buffer> <localleader>r orequire IEx; IEx.pry<esc>
+  autocmd FileType elixir nnoremap <buffer> <leader>r orequire IEx; IEx.pry()<esc>
 
   """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
   " ABBREVIATIONS
@@ -271,13 +371,17 @@ autocmd FileType eelixir :iabbrev <buffer> %% <% %><left><left><left>
 " <%#  %>
 autocmd FileType eelixir :iabbrev <buffer> ## <%# %><left><left><left>
 " <%= ... %>
-autocmd FileType eelixir :iabbrev <buffer> exp <%= %><left><left><left>
+autocmd FileType elixir,eelixir :iabbrev <buffer> exp <%= %><left><left><left>
 " <%= if ... do %>
 autocmd FileType eelixir :iabbrev <buffer> ifdo <%= if do %><left><left><left><left><left><left>
 " <% end %>
 autocmd FileType eelixir :iabbrev <buffer> ndd <% end %><esc>
 " <%= if @live_action == :dev do %>
 autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %><!-- <cr> -->
+
+autocmd FileType elixir :set foldmethod=expr
+autocmd FileType elixir :set foldexpr=ExFoldExpr(v:lnum)
+autocmd FileType elixir :set foldcolumn=3
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Common Abbreviations
@@ -291,8 +395,10 @@ func Eatchar(pat)
   return (c =~ a:pat) ? '' : c
 endfunc
 
-autocmd FileType * :iabbrev <silent> <buffer> dq ""<left><C-R>=Eatchar('\s')<CR>
-autocmd FileType * :iabbrev <silent> <buffer> PP ()<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> qq ""<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> eqq =""<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> ppp ()<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> pqq ("")<left><left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> BB {}<left><C-R>=Eatchar('\s')<CR>
 
 
