@@ -1,0 +1,4 @@
+# Exclude vim minpac package manager directory
+dotfile/.vim/pack
+
+dotfile/.vim/.netrwhist
