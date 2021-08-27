@@ -1,0 +1,17 @@
+# To use this file, create a master config file at ~/.gitconfig:
+# [user]
+#     email = <my email>
+#     name = Jonathan Chukinas
+# [include]
+#     path = .gitconfig_shared
+#
+# Then create a symlink to this file
+
+[core]
+	editor = vim
+
+[init]
+	defaultBranch = main
+
+[alias]
+    lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit --all
