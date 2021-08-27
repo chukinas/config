@@ -8,6 +8,11 @@
 " SETUP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" DOTFILES
+" 1. My bash script takes care of setting the VIMCONFIG env var.
+" 2. Create a ~/.vim dir
+" 3. In that folder, soft-link to this file 
+
 " FZF
 " 1. Install fd (https://github.com/sharkdp/fd#on-ubuntu), an alternative to the basic
 "    `find` command. It respects .gitignore. There are notes about how to

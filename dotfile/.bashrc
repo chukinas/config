@@ -121,36 +121,43 @@ fi
 # ABOVE: copy of standard .bashrc
 # BELOW: my additions
 
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-set -o noclobber
-
-# set default editor
-export EDITOR=vim
-
-export PATH="$HOME/.local/bin:$PATH"
-# Add yarn global bin to PATH:
-export PATH="$(yarn global bin):$PATH"
-export vrc=~/.vim/vimrc
-export brc=~/.bashrc
-export VIMCONFIG=~/.vim
-export VIMDATA=$VIMCONFIG
+###############################################################
+# => KEYBOARD CUSTOMIZATION
+###############################################################
 
 # TODO can I turn this into an executable?
 . ~/projects/dotfiles/script/keyboard_overrides.sh
+
+###############################################################
+# => ASDF
+###############################################################
+
+. $HOME/.asdf/asdf.sh
+. $HOME/.asdf/completions/asdf.bash
+
+###############################################################
+# => GIT
+###############################################################
 
 # Alias my common git commands
 alias gst="git status"
 alias gcom="git commit -m "
 
-# Load private env vars
-source ~/.bashrc_private
-
 ###############################################################
 # => VIM
 ###############################################################
 
+export vrc=~/.vim/vimrc
+export brc=~/.bashrc
+export VIMCONFIG=~/.vim
+export VIMDATA=$VIMCONFIG
+
 alias vimb="vim ~/.bashrc"
+alias vimv="vim $VIMCONFIG/vimrc"
+
+# set default editor
+# TODO the vim books talk about using VISUAL instead. Why?
+export EDITOR=vim
 
 ###############################################################
 # => NAV ALIASES
@@ -159,7 +166,7 @@ alias vimb="vim ~/.bashrc"
 CDPATH=:~/projects
 
 # Personal
-alias chd="cd ~/projects/dotfiles"
+alias cdd="cd ~/projects/dotfiles"
 
 if [ -d "~/projects/dreadnought" ] 
 then
@@ -170,6 +177,7 @@ fi
 
 # Comoto
 alias cdm=cd_zla
+alias cdr='cd_zla 1>/dev/null; cd ../..'
 
 ###############################################################
 # => SEARCH
@@ -197,3 +205,12 @@ alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
 ###############################################################
 # => AUTO-ADD or UNCATEGORIZED
 ###############################################################
+
+set -o noclobber
+
+export PATH="$HOME/.local/bin:$PATH"
+# Add yarn global bin to PATH:
+export PATH="$(yarn global bin):$PATH"
+
+# Load private env vars
+source ~/.bashrc_private
