@@ -159,6 +159,8 @@ alias vimv="vim $VIMCONFIG/vimrc"
 # TODO the vim books talk about using VISUAL instead. Why?
 export EDITOR=vim
 
+# TODO alias vim to nvim. Same for vi.
+
 ###############################################################
 # => NAV ALIASES
 ###############################################################

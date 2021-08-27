@@ -45,6 +45,13 @@
 " ACK
 " TODO move this to top level readme?
 " 1. install via apt
+"
+" NEOVIM
+" See pg6 of Modern Vim.
+" Create that init.vim file
+" TODO synlink that file and put master in my dotfiles project
+" I've moved the file to dotfiles and created the symlink
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
