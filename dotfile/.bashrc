@@ -196,13 +196,15 @@ alias fd="fdfind"
 # => COMOTO
 ###############################################################
 
-export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml
-source /usr/share/google-cloud-sdk/completion.bash.inc
-source ~/monorepo/zlaverse/support/bash_functions.sh
-alias jcdocker="cd ~/loyalty-api; docker-compose up -d; cd_zla; docker-compose up -d"
+if [ "$HOSTNAME" = msi ]; then
+    export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml
+    source /usr/share/google-cloud-sdk/completion.bash.inc
+    source ~/monorepo/zlaverse/support/bash_functions.sh
+    alias jcdocker="cd ~/loyalty-api; docker-compose up -d; cd_zla; docker-compose up -d"
 
-# JETBRAINS DATAGRIP (COMOTO ONLY)
-alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
+    # JETBRAINS DATAGRIP (COMOTO ONLY)
+    alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
+fi
 
 ###############################################################
 # => AUTO-ADD or UNCATEGORIZED
