@@ -1,3 +1,5 @@
+# https://linuxhint.com/bash_scripting_tutorial_beginners/ 
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -119,38 +121,98 @@ fi
 # ABOVE: copy of standard .bashrc
 # BELOW: my additions
 
+###############################################################
+# => KEYBOARD CUSTOMIZATION
+###############################################################
+
+# TODO can I turn this into an executable?
+. ~/projects/dotfiles/script/keyboard_overrides.sh
+
+###############################################################
+# => ASDF
+###############################################################
+
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash
-set -o noclobber
 
-# set default editor
-export EDITOR=vim
+###############################################################
+# => GIT
+###############################################################
 
-# jonathan's aliases
-alias chl="cd ~/projects/chukinas/lib"
-alias chd="cd ~/projects/chukinas/lib/chukinas/dreadnought"
-alias cht="cd ~/projects/chukinas/lib/chukinas_web/templates/dreadnought"
-alias todo="vim ~/projects/chukinas/todo.md"
+# Alias my common git commands
+alias gst="git status"
+alias gcom="git commit -m "
 
-export PATH="$HOME/.local/bin:$PATH"
-# Add yarn global bin to PATH:
-export PATH="$(yarn global bin):$PATH"
+###############################################################
+# => VIM
+###############################################################
+
 export vrc=~/.vim/vimrc
 export brc=~/.bashrc
 export VIMCONFIG=~/.vim
 export VIMDATA=$VIMCONFIG
 
-CDPATH=:~/projects
-# TODO can I turn this into an executable?
-. ~/projects/dotfiles/script/keyboard_overrides.sh
+alias vimb="vim ~/.bashrc"
+alias vimv="vim $VIMCONFIG/vimrc"
 
-# Alias my common git commands
-alias gst="git status"
-alias gadcom="git add .;gcom"
-alias gcom="git commit -m "
+# set default editor
+# TODO the vim books talk about using VISUAL instead. Why?
+export EDITOR=vim
+
+# TODO alias vim to nvim. Same for vi.
+
+###############################################################
+# => NAV ALIASES
+###############################################################
+
+CDPATH=:~/projects
+
+# Personal
+alias cdd="cd ~/projects/dotfiles"
+
+if [ -d "~/projects/dreadnought" ] 
+then
+    alias chd="cd ~/projects/dreadnought"
+else
+    alias chd="cd ~/projects/chukinas"
+fi
+
+# Comoto
+alias cdm=cd_zla
+alias cdr='cd_zla 1>/dev/null; cd ../..'
+
+###############################################################
+# => SEARCH
+###############################################################
+
+alias fd="fdfind"
+# Auto-added during fzf install (via git clone method)
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# have FZF respect .gitignore
+# TODO I'm getting rid of this just for now so I can prove out that fzf works in my msi vim 
+# export FZF_DEFAULT_COMMAND='fd --type f'
+
+###############################################################
+# => COMOTO
+###############################################################
+
+export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml
+source /usr/share/google-cloud-sdk/completion.bash.inc
+source ~/monorepo/zlaverse/support/bash_functions.sh
+alias jcdocker="cd ~/loyalty-api; docker-compose up -d; cd_zla; docker-compose up -d"
+
+# JETBRAINS DATAGRIP (COMOTO ONLY)
+alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
+
+###############################################################
+# => AUTO-ADD or UNCATEGORIZED
+###############################################################
+
+set -o noclobber
+
+export PATH="$HOME/.local/bin:$PATH"
+# Add yarn global bin to PATH:
+export PATH="$(yarn global bin):$PATH"
 
 # Load private env vars
 source ~/.bashrc_private
-
-# have FZF respect .gitignore
-export FZF_DEFAULT_COMMAND='fd --type f'

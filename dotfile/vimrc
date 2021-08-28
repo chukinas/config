@@ -1,30 +1,56 @@
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-"
-" Notes:
-"   - On getting the clipboard to work in WSL:
-"   https://gist.github.com/necojackarc/02c3c81e1525bb5dc3561f378e921541
-"
-" Sections:
-"    -> Plugins
-"    -> General
-"    -> VIM user interface
-"    -> Colors and Fonts
-"    -> Files and backups
-"    -> Text, tab and indent related
-"    -> Visual mode related
-"    -> Moving around, tabs and buffers
-"    -> Status line
-"    -> Editing mappings
-"    -> Search
-"    -> Spell checking
-"    -> Misc
-"    -> Helper functions
-"
-" Useful vimscript resources:
-" - https://learnvimscriptthehardway.stevelosh.com/
-" 
+" TODO make note of the fact that the standard apt(-get) vim doesn't some
+" installed with all the options. Somewhere (maybe in the readme) I've noted
+" where I got the one for my lemur pro. Or.... If I go with neovim, maybe I
+" don't need to worry about that after all
+" TODO switch to neovim (I think I need to connect the rc file)
+" TODO there is some vim stuff in the bashrc. Review
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SETUP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" DOTFILES
+" 1. My bash script takes care of setting the VIMCONFIG env var.
+" 2. Create a ~/.vim dir
+" 3. In that folder, soft-link to this file 
+
+" FZF
+" 1. Install fd (https://github.com/sharkdp/fd#on-ubuntu), an alternative to the basic
+"    `find` command. It respects .gitignore. There are notes about how to
+"    integrate it with fzf (https://github.com/sharkdp/fd#using-fd-with-fzf).
+"    Ensure that `fd` maps to `fdfind`, which is the actual binary name
+" 2. Create fd softlink `ln -s $(which fdfind) ~/.local/bin/fd`
+" 2. Install the command line tool FZF (https://github.com/junegunn/fzf#installation)
+"    I followed the instructions for cloning the git repo and executing the
+"    install script. This did nice things like ask me if I wanted to install
+"    keyboard commands and add lines to .bashrc
+"    # TODO check to see if that bashrc line is already in my rc
+" 1. Following the instructions at ~/monorepo/zlaverse/dev, install fzf to OS
+" Note, FZF has uninstall scripts
+
+" TODO: set up personal laptop with neovim, which is what my msi now runs
+
+" 1. Clone dotfiles repo
+" 2. Create symlink: `ln -s ~/projects/dotfiles/dotfile/.vim/ ~/.vim
+" 3. Install minpac (https://github.com/k-takata/minpac)
+" 4. Install VIM (how to get the " register to work?) TODO See my readme
+" 5. Node must be installed in order for coc.nvim to work (see https://github.com/neoclide/coc.nvim)
+" 6. Open Vim, run :PackUpdate in install packages
+
+" TODO automatically load vimrc after saving this file
+" TODO check all this config stuff back into github
+" TODO rename my dotfiles project to config. or setup?
+"
+" Why do only certain clipboard items work with the + registry?
+
+" ACK
+" TODO move this to top level readme?
+" 1. install via apt
+"
+" NEOVIM
+" See pg6 of Modern Vim.
+" Create that init.vim file
+" TODO synlink that file and put master in my dotfiles project
+" I've moved the file to dotfiles and created the symlink
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -45,6 +71,15 @@ set nocompatible
 
 let mapleader = "\<space>"
 let maplocalleader = "\\"
+
+noremap <leader>v :e~/.vim/vimrc<cr>
+noremap <leader>b :edit~/.bashrc<cr>
+
+" automatically source this vimrc on save
+" https://tech.serhatteker.com/post/2020-04/auto-source-vimrc-when-saved/
+" TODO is this working?
+autocmd! BufWritePost $MYVIMRC source $MYVIMRC | echom "Reloaded $NVIMRC"
+
 
 " Make the colon easier to type in normal mode
 nnoremap ; :
@@ -119,6 +154,10 @@ set incsearch
 " https://thevaluable.dev/vim-search-find-replace/
 " https://blog.jasonmeridth.com/posts/use-git-grep-to-replace-strings-in-files-in-your-git-repository/
 " https://superuser.com/questions/400078/how-can-i-search-a-file-by-its-name-and-partial-path
+
+" Search for visually selected text
+" https://vim.fandom.com/wiki/Search_for_visually_selected_text
+vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -320,6 +359,7 @@ set linebreak
 set whichwrap+=<,>,h,l
 
 
+" TODO move all the elixir stuff out into a separate file
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Elixir mappings
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -406,7 +446,7 @@ autocmd FileType * :iabbrev <silent> <buffer> BB {}<left><C-R>=Eatchar('\s')<CR>
 
 
 
-
+" TODO is there a vim plugin for navigating these headers?
 """""""
 " CoC
 " Symbol renaming.
@@ -415,5 +455,3 @@ nmap gd <Plug>(coc-definition)
 nmap gy <Plug>(coc-type-definition)
 nmap gi <Plug>(coc-implementation)
 nmap gr <Plug>(coc-references)
-
-noremap <leader>v :e~/.vim/vimrc<cr>
