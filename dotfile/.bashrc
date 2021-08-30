@@ -178,8 +178,7 @@ else
 fi
 
 # Comoto
-alias cdm=cd_zla
-alias cdr='cd_zla 1>/dev/null; cd ../..'
+alias cdm='cd_zla 1>/dev/null; cd ../..'
 
 ###############################################################
 # => SEARCH
