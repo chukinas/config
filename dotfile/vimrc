@@ -70,7 +70,8 @@ autocmd FocusGained,BufEnter * checktime
 set nocompatible
 
 let mapleader = "\<space>"
-let maplocalleader = "\\"
+" TODO I commented this out to see if I could get <C-\> working
+" let maplocalleader = "\\"
 
 noremap <leader>v :e~/.vim/vimrc<cr>
 noremap <leader>b :edit~/.bashrc<cr>
@@ -330,6 +331,12 @@ nnoremap <C-H>  <C-W>H
 nnoremap <C-J>  <C-W>J
 nnoremap <C-K>  <C-W>K
 nnoremap <C-L>  <C-W>L
+nnoremap <M-H>  <C-W><C-H>
+nnoremap <M-J>  <C-W><C-J>
+nnoremap <M-K>  <C-W><C-K>
+nnoremap <M-L>  <C-W><C-L>
+
+tnoremap <ESC> <C-\><C-N>
 
 " To change height of window:
 " :res(ize) 60     ...  to make it 60 rows high
