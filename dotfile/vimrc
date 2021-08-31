@@ -123,7 +123,6 @@ call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -161,37 +160,16 @@ set incsearch
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => VIM user interface
+" => VISUAL
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-"Always show current position
-set ruler
-
-" Configure backspace so it acts as it should act
-set backspace=eol,start,indent
-
-" Don't redraw while executing macros (good performance config)
-set lazyredraw 
 
 " Show matching brackets when text indicator is over them
 set showmatch 
 " How many tenths of a second to blink when matching brackets
 set mat=2
 
-" No annoying sound on errors
-set noerrorbells
-set novisualbell
-set t_vb=
-set tm=500
-
 " Enable syntax highlighting
 syntax enable 
-
-" Set utf8 as standard encoding and en_US as the standard language
-set encoding=utf8
-
-" Use Unix as the standard file type
-set ffs=unix,dos,mac
 
 " Always show the status line
 set laststatus=2
@@ -214,6 +192,32 @@ highlight VertSplit ctermfg=DarkGray ctermbg=Black
 
 " Always keep some lines between cursor and top/bottom of window
 set scrolloff=10
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => VIM user interface
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Configure backspace so it acts as it should act
+set backspace=eol,start,indent
+
+" Don't redraw while executing macros (good performance config)
+set lazyredraw 
+
+" No annoying sound on errors
+set noerrorbells
+set novisualbell
+set t_vb=
+set tm=500
+
+" Set utf8 as standard encoding and en_US as the standard language
+set encoding=utf8
+
+" Use Unix as the standard file type
+set ffs=unix,dos,mac
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => FOLDING
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " to bold the text, add cterm=bold
 highlight Folded ctermfg=LightGray ctermbg=DarkMagenta
@@ -320,7 +324,6 @@ set noswapfile
 " https://vim.fandom.com/wiki/Remove_unwanted_spaces
 autocmd BufWritePre *.exs,*.ex,*.html,*.md %s/\s\+$//e
 
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Windows
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -331,12 +334,11 @@ nnoremap <C-H>  <C-W>H
 nnoremap <C-J>  <C-W>J
 nnoremap <C-K>  <C-W>K
 nnoremap <C-L>  <C-W>L
-nnoremap <M-H>  <C-W><C-H>
-nnoremap <M-J>  <C-W><C-J>
-nnoremap <M-K>  <C-W><C-K>
-nnoremap <M-L>  <C-W><C-L>
-
-tnoremap <ESC> <C-\><C-N>
+"nnoremap <M-H>  <C-W><C-H>
+"nnoremap <M-J>  <C-W><C-J>
+"nnoremap <M-K>  <C-W><C-K>
+"nnoremap <M-L>  <C-W><C-L>
+"tnoremap <ESC> <C-\><C-N>
 
 " To change height of window:
 " :res(ize) 60     ...  to make it 60 rows high
@@ -344,7 +346,6 @@ tnoremap <ESC> <C-\><C-N>
 nnoremap <C-W>- :resize -5 <CR>
 nnoremap <C-W>+ :resize +5 <CR>
 nnoremap <silent> <leader>t <C-W>K :resize 15<CR>
-
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Text, tab and indent related
@@ -449,11 +450,8 @@ autocmd FileType * :iabbrev <silent> <buffer> qq ""<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> eqq =""<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> ppp ()<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> pqq ("")<left><left><C-R>=Eatchar('\s')<CR>
-autocmd FileType * :iabbrev <silent> <buffer> BB {}<left><C-R>=Eatchar('\s')<CR>
+autocmd FileType * :iabbrev <silent> <buffer> bbb {}<left><C-R>=Eatchar('\s')<CR>
 
-
-
-" TODO is there a vim plugin for navigating these headers?
 """""""
 " CoC
 " Symbol renaming.
