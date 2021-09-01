@@ -179,6 +179,7 @@ fi
 
 # Comoto
 alias cdm='cd_zla 1>/dev/null; cd ../..'
+alias cdr='cdm; cd redline'
 
 ###############################################################
 # => SEARCH

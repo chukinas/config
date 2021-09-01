@@ -51,6 +51,12 @@
 " Create that init.vim file
 " TODO synlink that file and put master in my dotfiles project
 " I've moved the file to dotfiles and created the symlink
+"
+" COC
+" 1. Follow ASDF instructions; install matching versions of erlang/elixir
+" 2. In vim,
+"    `:PackUpdate`
+"    `:CocInstall coc-elixir coc-...`
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -104,6 +110,32 @@ nnoremap <leader>f :FZF<CR>
 call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
 hi Pmenu ctermbg=LightGray
 nnoremap <leader>d :CocDiagnostics<cr>
+nmap gd <Plug>(coc-definition)
+"Type definitions not yet supported by ElixirLS
+"nmap gy <Plug>(coc-type-definition)
+nmap gi <Plug>(coc-implementation)
+nmap gr <Plug>(coc-references)
+" From https://github.com/neoclide/coc.nvim#example-vim-configuration
+set updatetime=300
+" Don't pass messages to |ins-completion-menu|.
+set shortmess+=c
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+" Highlight the symbol and its references when holding the cursor.
+" TODO doesn't seem to work...
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Symbol renaming.
+nmap <leader>rn <Plug>(coc-rename)
 
 " Projectionist
 call minpac#add('tpope/vim-projectionist')
@@ -451,12 +483,3 @@ autocmd FileType * :iabbrev <silent> <buffer> eqq =""<left><C-R>=Eatchar('\s')<C
 autocmd FileType * :iabbrev <silent> <buffer> ppp ()<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> pqq ("")<left><left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> bbb {}<left><C-R>=Eatchar('\s')<CR>
-
-"""""""
-" CoC
-" Symbol renaming.
-" https://github.com/neoclide/coc.nvim
-nmap gd <Plug>(coc-definition)
-nmap gy <Plug>(coc-type-definition)
-nmap gi <Plug>(coc-implementation)
-nmap gr <Plug>(coc-references)
