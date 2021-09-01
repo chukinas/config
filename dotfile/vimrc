@@ -141,8 +141,6 @@ nmap <leader>rn <Plug>(coc-rename)
 call minpac#add('tpope/vim-projectionist')
 nnoremap <leader>a :A<CR>
 
-call minpac#add('mattn/emmet-vim')
-" https://raw.githubusercontent.com/mattn/emmet-vim/master/TUTORIAL
 call minpac#add('tpope/vim-unimpaired')
 call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-fugitive')
@@ -152,6 +150,7 @@ call minpac#add('sheerun/vim-polyglot')
 call minpac#add('tpope/vim-rhubarb')
 call minpac#add('mileszs/ack.vim')
 call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
+call minpac#add('neovim/nvim-lspconfig')
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
 
