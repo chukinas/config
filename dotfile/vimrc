@@ -112,6 +112,12 @@ nnoremap <leader>p "+p
 nnoremap <leader>q q:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => NeoVim
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -178,6 +184,11 @@ call minpac#add('tomtom/tlib_vim')
 call minpac#add('garbas/vim-snipmate')
 " optional
 call minpac#add('honza/vim-snippets')
+
+" My custom snippets:
+set runtimepath+= ~/projects/dotfiles/vim_runtimepath
+" For reference, here are the snippets from vim-snippets plugin:
+" ~/.vim/pack/minpac/start/vim-snippets/snippets
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search

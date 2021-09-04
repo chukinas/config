@@ -125,7 +125,6 @@ fi
 # => KEYBOARD CUSTOMIZATION
 ###############################################################
 
-# TODO can I turn this into an executable?
 xmodmap /home/jc/projects/dotfiles/dotfile/xmodmap
 
 ###############################################################
