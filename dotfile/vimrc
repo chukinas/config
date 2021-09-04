@@ -169,6 +169,17 @@ command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => SNIPPETS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" https://github.com/garbas/vim-snipmate
+
+call minpac#add('MarcWeber/vim-addon-mw-utils')
+call minpac#add('tomtom/tlib_vim')
+call minpac#add('garbas/vim-snipmate')
+" optional
+call minpac#add('honza/vim-snippets')
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
