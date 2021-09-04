@@ -147,6 +147,8 @@ alias gcom="git commit -m "
 # => VIM
 ###############################################################
 
+# TODO remove this first one?
+export MYVIMRC=~/.vim/vimrc
 export vrc=~/.vim/vimrc
 export brc=~/.bashrc
 export VIMCONFIG=~/.vim
@@ -169,6 +171,7 @@ CDPATH=:~/projects
 
 # Personal
 alias cdd="cd ~/projects/dotfiles"
+alias cdp="cd ~/projects/metaprogramming"
 
 if [ -d "~/projects/dreadnought" ] 
 then
@@ -217,4 +220,4 @@ export PATH="$HOME/.local/bin:$PATH"
 export PATH="$(yarn global bin):$PATH"
 
 # Load private env vars
-source ~/.bashrc_private
+source ~/.bashrc_private 2>/dev/null

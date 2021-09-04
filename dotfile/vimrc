@@ -1,3 +1,12 @@
+"
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" TEMP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+:command BikeReplace Subvert/bike{,s}/vehicle{,s} | normal n
+:command MotorcycleReplace Subvert/motorcycle{,s}/vehicle{,s} | normal n
+
+
 " TODO make note of the fact that the standard apt(-get) vim doesn't some
 " installed with all the options. Somewhere (maybe in the readme) I've noted
 " where I got the one for my lemur pro. Or.... If I go with neovim, maybe I
@@ -84,8 +93,9 @@ noremap <leader>b :edit~/.bashrc<cr>
 
 " automatically source this vimrc on save
 " https://tech.serhatteker.com/post/2020-04/auto-source-vimrc-when-saved/
-" TODO is this working?
-autocmd! BufWritePost $MYVIMRC source $MYVIMRC | echom "Reloaded $NVIMRC"
+" TODO fix magic string
+autocmd! BufWritePost ~/.vim/vimrc source ~/.vim/vimrc | echom "Reloaded VIMRC"
+"autocmd! BufWritePost $MYVIMRC source $MYVIMRC | echom "Reloaded $NVIMRC"
 
 
 " Make the colon easier to type in normal mode
@@ -94,11 +104,19 @@ nnoremap : ;
 
 set path+=app**
 
+" Make it easier to copy/paste from clipboard register
+nnoremap <leader>y "+y
+nnoremap <leader>p "+p
+
+" Make it easier to access command history
+nnoremap <leader>q q:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Note: some of my minpac plugins are defined further below.
+" Examgle: Ack-Vim is imported in the Search section below.
 packadd minpac
 call minpac#init()
 
@@ -141,15 +159,11 @@ nmap <leader>rn <Plug>(coc-rename)
 call minpac#add('tpope/vim-projectionist')
 nnoremap <leader>a :A<CR>
 
-call minpac#add('tpope/vim-unimpaired')
-call minpac#add('tpope/vim-abolish')
 call minpac#add('tpope/vim-fugitive')
 call minpac#add('tpope/vim-surround')
 call minpac#add('tpope/vim-repeat')
 call minpac#add('sheerun/vim-polyglot')
 call minpac#add('tpope/vim-rhubarb')
-call minpac#add('mileszs/ack.vim')
-call minpac#add('prettier/vim-prettier', { 'do': 'yarn install' })
 call minpac#add('neovim/nvim-lspconfig')
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
@@ -157,6 +171,24 @@ command! PackClean call minpac#clean()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" :ACK is one of my main search tools.
+" See my .ackrc for tips on using it on command line.
+" Most of this options can be used in Ack-vim as well.
+"
+" TODO see instructions above
+" Be sure to symlink ~/.ackrc to my dotfile
+" ~/projects/dotfiles/dotfile/.ackrc
+" TODO isn't there a way for vim to open a file from a path like the one
+" above?
+call minpac#add('mileszs/ack.vim')
+nmap <leader>s :Ack 
+
+" VIM ABOLISH
+" https://github.com/tpope/vim-abolish#substitution
+" Example:
+" :Subvert/bike{,s}/vehicle{,s}
+call minpac#add('tpope/vim-abolish')
 
 " For regular expressions turn magic on
 set magic

@@ -1,13 +1,39 @@
---type-set
-phoenix:ext:eex,leex
+# .ackrc is located in ~/.ackrc
+#
+# Common options
+# -cl               count by file
+# --type=.ex        search only .ex files
+# --type=template   search only phoenix templates (as custom defined below)
+# -i                ignore case
+# -w                whole words only
+#
+# Search files whose paths match a pattern:
+# > fd garage | ack --type=phx --files-from=- bike
+#
+# Here's a nice cheatsheet:
+# https://kapeli.com/cheat_sheets/Ack.docset/Contents/Resources/Documents/index
+#
+# If Ack-vim is set up, use by e.g:
+# :Ack --type=elixir search_term
 
---type-set
-phx:ext:eex,leex
+# Always sort files
+--sort-files
 
+# ELIXIR AND PHOENIX
+# 
+# Example: search only phoenix templates:
+# > ack --type=phoenix my_search_term
+#
+# Example: search only elixir files:
+# > ack --type=elixir my_search_term
+#
+# Example: search
+# Types:
 --type-set
-liveview:ext:leex
-
+phx:ext:eex,leex,ex,exs
 --type-set
-lv:ext:leex
+template:ext:eex,leex
 
+# Ignore in mix and phoenix projects:
 --ignore-dir=deps
+--ignore-dir=priv
