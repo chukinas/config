@@ -186,7 +186,7 @@ call minpac#add('garbas/vim-snipmate')
 call minpac#add('honza/vim-snippets')
 
 " My custom snippets:
-set runtimepath+= ~/projects/dotfiles/vim_runtimepath
+set runtimepath+=~/projects/dotfiles/vim_runtimepath
 " For reference, here are the snippets from vim-snippets plugin:
 " ~/.vim/pack/minpac/start/vim-snippets/snippets
 
@@ -454,36 +454,6 @@ set whichwrap+=<,>,h,l
 
 " TODO move all the elixir stuff out into a separate file
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Elixir mappings
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-" Shortcut to invalidate tailwind config hash to force reload
-"noremap <leader>w :e assets/tailwind.config.js<cr>
-
-augroup myElixir
-  au!
-
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " NORMAL
-  "
-  " pry
-  " Remember to run tests in iex, example:
-  " `iex -S mix test`
-  autocmd FileType elixir nnoremap <buffer> <leader>r orequire IEx; IEx.pry()<esc>
-
-  """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-  " ABBREVIATIONS
-  "
-  " %__MODULE__{} = 
-  autocmd FileType elixir :iabbrev <buffer> mod %__MODULE__{} =
-  " %{}
-  autocmd FileType elixir :iabbrev <buffer> mpp %{}<left>
-  " IO.inspect
-  autocmd FileType elixir :iabbrev <buffer> insp IO.inspect(label: "")<left><left>
-augroup END
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Embedded Elixir
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -492,28 +462,6 @@ nnoremap <leader>C 0f>i<Space>class=""<ESC>:noh<CR>i
 
 " `class=""` edit
 nnoremap <leader>c V/\%Vclass<CR><ESC>:noh<CR>f";i<Space>
-
-" `<% %> add then edit
-nnoremap <leader>e O<%<Space>%><ESC>F%;a
-
-" `<%# %> add then edit
-nnoremap <leader>3 O<%#<Space>%><ESC>F#a<Space>
-
-" `=""` and drop into INSERT mode
-nnoremap <leader>" i=""<ESC>i
-
-" <% ... %>
-autocmd FileType eelixir :iabbrev <buffer> %% <% %><left><left><left>
-" <%#  %>
-autocmd FileType eelixir :iabbrev <buffer> ## <%# %><left><left><left>
-" <%= ... %>
-autocmd FileType elixir,eelixir :iabbrev <buffer> exp <%= %><left><left><left>
-" <%= if ... do %>
-autocmd FileType eelixir :iabbrev <buffer> ifdo <%= if do %><left><left><left><left><left><left>
-" <% end %>
-autocmd FileType eelixir :iabbrev <buffer> ndd <% end %><esc>
-" <%= if @live_action == :dev do %>
-autocmd FileType eelixir :iabbrev <buffer> dvv <%= if @live_action == :dev do %><!-- <cr> -->
 
 autocmd FileType elixir :set foldmethod=expr
 autocmd FileType elixir :set foldexpr=ExFoldExpr(v:lnum)
