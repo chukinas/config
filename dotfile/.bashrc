@@ -175,9 +175,9 @@ alias cdp="cd ~/projects/metaprogramming"
 
 if [ -d "~/projects/dreadnought" ] 
 then
-    alias chd="cd ~/projects/dreadnought"
+    alias dr="cd ~/projects/dreadnought"
 else
-    alias chd="cd ~/projects/chukinas"
+    alias dr="cd ~/projects/chukinas"
 fi
 
 # Comoto
