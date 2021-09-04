@@ -126,7 +126,7 @@ fi
 ###############################################################
 
 # TODO can I turn this into an executable?
-. ~/projects/dotfiles/script/keyboard_overrides.sh
+xmodmap /home/jc/projects/dotfiles/dotfile/xmodmap
 
 ###############################################################
 # => ASDF
