@@ -437,7 +437,7 @@ nnoremap <silent> <leader>t <C-W>K :resize 15<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Tab
-set shiftwidth=4
+set shiftwidth=2
 set tabstop=4
 set expandtab
 set smarttab
