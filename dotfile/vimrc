@@ -112,12 +112,6 @@ nnoremap <leader>p "+p
 nnoremap <leader>q q:
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => NeoVim
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-
-
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Plugins
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -129,37 +123,6 @@ call minpac#init()
 " FZF (Fuzzy Finder)
 call minpac#add('junegunn/fzf')
 nnoremap <leader>f :FZF<CR>
-
-" Conquer of Completion
-call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
-hi Pmenu ctermbg=LightGray
-nnoremap <leader>d :CocDiagnostics<cr>
-nmap gd <Plug>(coc-definition)
-"Type definitions not yet supported by ElixirLS
-"nmap gy <Plug>(coc-type-definition)
-nmap gi <Plug>(coc-implementation)
-nmap gr <Plug>(coc-references)
-" From https://github.com/neoclide/coc.nvim#example-vim-configuration
-set updatetime=300
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nnoremap <silent> K :call <SID>show_documentation()<CR>
-function! s:show_documentation()
-  if (index(['vim','help'], &filetype) >= 0)
-    execute 'h '.expand('<cword>')
-  elseif (coc#rpc#ready())
-    call CocActionAsync('doHover')
-  else
-    execute '!' . &keywordprg . " " . expand('<cword>')
-  endif
-endfunction
-" Highlight the symbol and its references when holding the cursor.
-" TODO doesn't seem to work...
-autocmd CursorHold * silent call CocActionAsync('highlight')
-" Symbol renaming.
-nmap <leader>rn <Plug>(coc-rename)
 
 " Projectionist
 call minpac#add('tpope/vim-projectionist')
@@ -173,6 +136,56 @@ call minpac#add('tpope/vim-rhubarb')
 call minpac#add('neovim/nvim-lspconfig')
 command! PackUpdate call minpac#update()
 command! PackClean call minpac#clean()
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => IDE
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" Load the correct packages based on VIM vs NEOVIM
+if has('nvim')
+  " NEOVIM (LSP)
+  call minpac#add("neovim/nvim-lspconfig")
+  " https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
+  " `compe` is deprecated... Check the article some other time to see if there's
+  " a goot replacement.
+  call minpac#add("hrsh7th/nvim-compe")
+  call minpac#add("hrsh7th/vim-vsnip")
+  call minpac#add("hrsh7th/vim-vsnip-integ")
+  source ~/projects/dotfiles/dotfile/init.lua
+
+else
+  " TODO I don't like this nesting
+  " VIM (Conquer of Completion)
+  call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
+  hi Pmenu ctermbg=LightGray
+  nnoremap <leader>d :CocDiagnostics<cr>
+  nmap gd <Plug>(coc-definition)
+  "Type definitions not yet supported by ElixirLS
+  "nmap gy <Plug>(coc-type-definition)
+  nmap gi <Plug>(coc-implementation)
+  nmap gr <Plug>(coc-references)
+  " From https://github.com/neoclide/coc.nvim#example-vim-configuration
+  set updatetime=300
+  " Don't pass messages to |ins-completion-menu|.
+  set shortmess+=c
+  nmap <silent> [g <Plug>(coc-diagnostic-prev)
+  nmap <silent> ]g <Plug>(coc-diagnostic-next)
+  nnoremap <silent> K :call <SID>show_documentation()<CR>
+  function! s:show_documentation()
+    if (index(['vim','help'], &filetype) >= 0)
+      execute 'h '.expand('<cword>')
+    elseif (coc#rpc#ready())
+      call CocActionAsync('doHover')
+    else
+      execute '!' . &keywordprg . " " . expand('<cword>')
+    endif
+  endfunction
+  " Highlight the symbol and its references when holding the cursor.
+  " TODO doesn't seem to work...
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+  " Symbol renaming.
+  nmap <leader>rn <Plug>(coc-rename)
+endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => SNIPPETS
