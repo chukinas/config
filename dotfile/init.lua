@@ -1,5 +1,4 @@
 -- NeoVim Lua config file. Sourced by: ~/projects/dotfiles/dotfile/vimrc
-print("init.lua")
 
 -- https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
 local lspconfig = require("lspconfig")
@@ -40,12 +39,10 @@ require "compe".setup {
 -- A callback that will get called when a buffer connects to the language server.
 -- Here we create any key maps that we want to have on that buffer.
 local on_attach = function(_, bufnr)
-  print("attaching!")
   local function map(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
   local map_opts = {noremap = true, silent = true}
-  print("about to map!")
 
   map("n", "df", "<cmd>lua vim.lsp.buf.formatting()<cr>", map_opts)
   map("n", "gd", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", map_opts)
