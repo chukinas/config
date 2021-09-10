@@ -153,8 +153,8 @@ export brc=~/.bashrc
 export VIMCONFIG=~/.vim
 export VIMDATA=$VIMCONFIG
 
-alias vimb="vim ~/.bashrc"
-alias vimv="vim $VIMCONFIG/vimrc"
+alias vimb="nvim ~/.bashrc"
+alias vimv="nvim $VIMCONFIG/vimrc"
 
 # set default editor
 # TODO the vim books talk about using VISUAL instead. Why?

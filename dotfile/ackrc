@@ -6,6 +6,7 @@
 # --type=template   search only phoenix templates (as custom defined below)
 # -i                ignore case
 # -w                whole words only
+# --help-types      show list of all types ack knows about
 #
 # Search files whose paths match a pattern:
 # > fd garage | ack --type=phx --files-from=- bike
