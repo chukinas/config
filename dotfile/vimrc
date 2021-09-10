@@ -154,6 +154,11 @@ call minpac#add('tpope/vim-fugitive')
 if has("autocmd")
   autocmd BufReadPost fugitive://* set bufhidden=delete
 endif
+" Inline diff: remove color is far too light to be easily distinguished from
+" white. Fix this:
+highlight DiffDelete ctermfg=DarkMagenta ctermbg=DarkMagenta 
+"guifg=#666666 guibg=#666666
+"highlight StatusLine cterm=bold ctermfg=Black ctermbg=Cyan
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => IDE

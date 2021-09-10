@@ -38,3 +38,4 @@ template:ext:eex,leex
 # Ignore in mix and phoenix projects:
 --ignore-dir=deps
 --ignore-dir=priv
+--ignore-dir=.elixir_ls
