@@ -167,7 +167,8 @@ call minpac#add('tpope/vim-rhubarb')
 " ~/projects/dotfiles/dotfile/init.lua:53
 "
 " SETUP
-" https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
+" https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/#setting-up-elixir-ls
+" run scripts/setup_elixir_lsp.sh
 
 " Load the correct packages based on VIM vs NEOVIM
 if has('nvim')

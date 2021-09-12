@@ -71,9 +71,6 @@ local on_attach = function(_, bufnr)
   vim.cmd [[inoremap <silent><expr> <C-d> compe#scroll({ 'delta': -4 })]]
 end
 
--- Finally, let's initialize the Elixir language server
-
--- Replace the following with the path to your installation
 local path_to_elixirls = vim.fn.expand("~/projects/elixir-ls/release/language_server.sh")
 
 lspconfig.elixirls.setup({
