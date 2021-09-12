@@ -66,6 +66,9 @@
 " 2. In vim,
 "    `:PackUpdate`
 "    `:CocInstall coc-elixir coc-...`
+"
+" IDE
+" See IDE setup instructions
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => General
@@ -156,19 +159,19 @@ if has("autocmd")
 endif
 " Inline diff: remove color is far too light to be easily distinguished from
 " white. Fix this:
-highlight DiffDelete ctermfg=DarkMagenta ctermbg=DarkMagenta 
-"guifg=#666666 guibg=#666666
+highlight DiffDelete ctermfg=DarkMagenta ctermbg=DarkCyan guifg=#666666 guibg=#666666
 "highlight StatusLine cterm=bold ctermfg=Black ctermbg=Cyan
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => IDE
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SETUP
+" https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
 
 " Load the correct packages based on VIM vs NEOVIM
 if has('nvim')
   " NEOVIM (LSP)
   call minpac#add("neovim/nvim-lspconfig")
-  " https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
   " `compe` is deprecated... Check the article some other time to see if there's
   " a goot replacement.
   call minpac#add("hrsh7th/nvim-compe")
