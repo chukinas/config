@@ -153,12 +153,13 @@ export brc=~/.bashrc
 export VIMCONFIG=~/.vim
 export VIMDATA=$VIMCONFIG
 
+alias vi="nvim"
 alias vimb="nvim ~/.bashrc"
 alias vimv="nvim $VIMCONFIG/vimrc"
 
 # set default editor
 # TODO the vim books talk about using VISUAL instead. Why?
-export EDITOR=vim
+export EDITOR=nvim
 
 # TODO alias vim to nvim. Same for vi.
 
@@ -204,6 +205,7 @@ if [ "$HOSTNAME" = msi ]; then
     source /usr/share/google-cloud-sdk/completion.bash.inc
     source ~/monorepo/zlaverse/support/bash_functions.sh
     alias jcdocker="cd ~/loyalty-api; docker-compose up -d; cd_zla; docker-compose up -d"
+    alias jclogs="docker-compose logs -f --tail=100 revzilla-redline-webapp"
 
     # JETBRAINS DATAGRIP (COMOTO ONLY)
     alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
