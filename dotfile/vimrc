@@ -164,7 +164,8 @@ call minpac#add('tpope/vim-rhubarb')
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " QUICK REFERENCE MAPPINGS:
-" ~/projects/dotfiles/dotfile/init.lua:53
+nnoremap <leader>l :e ~/projects/dotfiles/dotfile/init.lua
+
 "
 " SETUP
 " https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/#setting-up-elixir-ls
