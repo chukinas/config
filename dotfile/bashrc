@@ -167,8 +167,6 @@ export EDITOR=nvim
 # => NAV ALIASES
 ###############################################################
 
-CDPATH=:~/projects
-
 # Personal
 alias cdd="cd ~/projects/dotfiles"
 alias cdp="cd ~/projects/metaprogramming"
