@@ -7,5 +7,37 @@
     "apps/redline_web_store/web/services/component_engine/templates/*.html.eex": {
         "type": "template",
         "alternate": "apps/redline_web_store/web/services/component_engine/components/{}.ex" 
+    },
+    
+
+    "apps/redline_web_store/web/services/*.ex": {
+        "alternate": "apps/redline_web_store/test/services/{}_test.exs" 
+    },
+    "apps/redline_web_store/test/services/*_test.exs": {
+        "type": "test",
+        "alternate": "apps/redline_web_store/web/services/{}.ex" 
+    },
+
+
+    "apps/redline_web_store/web/services/component_engine/*.ex": {
+        "alternate": "apps/redline_web_store/test/services/component_engine/{}_test.exs" 
+    },
+    "apps/redline_web_store/test/services/component_engine/*_test.exs": {
+        "type": "test",
+        "alternate": "apps/redline_web_store/web/services/component_engine/{}.ex" 
+    },
+
+
+
+    "apps/redline_web_store/web/templates/*.html.eex": {
+        "type": "templates_dir",
+        "alternate": "apps/redline_web_store/web/controllers/{dirname}_controller.ex"
+    },
+    "apps/redline_web_store/web/views/*_view.ex": {
+        "type": "view"
+    },
+    "apps/redline_web_store/web/controllers/*_controller.ex": {
+        "type": "controller",
+        "alternate": "apps/redline_web_store/web/templates/{}" 
     }
 }

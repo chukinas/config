@@ -1,11 +1,40 @@
-"
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TEMP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+command! BikeFind :Ack --files-from=component_engine "ride|motorcycle|bike"
+command! GimmeAllThree :Etest|Vcomponent|Vtemplate
+command! VehicleReplace :%Subvert/{bike,motorcycle,ride}/{,,}vehicle/gc
+nnoremap <leader>s :wa<CR>:only<CR>:e webstorenotcomp<CR>:vs<CR>gggf:VehicleReplace<CR>
 
-:command BikeReplace Subvert/bike{,s}/vehicle{,s} | normal n
-:command MotorcycleReplace Subvert/motorcycle{,s}/vehicle{,s} | normal n
+" open list of files I checked during webstore step (step 2)
+nnoremap <localleader>w :e ~/monorepo/redline/utv_76_notes.md<CR>
 
+" open list of remaining files (the matching one left over after components
+" and web). This was the third and final step
+nnoremap <localleader>r :only<CR>:vs vehicle_replace_notcomp_notweb<CR>gg/apps\/<CR>
+
+" view and start replace in file under cursor
+nnoremap <localleader>v :vs<CR>gF
+
+" drop current line to botton of file
+nnoremap <localleader>d ddGpgg/apps\/<CR> :wa<CR>
+" nnoremap <leader>d ddGpnn
+
+" view inline diff of file under cursor
+nnoremap <localleader>f vaW//:Git<CR>
+
+" open file under cursor, git-blame, and search for "chuk"
+nnoremap <localleader>b gf:Git blame<CR>/chuk<CR>
+
+" search git-blame for "commit"
+nnoremap <localleader>c /Not Committed Yet<CR>
+
+" yank current line (should be a exunit test file) and prepend 'mix test ',
+" ready to paste into rz-bash:
+nnoremap <localleader>t ggImix test <ESC>"+yy^dW.
+
+" Search sections
+nnoremap <localleader>s /\V# *** \w\.\*<CR>
 
 " TODO make note of the fact that the standard apt(-get) vim doesn't some
 " installed with all the options. Somewhere (maybe in the readme) I've noted
@@ -89,7 +118,7 @@ set nocompatible
 
 let mapleader = "\<space>"
 " TODO I commented this out to see if I could get <C-\> working
-" let maplocalleader = "\\"
+let maplocalleader = "\\"
 
 noremap <leader>v :e~/.vim/vimrc<cr>
 noremap <leader>b :edit~/.bashrc<cr>
@@ -110,6 +139,7 @@ set path+=app**
 " Make it easier to copy/paste from clipboard register
 nnoremap <leader>y "+y
 nnoremap <leader>p "+p
+nnoremap <leader>% :let @+ = expand("%")<CR>
 
 " Make it easier to access command history
 nnoremap <leader>q q:
@@ -178,8 +208,9 @@ if has('nvim')
   " `compe` is deprecated... Check the article some other time to see if there's
   " a goot replacement.
   call minpac#add("hrsh7th/nvim-compe")
-  call minpac#add("hrsh7th/vim-vsnip")
-  call minpac#add("hrsh7th/vim-vsnip-integ")
+  " https://github.com/hrsh7th/vim-vsnip
+  "call minpac#add("hrsh7th/vim-vsnip")
+  "call minpac#add("hrsh7th/vim-vsnip-integ")
   source ~/projects/dotfiles/dotfile/init.lua
 
 else
@@ -187,7 +218,7 @@ else
   " VIM (Conquer of Completion)
   call minpac#add('neoclide/coc.nvim', {'branch': 'release'} )
   hi Pmenu ctermbg=LightGray
-  nnoremap <leader>d :CocDiagnostics<cr>
+  "nnoremap <leader>d :CocDiagnostics<cr>
   nmap gd <Plug>(coc-definition)
   "Type definitions not yet supported by ElixirLS
   "nmap gy <Plug>(coc-type-definition)
@@ -221,16 +252,15 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/garbas/vim-snipmate
 
+" Snippet Engine:
 call minpac#add('MarcWeber/vim-addon-mw-utils')
 call minpac#add('tomtom/tlib_vim')
 call minpac#add('garbas/vim-snipmate')
-" optional
-call minpac#add('honza/vim-snippets')
 
-" My custom snippets:
-set runtimepath+=~/projects/dotfiles/vim_runtimepath
-" For reference, here are the snippets from vim-snippets plugin:
+" Snippets:
+call minpac#add('honza/vim-snippets')
 " ~/.vim/pack/minpac/start/vim-snippets/snippets
+set runtimepath+=~/projects/dotfiles/vim_runtimepath
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
@@ -247,10 +277,7 @@ nnoremap <leader>f :FZF<CR>
 " TODO see instructions above
 " Be sure to symlink ~/.ackrc to my dotfile
 " ~/projects/dotfiles/dotfile/.ackrc
-" TODO isn't there a way for vim to open a file from a path like the one
-" above?
 call minpac#add('mileszs/ack.vim')
-nmap <leader>s :Ack 
 
 " VIM ABOLISH
 " https://github.com/tpope/vim-abolish#substitution
@@ -289,6 +316,7 @@ set incsearch
 " Search for visually selected text
 " https://vim.fandom.com/wiki/Search_for_visually_selected_text
 vnoremap // y/\V<C-R>=escape(@",'/\')<CR><CR>
+vnoremap /a y/\V<C-R>=escape(@",'/\')<CR><CR>:AckFromSearch<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VISUAL
@@ -323,6 +351,16 @@ highlight VertSplit ctermfg=DarkGray ctermbg=Black
 
 " Always keep some lines between cursor and top/bottom of window
 set scrolloff=10
+
+" SCROLLBAR
+" https://github.com/Xuyuanp/scrollbar.nvim
+call minpac#add('Xuyuanp/scrollbar.nvim')
+augroup ScrollbarInit
+  autocmd!
+  autocmd CursorMoved,VimResized,QuitPre * silent! lua require('scrollbar').show()
+  autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
+  autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
+augroup end
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
@@ -424,6 +462,7 @@ autocmd FileType elixir :set foldcolumn=3
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Common Abbreviations
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 " This function is useful for dealing with unwanted whitespace
 " caused by using the spacebar as the keyword to end abbreviations.
 " Put this at the end of the abbeviation:
@@ -438,3 +477,24 @@ autocmd FileType * :iabbrev <silent> <buffer> eqq =""<left><C-R>=Eatchar('\s')<C
 autocmd FileType * :iabbrev <silent> <buffer> ppp ()<left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> pqq ("")<left><left><C-R>=Eatchar('\s')<CR>
 autocmd FileType * :iabbrev <silent> <buffer> bbb {}<left><C-R>=Eatchar('\s')<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => COMOTO
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" https://github.com/revzilla/monorepo/blob/master/redline/FORMATTER.md
+
+set autoread
+autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
+function FormatAndRedraw()
+  let currentpath = expand('%:p')
+  let rlfilematch = matchstr(currentpath, 'redline')
+
+  if len(rlfilematch)
+    let redlinepath = $HOME . "/monorepo/redline/"
+    let formatpath = substitute(currentpath, "^" . redlinepath, "", "")
+
+    silent exec "!${PROJECT_ROOT}/monorepo/zlaverse/support/frmt_vim.sh " . formatpath
+    redraw!
+  endif
+endfunction

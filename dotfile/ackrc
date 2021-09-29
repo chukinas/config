@@ -11,11 +11,17 @@
 # Search files whose paths match a pattern:
 # > fd garage | ack --type=phx --files-from=- bike
 #
+# The only way I can figure out to do this in vim:
+# 1) on command line:
+# > ack -g component_engine.*html\.eex > ack_matches
+# 2: then, in vim:
+# > :Ack --from-files=ack_matches content_pattern
+#
 # Here's a nice cheatsheet:
 # https://kapeli.com/cheat_sheets/Ack.docset/Contents/Resources/Documents/index
 #
 # If Ack-vim is set up, use by e.g:
-# :Ack --type=elixir search_term
+# :Ack --elixir search_term
 
 # Always sort files
 --sort-files
