@@ -9,6 +9,9 @@ nnoremap <leader>s :wa<CR>:only<CR>:e webstorenotcomp<CR>:vs<CR>gggf:VehicleRepl
 " open list of files I checked during webstore step (step 2)
 nnoremap <localleader>w :e ~/monorepo/redline/utv_76_notes.md<CR>
 
+" 
+nnoremap <localleader>q :e ~/monorepo/redline/bike_to_vehicle_notes<CR>
+
 " open list of remaining files (the matching one left over after components
 " and web). This was the third and final step
 nnoremap <localleader>r :only<CR>:vs vehicle_replace_notcomp_notweb<CR>gg/apps\/<CR>
@@ -166,7 +169,7 @@ command! PackClean call minpac#clean()
 
 " PROJECTIONIST
 call minpac#add('tpope/vim-projectionist')
-nnoremap <leader>a :A<CR>
+nnoremap <localleader>a :A<CR>
 
 " UMIMPAIRED
 " https://github.com/tpope/vim-unimpaired
@@ -484,17 +487,18 @@ autocmd FileType * :iabbrev <silent> <buffer> bbb {}<left><C-R>=Eatchar('\s')<CR
 
 " https://github.com/revzilla/monorepo/blob/master/redline/FORMATTER.md
 
-set autoread
-autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
 function FormatAndRedraw()
   let currentpath = expand('%:p')
   let rlfilematch = matchstr(currentpath, 'redline')
 
   if len(rlfilematch)
     let redlinepath = $HOME . "/monorepo/redline/"
+    echo redlinepath
     let formatpath = substitute(currentpath, "^" . redlinepath, "", "")
 
     silent exec "!${PROJECT_ROOT}/monorepo/zlaverse/support/frmt_vim.sh " . formatpath
     redraw!
   endif
 endfunction
+set autoread
+autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()

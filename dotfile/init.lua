@@ -44,11 +44,18 @@ local on_attach = function(_, bufnr)
   end
   local map_opts = {noremap = true, silent = true}
 
-  map("n", "df", "<cmd>lua vim.lsp.buf.formatting()<cr>", map_opts)
-  map("n", "gd", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", map_opts)
-  map("n", "dt", "<cmd>lua vim.lsp.buf.definition()<cr>", map_opts)
-  map("n", "K", "<cmd>lua vim.lsp.buf.hover()<cr>", map_opts)
-  map("n", "gD", "<cmd>lua vim.lsp.buf.implementation()<cr>", map_opts)
+  -- I'm using the <localleader>l... namespace ... 
+  -- mnemonic: "l" for "language server"
+  -- mnemonic: "f" for "formatting"
+  map("n", "<localleader>lf", "<cmd>lua vim.lsp.buf.formatting()<cr>", map_opts)
+  -- mnemonic: "e" for "errors"
+  map("n", "<localleader>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", map_opts)
+  -- mnemonic: "d" for "definition"
+  map("n", "<localleader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", map_opts)
+  -- mnemonic: "h" for "hover"
+  map("n", "<localleader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", map_opts)
+  -- mnemonic: "i" for "implementation"
+  map("n", "<localleader>li", "<cmd>lua vim.lsp.buf.implementation()<cr>", map_opts)
   map("n", "<c-k>", "<cmd>lua vim.lsp.buf.signature_help()<cr>", map_opts)
   map("n", "1gD", "<cmd>lua vim.lsp.buf.type_definition()<cr>", map_opts)
 
