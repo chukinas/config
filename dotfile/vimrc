@@ -6,11 +6,10 @@ command! GimmeAllThree :Etest|Vcomponent|Vtemplate
 command! VehicleReplace :%Subvert/{bike,motorcycle,ride}/{,,}vehicle/gc
 nnoremap <leader>s :wa<CR>:only<CR>:e webstorenotcomp<CR>:vs<CR>gggf:VehicleReplace<CR>
 
-" open list of files I checked during webstore step (step 2)
-nnoremap <localleader>w :e ~/monorepo/redline/utv_76_notes.md<CR>
-
+" open browse tire finder
+nnoremap <localleader>t :e ~/monorepo/redline/apps/redline_web_store/web/static/js/redline/pages/product_faceted_browse/index/tire_finder.js<CR>
 " 
-nnoremap <localleader>q :e ~/monorepo/redline/bike_to_vehicle_notes<CR>
+nnoremap <localleader>n :e ~/temp/utv_76_notes.md<CR>
 
 " open list of remaining files (the matching one left over after components
 " and web). This was the third and final step
@@ -27,14 +26,10 @@ nnoremap <localleader>d ddGpgg/apps\/<CR> :wa<CR>
 nnoremap <localleader>f vaW//:Git<CR>
 
 " open file under cursor, git-blame, and search for "chuk"
-nnoremap <localleader>b gf:Git blame<CR>/chuk<CR>
+nnoremap <localleader>b :only<CR>:vs<CR>gf:Git blame<CR>/chuk<CR>
 
 " search git-blame for "commit"
 nnoremap <localleader>c /Not Committed Yet<CR>
-
-" yank current line (should be a exunit test file) and prepend 'mix test ',
-" ready to paste into rz-bash:
-nnoremap <localleader>t ggImix test <ESC>"+yy^dW.
 
 " Search sections
 nnoremap <localleader>s /\V# *** \w\.\*<CR>
