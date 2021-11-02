@@ -158,8 +158,7 @@ alias vimb="nvim ~/.bashrc"
 alias vimv="nvim $VIMCONFIG/vimrc"
 
 # set default editor
-# TODO the vim books talk about using VISUAL instead. Why?
-export EDITOR=nvim
+export VISUAL=nvim
 
 # TODO alias vim to nvim. Same for vi.
 

@@ -1,38 +1,8 @@
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " TEMP
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-command! BikeFind :Ack --files-from=component_engine "ride|motorcycle|bike"
-command! GimmeAllThree :Etest|Vcomponent|Vtemplate
-command! VehicleReplace :%Subvert/{bike,motorcycle,ride}/{,,}vehicle/gc
-nnoremap <leader>s :wa<CR>:only<CR>:e webstorenotcomp<CR>:vs<CR>gggf:VehicleReplace<CR>
 
-" open browse tire finder
-nnoremap <localleader>t :e ~/monorepo/redline/apps/redline_web_store/web/static/js/redline/pages/product_faceted_browse/index/tire_finder.js<CR>
-" 
-nnoremap <localleader>n :e ~/temp/utv_76_notes.md<CR>
-
-" open list of remaining files (the matching one left over after components
-" and web). This was the third and final step
-nnoremap <localleader>r :only<CR>:vs vehicle_replace_notcomp_notweb<CR>gg/apps\/<CR>
-
-" view and start replace in file under cursor
-nnoremap <localleader>v :vs<CR>gF
-
-" drop current line to botton of file
-nnoremap <localleader>d ddGpgg/apps\/<CR> :wa<CR>
-" nnoremap <leader>d ddGpnn
-
-" view inline diff of file under cursor
-nnoremap <localleader>f vaW//:Git<CR>
-
-" open file under cursor, git-blame, and search for "chuk"
-nnoremap <localleader>b :only<CR>:vs<CR>gf:Git blame<CR>/chuk<CR>
-
-" search git-blame for "commit"
-nnoremap <localleader>c /Not Committed Yet<CR>
-
-" Search sections
-nnoremap <localleader>s /\V# *** \w\.\*<CR>
+nnoremap <localleader>n :e ~/monorepo/notes.md<CR>
 
 " TODO make note of the fact that the standard apt(-get) vim doesn't some
 " installed with all the options. Somewhere (maybe in the readme) I've noted
@@ -302,8 +272,7 @@ set incsearch
 " (from Practical Vim, p.239)
 " /Pragmatic\ze Vim
 " :vimgrep // **/*.txt
-" :cfdo %s//Practical/gc
-" :cfdo update
+" :cfdo %s//Practical/gc | update
 
 " :cn goes to the next result
 " See the quickfix window
@@ -409,11 +378,35 @@ nnoremap <C-H>  <C-W>H
 nnoremap <C-J>  <C-W>J
 nnoremap <C-K>  <C-W>K
 nnoremap <C-L>  <C-W>L
+" 
+" " terminal
+tnoremap <ESC>  <C-\><C-N>
+" tnoremap <C-H>  <C-W>H
+" tnoremap <C-J>  <C-W>J
+" tnoremap <C-K>  <C-W>K
+" tnoremap <C-L>  <C-W>L
+" tnoremap <C-W><C-H>  <C-\><C-N><C-W>H
+" tnoremap <C-W><C-J>  <C-\><C-N><C-W>J
+" tnoremap <C-W><C-K>  <C-\><C-N><C-W>K
+" tnoremap <C-W><C-L>  <C-\><C-N><C-W>L
 "nnoremap <M-H>  <C-W><C-H>
 "nnoremap <M-J>  <C-W><C-J>
 "nnoremap <M-K>  <C-W><C-K>
 "nnoremap <M-L>  <C-W><C-L>
 "tnoremap <ESC> <C-\><C-N>
+
+:tnoremap <A-h> <C-\><C-N><C-w>h
+:tnoremap <A-j> <C-\><C-N><C-w>j
+:tnoremap <A-k> <C-\><C-N><C-w>k
+:tnoremap <A-l> <C-\><C-N><C-w>l
+:inoremap <A-h> <C-\><C-N><C-w>h
+:inoremap <A-j> <C-\><C-N><C-w>j
+:inoremap <A-k> <C-\><C-N><C-w>k
+:inoremap <A-l> <C-\><C-N><C-w>l
+:nnoremap <A-h> <C-w>h
+:nnoremap <A-j> <C-w>j
+:nnoremap <A-k> <C-w>k
+:nnoremap <A-l> <C-w>l
 
 " To change height of window:
 " :res(ize) 60     ...  to make it 60 rows high
