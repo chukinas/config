@@ -1,3 +1,18 @@
+#!/bin/bash
+
+# ~/.bashrc
+# ~/projects/dotfiles/dotfile/bash-general.sh
+# ~/projects/dotfiles/dotfile/bash-personal.sh
+# ~/projects/dotfiles/dotfile/bash-comoto.sh
+
+# To use this file and e.g. the comoto script,
+# create a file ~/.bashrc with the following lines, uncommented:
+# source ~/projects/dotfiles/dotfile/bash-general.sh
+# source ~/projects/dotfiles/dotfile/bash-comoto.sh
+
+# If I wanted to make them executables,
+# apparently I'd have to $ chmod +x <file-name>
+
 # https://linuxhint.com/bash_scripting_tutorial_beginners/ 
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
@@ -170,19 +185,6 @@ export VISUAL=nvim
 alias cdd="cd ~/projects/dotfiles"
 alias cdp="cd ~/projects/metaprogramming"
 
-if [ -d "~/projects/dreadnought" ] 
-then
-    alias dr="cd ~/projects/dreadnought"
-else
-    alias dr="cd ~/projects/chukinas"
-fi
-
-# Comoto
-alias cdm='cd_zla 1>/dev/null; cd ../..'
-alias cdr='cdm; cd redline'
-alias cds='dr; cd apps/suns_core'
-alias vimr="cdr; nvim"
-
 ###############################################################
 # => SEARCH
 ###############################################################
@@ -193,25 +195,6 @@ alias fd="fdfind"
 # have FZF respect .gitignore
 # TODO I'm getting rid of this just for now so I can prove out that fzf works in my msi vim 
 # export FZF_DEFAULT_COMMAND='fd --type f'
-
-###############################################################
-# => COMOTO
-###############################################################
-
-if [ "$HOSTNAME" = msi ]; then
-    export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml
-    source /usr/share/google-cloud-sdk/completion.bash.inc
-    source ~/monorepo/zlaverse/support/bash_functions.sh
-    alias jclogs="cd_zla && docker-compose logs -f --tail=100 revzilla-redline-webapp"
-    function dlog () {
-        cd_zla && docker-compose logs --tail=100 -f ${1:-revzilla-redline-webapp}
-    }
-    alias jcdocker="cd_zla && docker-compose stop && docker-compose up -d && jclogs"
-
-    # JETBRAINS DATAGRIP (COMOTO ONLY)
-    # This it the db, database tool we use
-    alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
-fi
 
 ###############################################################
 # => AUTO-ADD or UNCATEGORIZED
@@ -231,6 +214,5 @@ source ~/.bashrc_private 2>/dev/null
 meet() {
      google-chrome "$(xclip -selection c -o)"
 }
-source /usr/share/google-cloud-sdk/completion.bash.inc
-source ~/monorepo/zlaverse/support/bash_functions.sh
-export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml
+
+export DOTFILES=~/projects/dotfiles/dotfile

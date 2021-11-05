@@ -88,8 +88,8 @@ let mapleader = "\<space>"
 " TODO I commented this out to see if I could get <C-\> working
 let maplocalleader = "\\"
 
-noremap <leader>v :e~/.vim/vimrc<cr>
-noremap <leader>b :edit~/.bashrc<cr>
+noremap <leader>v :edit ~/.vim/vimrc<cr>
+noremap <leader>b :edit ~/projects/dotfiles/dotfile/bash-general.sh<cr>
 
 " automatically source this vimrc on save
 " https://tech.serhatteker.com/post/2020-04/auto-source-vimrc-when-saved/
@@ -475,18 +475,53 @@ autocmd FileType * :iabbrev <silent> <buffer> bbb {}<left><C-R>=Eatchar('\s')<CR
 
 " https://github.com/revzilla/monorepo/blob/master/redline/FORMATTER.md
 
-function FormatAndRedraw()
-  let currentpath = expand('%:p')
-  let rlfilematch = matchstr(currentpath, 'redline')
+"function FormatAndRedraw()
+"  let currentpath = expand('%:p')
+"  let rlfilematch = matchstr(currentpath, 'redline')
+"  if len(rlfilematch)
+"    let redlinepath = $HOME . "/monorepo/redline/"
+"    let formatpath = substitute(currentpath, "^" . redlinepath, "", "")
+"    exec "!${PROJECT_ROOT}/monorepo/zlaverse/support/frmt_vim.sh " . currentpath
+"    redraw!
+"  endif
+"endfunction
 
-  if len(rlfilematch)
-    let redlinepath = $HOME . "/monorepo/redline/"
-    echo redlinepath
-    let formatpath = substitute(currentpath, "^" . redlinepath, "", "")
-
-    silent exec "!${PROJECT_ROOT}/monorepo/zlaverse/support/frmt_vim.sh " . formatpath
-    redraw!
-  endif
-endfunction
 set autoread
 autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
+function FormatAndRedraw()
+	let currentpath = expand('%:p')
+	let zlarlfilematch = matchstr(currentpath, 'redline')
+	let ltyrlfilematch = matchstr(currentpath, 'loyalty-api')
+	let prdctsvrlfilematch = matchstr(currentpath, 'product-service')
+
+	if len(zlarlfilematch)
+		let homepath = $HOME . "/monorepo/redline/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+        echom formatpath
+
+		silent exec "!~/projects/dotfiles/dotfile/bash-elixir-format.sh " . formatpath
+        "echom "Just formatted!"
+        edit
+	  "redraw!
+      "echom "Just redrew!"
+	endif
+
+	if len(ltyrlfilematch)
+		let homepath = $HOME . "/loyalty-api/loyalty/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+
+		exec "!${PROJECT_ROOT}/loyalty-api/scripts/frmt_vim.sh " . formatpath
+	  redraw!
+	endif
+
+	if len(prdctsvrlfilematch)
+		let homepath = $HOME . "/product-service/product_service/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+
+		exec "!${PROJECT_ROOT}/product-service/scripts/frmt_vim.sh " . formatpath
+	  redraw!
+	endif
+endfunction
+" 
+" set autoread
+" autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
