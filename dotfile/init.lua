@@ -51,7 +51,7 @@ local on_attach = function(_, bufnr)
   -- mnemonic: "e" for "errors"
   map("n", "<localleader>le", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<cr>", map_opts)
   -- mnemonic: "d" for "definition"
-  map("n", "<localleader>ld", "<cmd>lua vim.lsp.buf.definition()<cr>", map_opts)
+  map("n", "<localleader>d", "<cmd>lua vim.lsp.buf.definition()<cr>", map_opts)
   -- mnemonic: "h" for "hover"
   map("n", "<localleader>lh", "<cmd>lua vim.lsp.buf.hover()<cr>", map_opts)
   -- mnemonic: "i" for "implementation"
