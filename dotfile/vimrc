@@ -380,7 +380,7 @@ nnoremap <C-K>  <C-W>K
 nnoremap <C-L>  <C-W>L
 " 
 " " terminal
-tnoremap <ESC>  <C-\><C-N>
+"tnoremap <ESC>  <C-\><C-N>
 " tnoremap <C-H>  <C-W>H
 " tnoremap <C-J>  <C-W>J
 " tnoremap <C-K>  <C-W>K
