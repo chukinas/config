@@ -182,8 +182,7 @@ export VISUAL=nvim
 ###############################################################
 
 # Personal
-alias cdd="cd ~/projects/dotfiles"
-alias cdp="cd ~/projects/metaprogramming"
+alias cdd="cd ~/projects/dotfiles/dotfile"
 
 ###############################################################
 # => SEARCH

@@ -32,7 +32,30 @@ function jc-format-elixir() {
   cg-bash-noninteractive "mix format $1"
 }
 
+alias selenium-start="~/monorepo/monotest/browser-container.sh;"
+alias test_std="cd ~/monorepo/monotest; mix test"
+alias test_dev="cd ~/monorepo/monotest; RZ_URL=https://rz.devzla.com CG_URL=https://cg.devzla.com mix test"
+alias test_dev_mobile="PLATFORM=chrome_iphone cd ~/monorepo/monotest; RZ_URL=https://rz.devzla.com CG_URL=https://cg.devzla.com mix test"
+
+function test_dev_mobile {
+  cd ~/monorepo/monotest
+  PLATFORM="chrome_iphone" RZ_URL=https://rz.devzla.com CG_URL=https://cg.devzla.com mix test
+}
+
+function test_staging {
+  cd ~/monorepo/monotest
+  "RZ_URL=https://rz-pr-${1}.stagezla.com/ CG_URL=https://cg-pr-${1}.stagezla.com/ mix test"
+}
+
+function test_staging_mobile {
+  cd ~/monorepo/monotest;
+  PLATFORM="chrome_iphone" RZ_URL=https://rz-pr-${1}.stagezla.com/ CG_URL=https://cg-pr-${1}.stagezla.com/ mix test;
+}
+
+# function mixtest {
+#   alias test="cd ~/monorepo/monotest; RZ_URL=https://rz.devzla.com CG_URL=https://cg.devzla.com mix test"
+# }
+
 # OTHER
-alias cdm='cd_zla 1>/dev/null; cd ../..'
-alias cdr='cdm; cd redline'
-alias vimr="cdr; nvim"
+alias cdr='cd ~/monorepo/redline'
+alias cdt='cd ~/monorepo/monotest'
