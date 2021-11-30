@@ -45,3 +45,4 @@ template:ext:eex,leex
 --ignore-dir=deps
 --ignore-dir=priv
 --ignore-dir=.elixir_ls
+--ignore-dir=doc
