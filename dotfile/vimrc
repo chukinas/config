@@ -490,9 +490,22 @@ set autoread
 autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
 function FormatAndRedraw()
 	let currentpath = expand('%:p')
+	let monotestfilematch = matchstr(currentpath, 'monotest')
 	let zlarlfilematch = matchstr(currentpath, 'redline')
 	let ltyrlfilematch = matchstr(currentpath, 'loyalty-api')
 	let prdctsvrlfilematch = matchstr(currentpath, 'product-service')
+
+	if len(monotestfilematch)
+		let homepath = $HOME . "/monorepo/monotest/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+        echom formatpath
+
+		silent exec "!~/projects/dotfiles/dotfile/bash-elixir-format.sh " . formatpath
+        "echom "Just formatted!"
+        edit
+	  "redraw!
+      "echom "Just redrew!"
+	endif
 
 	if len(zlarlfilematch)
 		let homepath = $HOME . "/monorepo/redline/"
