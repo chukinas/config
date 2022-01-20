@@ -1,4 +1,5 @@
 -- NeoVim Lua config file. Sourced by: ~/projects/dotfiles/dotfile/vimrc
+-- https://github.com/nanotee/nvim-lua-guide
 
 -- https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/
 local lspconfig = require("lspconfig")
@@ -97,3 +98,6 @@ lspconfig.elixirls.setup({
     }
   }
 })
+
+
+vim.api.nvim_set_keymap('n', '<localleader>n', ':e `git rev-parse --show-toplevel`/notes.md<CR>', { noremap = true, silent = true })

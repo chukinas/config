@@ -208,10 +208,4 @@ export PATH="$(yarn global bin):$PATH"
 # Load private env vars
 source ~/.bashrc_private 2>/dev/null
 
-# 1. Copy google video chat link to clipboard
-# 2. run `meet` in terminal
-meet() {
-     google-chrome "$(xclip -selection c -o)"
-}
-
 export DOTFILES=~/projects/dotfiles/dotfile
