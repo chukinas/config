@@ -306,9 +306,6 @@ set number
 " Always show current position
 set ruler
 
-" Highlight (with an underline) the current line in each window
-" set cursorline
-
 " Dim status line of inactive windows
 highlight StatusLine cterm=bold ctermfg=Black ctermbg=Cyan
 highlight StatusLineNC ctermfg=DarkGray ctermbg=White
@@ -326,6 +323,19 @@ augroup ScrollbarInit
   autocmd WinEnter,FocusGained           * silent! lua require('scrollbar').show()
   autocmd WinLeave,BufLeave,BufWinLeave,FocusLost            * silent! lua require('scrollbar').clear()
 augroup end
+
+" CROSSHAIR OVER CURSOR
+" https://vim.fandom.com/wiki/Highlight_current_line
+" https://www.ditig.com/256-colors-cheat-sheet
+highlight CursorLine  cterm=NONE ctermbg=234
+highlight CursorColumn cterm=NONE ctermbg=234
+augroup CursorLine
+  au!
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorline
+  au VimEnter,WinEnter,BufWinEnter * setlocal cursorcolumn
+  au WinLeave * setlocal nocursorline
+  au WinLeave * setlocal nocursorcolumn
+augroup END
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
