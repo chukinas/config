@@ -228,6 +228,11 @@ call minpac#add('honza/vim-snippets')
 " ~/.vim/pack/minpac/start/vim-snippets/snippets
 set runtimepath+=~/projects/dotfiles/vim_runtimepath
 
+" AutoPairs
+call minpac#add('jiangmiao/auto-pairs')
+" au FileType ex      let b:AutoPairs = AutoPairsDefine({'<?' : '?>', '<?php': '?>'})
+" let g:AutoPairs = AutoPairsDefine({'do' : 'end', '<?php': '?>'})
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Search
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
