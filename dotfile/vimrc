@@ -337,6 +337,10 @@ augroup CursorLine
   au WinLeave * setlocal nocursorcolumn
 augroup END
 
+" Pick a darker color for the Comments
+" The cyan (i think it was) was really bright and overpowering
+highlight Comment ctermfg=DarkGray
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => VIM user interface
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
