@@ -20,3 +20,8 @@
     lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
     all = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit --all
     fixup = commit -a --fixup HEAD
+    rum = rebase upstream/master
+    rumi = rebase -i upstream/master
+    rumf = !git fetch upstream master && git rebase upstream/master && git all
+    rumif = !git fetch upstream master && git rebase -i upstream/master
+    pf = !git push -f && git all
