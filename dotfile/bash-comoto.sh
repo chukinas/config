@@ -58,4 +58,4 @@ function test_staging_mobile {
 
 # OTHER
 alias cdr='cd ~/monorepo/redline'
-alias cdt='cd ~/monorepo/monotest'
+alias cdm='cd ~/monorepo/monotest'
