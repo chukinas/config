@@ -7,9 +7,6 @@
 # ~/monorepo/zlaverse/support/bash_functions.sh
 # ~/monorepo/zlaverse/support/frmt_vim.sh
 
-# JETBRAINS DATAGRIP (db tool)
-alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
-
 # MONOREPO
 alias jclogs="cd_zla && docker-compose logs -f --tail=100 revzilla-redline-webapp"
 function dlog () {
@@ -59,3 +56,11 @@ function test_staging_mobile {
 # OTHER
 alias cdr='cd ~/monorepo/redline'
 alias cdm='cd ~/monorepo/monotest'
+
+# Database
+alias datagrip="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh"
+
+function jcdb {
+  ecom-bash "rake db:migrate:lock"
+  ecom-bash "rake db:migrate:up"
+}
