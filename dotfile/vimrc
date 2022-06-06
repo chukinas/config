@@ -172,7 +172,7 @@ if has('nvim')
   " NEOVIM (LSP)
   call minpac#add("neovim/nvim-lspconfig")
   " `compe` is deprecated... Check the article some other time to see if there's
-  " a goot replacement.
+  " a good replacement.
   call minpac#add("hrsh7th/nvim-compe")
   " https://github.com/hrsh7th/vim-vsnip
   "call minpac#add("hrsh7th/vim-vsnip")
