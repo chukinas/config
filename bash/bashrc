@@ -22,3 +22,6 @@ source $config_dir/asdf/bashrc
 
 # Custom keyboard bindings like R-Caps-Lock -> R-Crtl
 source $config_dir/keyboard/bashrc
+
+# asdf config
+source $config_dir/neovim/bashrc

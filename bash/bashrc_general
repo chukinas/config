@@ -136,32 +136,11 @@ fi
 alias gst="git status"
 
 ###############################################################
-# => VIM
-###############################################################
-
-# TODO remove this first one?
-export MYVIMRC=~/.vim/vimrc
-export vrc=~/.vim/vimrc
-export brc=~/.bashrc
-export VIMCONFIG=~/.vim
-export VIMDATA=$VIMCONFIG
-
-alias vi="nvim"
-alias vimb="nvim ~/.bashrc"
-alias vimv="nvim $VIMCONFIG/vimrc"
-
-# set default editor
-export VISUAL=nvim
-
-# TODO alias vim to nvim. Same for vi.
-
-###############################################################
 # => NAV ALIASES
 ###############################################################
 
 # Personal
 alias cdd="cd ~/projects/dotfiles"
-alias cdvi="cd $HOME/.config/nvim"
 
 ###############################################################
 # => SEARCH
