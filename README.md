@@ -16,8 +16,16 @@
 - [ ] dropbox: download from site, install with eddy, set up selective sync
 - [ ] printer (hardware, optional): connect and print test page
 
-### Dev setup
-- [ ] setup dotfiles
+### Configure dotfiles
+
+```
+$MY_CONFIG=$HOME/projects/config
+mkdir -p $MY_CONFIG
+cd $MY_CONFIG
+git clone https://github.com/jonathanchukinas/dotfiles.git .
+bash setup
+```
+
 - [ ] zlaverse (comoto only) follow instructions:
 - [ ] terminal: change font-size to 8
 
