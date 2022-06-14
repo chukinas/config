@@ -1,0 +1,9 @@
+# To use this file, create a master config file at ~/.gitconfig:
+# [user]
+#     email = <my email>
+#     name = Jonathan Chukinas
+# [include]
+#     path = .gitconfig_shared
+#
+# Then create a symlink to this file
+

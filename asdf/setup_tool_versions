@@ -1,0 +1,72 @@
+#!/bin/bash
+
+#######################################
+# SYMLINK ~/.tool-versions
+#######################################
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+script_name="$(basename $0)"
+source $script_dir/../_setup/helpers.sh
+
+tool_versions_symlink=~/.tool-versions
+tool_versions_target=$script_dir/tool-versions
+
+# this script will exit with 0 if we confirm that tool_versions_symlink points to the tool_versions_target
+exit_code=1
+
+
+function _create_symlink() {
+   ln -sf $tool_versions_target $tool_versions_symlink
+   echo "Creating symlink $tool_versions_symlink -> $tool_versions_target"
+   exit_code=0
+}
+
+function _ask_user_to_overwrite() {
+   read -p "Overwrite and create symlink to $tool_versions_target? (y/n)" -n 1 -r
+   echo
+   if [[ $REPLY =~ ^[Yy]$ ]]
+   then
+      _create_symlink
+   else
+      echo "Not overwriting existing file."
+   fi
+}
+
+print_subheader $0
+echo "Checking for $tool_versions_symlink"
+
+if [[ -L $tool_versions_symlink ]]; then
+   current_target="$(readlink -f $tool_versions_symlink)"
+   if [[ $current_target = $tool_versions_target ]]; then
+
+      # Symlink already exists with correct target
+      echo "Symlink exists and points to the correct target: $tool_versions_target"
+      exit_code=0
+   else
+
+      # Symlink already exists but with wrong target
+      echo "Symlink exists but points to wrong target: $current_target"
+      _ask_user_to_overwrite
+   fi
+elif [[ -f $tool_versions_symlink ]]; then
+
+   # File isn't a symlink
+   echo "File should be a symlink but it's actually a file."
+   _ask_user_to_overwrite
+   exit
+else
+
+   # No file or symlink found; create symlink
+   echo "Symlink does not yet exist."
+   _create_symlink
+fi
+
+# Print success or failure
+if [[ $exit_code = 0 ]]; then
+   print_success "SUCCESS. Symlink valid"
+else
+   print_fail "FAIL. Symlink not valid"
+fi
+echo
+
+exit $exit_code

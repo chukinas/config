@@ -12,6 +12,29 @@ alias jclogs="cd_zla && docker-compose logs -f --tail=100 revzilla-redline-webap
 function dlog () {
     cd_zla && docker-compose logs --tail=100 -f ${1:-revzilla-redline-webapp}
 }
+function jcgitsync() {
+
+  echo -e "\n------------------------------"
+  echo -e "fetching upsteam/master\n"
+  git fetch upstream master
+
+  echo -e "\n------------------------------"
+  echo -e "checking out master\n"
+  git checkout master
+
+  echo -e "\n------------------------------"
+  echo -e "merge master with upstream/master\n"
+  git merge upstream/master
+
+  echo -e "\n------------------------------"
+  echo -e "pushing master\n"
+  git push
+
+  echo -e "\n------------------------------"
+  echo -e "git all -n 20\n"
+  git all -n 20
+
+}
 alias jcdocker="cd_zla && docker-compose stop && docker-compose up -d && jclogs"
 source ~/monorepo/zlaverse/support/bash_functions.sh
 export COMPOSE_FILE=./docker-compose.yml:./docker-compose-linux.yml

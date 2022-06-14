@@ -1,0 +1,14 @@
+#!/bin/bash
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../_setup/helpers.sh
+
+print_header "Ack"
+
+print_subheader $0
+
+echo installing ack
+sudo apt-get install ack
+
+echo symlinking ackrc
+ln -sf $script_dir/ackrc $HOME/.ackrc

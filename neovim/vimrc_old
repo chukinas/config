@@ -1,0 +1,105 @@
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" TEMP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" TODO make note of the fact that the standard apt(-get) vim doesn't some
+" installed with all the options. Somewhere (maybe in the readme) I've noted
+" where I got the one for my lemur pro. Or.... If I go with neovim, maybe I
+" don't need to worry about that after all
+" TODO switch to neovim (I think I need to connect the rc file)
+" TODO there is some vim stuff in the bashrc. Review
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" SETUP
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" DOTFILES
+" 1. My bash script takes care of setting the VIMCONFIG env var.
+" 2. Create a ~/.vim dir
+" 3. In that folder, soft-link to this file
+
+" FZF
+" 1. Install fd (https://github.com/sharkdp/fd#on-ubuntu), an alternative to the basic
+"    `find` command. It respects .gitignore. There are notes about how to
+"    integrate it with fzf (https://github.com/sharkdp/fd#using-fd-with-fzf).
+"    Ensure that `fd` maps to `fdfind`, which is the actual binary name
+" 2. Create fd softlink `ln -s $(which fdfind) ~/.local/bin/fd`
+" 2. Install the command line tool FZF (https://github.com/junegunn/fzf#installation)
+"    I followed the instructions for cloning the git repo and executing the
+"    install script. This did nice things like ask me if I wanted to install
+"    keyboard commands and add lines to .bashrc
+"    # TODO check to see if that bashrc line is already in my rc
+" 1. Following the instructions at ~/monorepo/zlaverse/dev, install fzf to OS
+" Note, FZF has uninstall scripts
+
+" TODO: set up personal laptop with neovim, which is what my msi now runs
+
+" 1. Clone dotfiles repo
+" 2. Create symlink: `ln -s ~/projects/dotfiles/dotfile/.vim/ ~/.vim
+" 3. Install minpac (https://github.com/k-takata/minpac)
+" 4. Install VIM (how to get the " register to work?) TODO See my readme
+" 5. Node must be installed in order for coc.nvim to work (see https://github.com/neoclide/coc.nvim)
+" 6. Open Vim, run :PackUpdate in install packages
+
+" ACK
+" TODO move this to top level readme?
+" 1. install via apt
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" => COMOTO
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+" https://github.com/revzilla/monorepo/blob/master/redline/FORMATTER.md
+
+"function FormatAndRedraw()
+"  let currentpath = expand('%:p')
+"  let rlfilematch = matchstr(currentpath, 'redline')
+"  if len(rlfilematch)
+"    let redlinepath = $HOME . "/monorepo/redline/"
+"    let formatpath = substitute(currentpath, "^" . redlinepath, "", "")
+"    exec "!${PROJECT_ROOT}/monorepo/zlaverse/support/frmt_vim.sh " . currentpath
+"    redraw!
+"  endif
+"endfunction
+
+set autoread
+autocmd BufWritePost *.ex,*.exs call FormatAndRedraw()
+function FormatAndRedraw()
+	let currentpath = expand('%:p')
+	let monotestfilematch = matchstr(currentpath, 'monotest')
+	let zlarlfilematch = matchstr(currentpath, 'redline')
+	let ltyrlfilematch = matchstr(currentpath, 'loyalty-api')
+	let prdctsvrlfilematch = matchstr(currentpath, 'product-service')
+
+	if len(monotestfilematch)
+		let homepath = $HOME . "/monorepo/monotest/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+        echom formatpath
+
+		silent exec "!~/projects/dotfiles/dotfile/bash-elixir-format.sh " . formatpath
+        edit
+
+    elseif len(zlarlfilematch)
+		let homepath = $HOME . "/monorepo/redline/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+        echom formatpath
+
+		silent exec "!~/projects/dotfiles/dotfile/bash-elixir-format.sh " . formatpath
+        edit
+
+    elseif len(ltyrlfilematch)
+		let homepath = $HOME . "/loyalty-api/loyalty/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+
+		exec "!${PROJECT_ROOT}/loyalty-api/scripts/frmt_vim.sh " . formatpath
+
+    elseif len(prdctsvrlfilematch)
+		let homepath = $HOME . "/product-service/product_service/"
+		let formatpath = substitute(currentpath, "^" . homepath, "", "")
+
+		exec "!${PROJECT_ROOT}/product-service/scripts/frmt_vim.sh " . formatpath
+
+    " else
+    "     silent exec "!mix format"
+    "     edit
+	endif
+endfunction

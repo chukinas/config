@@ -2,29 +2,29 @@
     "_comment": "used by vim projectionist plugin for navigating monorepo",
     "apps/redline_web_store/web/services/component_engine/components/*.ex": {
         "type": "component",
-        "alternate": "apps/redline_web_store/web/services/component_engine/templates/{}.html.eex" 
+        "alternate": "apps/redline_web_store/web/services/component_engine/templates/{}.html.eex"
     },
     "apps/redline_web_store/web/services/component_engine/templates/*.html.eex": {
         "type": "template",
-        "alternate": "apps/redline_web_store/web/services/component_engine/components/{}.ex" 
+        "alternate": "apps/redline_web_store/web/services/component_engine/components/{}.ex"
     },
-    
+
 
     "apps/redline_web_store/web/services/*.ex": {
-        "alternate": "apps/redline_web_store/test/services/{}_test.exs" 
+        "alternate": "apps/redline_web_store/test/services/{}_test.exs"
     },
     "apps/redline_web_store/test/services/*_test.exs": {
         "type": "test",
-        "alternate": "apps/redline_web_store/web/services/{}.ex" 
+        "alternate": "apps/redline_web_store/web/services/{}.ex"
     },
 
 
     "apps/redline_web_store/web/services/component_engine/*.ex": {
-        "alternate": "apps/redline_web_store/test/services/component_engine/{}_test.exs" 
+        "alternate": "apps/redline_web_store/test/services/component_engine/{}_test.exs"
     },
     "apps/redline_web_store/test/services/component_engine/*_test.exs": {
         "type": "test",
-        "alternate": "apps/redline_web_store/web/services/component_engine/{}.ex" 
+        "alternate": "apps/redline_web_store/web/services/component_engine/{}.ex"
     },
 
 
@@ -38,6 +38,6 @@
     },
     "apps/redline_web_store/web/controllers/*_controller.ex": {
         "type": "controller",
-        "alternate": "apps/redline_web_store/web/templates/{}" 
+        "alternate": "apps/redline_web_store/web/templates/{}"
     }
 }

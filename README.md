@@ -1,40 +1,40 @@
-# dotfiles
+# config
 
-# Pop!_OS
-- terminal: change Pop profile:
-  - Custom Font -> change size from 12 to 10
+## How to set up new System76 laptop
 
-# ASDF and TOOL VERSIONS
-1. Create `.tool-versions` file in `~/`. Better yet, create symlink to `./dotfile/.tool-versions`.
-2. Download asdf (http://asdf-vm.com/guide/getting-started.html#_1-install-dependencies)
-3. "Install" asdf (though there's no need; my bashrc already takes care of this)
-4. Install language plugin (start with erlang)
-   - `asdf plugin list all` to see plugins and where to get them. Click the link and follow install instructions.
-   - `asdf plugin add erlang <github url>`
-5. Install language `asdf install` install all languages listed in the current `.tool-versions`.
-   - Note: erlang has some specific dependencies that need installed first. See the plugin's ubuntu notes.
-- See all available versions: `$ asdf list all elixir`
-- See all installed versions: `$ asdf list     elixir`
-- Install latest version:     `$ asdf install  elixir latest`
-- Show latest version:        `$ asdf latest   elixir`
+### Non-dev setup
 
-## ASDF ELIXIR
-- install erlang first, then elixir
-- The erlang version should match the otp version
-- https://github.com/asdf-vm/asdf-elixirq
+- [x] slack: install from pop!_shop
+- [ ] chrome
+  - [x] install from pop!_shop
+  - [x] set as default
+  - [x] sign into rz google
+  - [x] sign into personal google
+- [x] 1password
+   - [x] install from site
+   - [x] add chrome plugin
+- [ ] dropbox: download from site, install with eddy, set up selective sync
+- [ ] printer (hardware, optional): connect and print test page
 
-## SCREENSHOTS W/ FLAMESHOT
-### SETUP
-1. `sudo apt install flameshot`
-2. Remove default `print` button keybinding
-3. Add custom keybinding: `print` -> `flameshot gui`
-### USAGE
-- Press `print` key to start snapshot
-- Click and drag
-- Right-click in image to pick color
-- Scroll mouse wheel to change stroke width
-- <C-s> to save
+### Dev setup
+- [ ] setup dotfiles
+- [ ] zlaverse (comoto only) follow instructions:
+- [ ] terminal: change font-size to 8
 
 
 
-Note, some of my bash stuff fires based on computer name (msi for my work laptop, system76 for my personal)
+
+## TODO
+
+- [ ] bash/main.sh -> bash/bashrc
+- [ ] ack/setup.sh
+- [ ] ack/main.sh
+- [ ] asdf/setup.sh
+- [ ] asdf/main.sh
+- [ ] can I configure my System76 terminal via a config file?
+- [ ] rename repo -> config
+- [ ] install git cli
+- [ ] /neovim
+      - setup: symlink to .projections.json
+- [ ] /git
+      - setup: symlink to ./gitconfig

@@ -1,3 +1,4 @@
+# TODO do I need this with my fancy new neovim packer setup?...
 # https://www.mitchellhanberg.com/how-to-set-up-neovim-for-elixir-development/#setting-up-elixir-ls
 
 # Clone Elixir LS project
@@ -17,6 +18,6 @@ asdf local elixir $ELIXIR_VERSION
 
 # Compile
 mkdir rel
-mix deps.get 
+mix deps.get
 mix compile
 mix elixir_ls.release -o release

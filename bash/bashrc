@@ -1,0 +1,24 @@
+#!/b:in/bash
+# main entry point for my bashrc
+
+########################################
+# Source primary bash configs
+########################################
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+
+source $script_dir/bashrc_general
+source $script_dir/bashrc_personal
+source $script_dir/bashrc_comoto
+
+########################################
+# Source from other config dirs
+########################################
+
+config_dir=$script_dir/..
+
+# asdf config
+source $config_dir/asdf/bashrc
+
+# Custom keyboard bindings like R-Caps-Lock -> R-Crtl
+source $config_dir/keyboard/bashrc

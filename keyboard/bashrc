@@ -1,0 +1,3 @@
+# Custom keyboard bindings like R-Caps-Lock -> R-Crtl
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+xmodmap $script_dir/xmodmap

@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# ASDF and TOOL VERSIONS
+# 2. Download asdf (http://asdf-vm.com/guide/getting-started.html#_1-install-dependencies)
+# 3. "Install" asdf (though there's no need; my bashrc already takes care of this)
+# 4. Install language plugin (start with erlang)
+#    - `asdf plugin list all` to see plugins and where to get them. Click the link and follow install instructions.
+#    - `asdf plugin add erlang <github url>`
+# 5. Install language `asdf install` install all languages listed in the current `.tool-versions`.
+#    - Note: erlang has some specific dependencies that need installed first. See the plugin's ubuntu notes.
+# - See all available versions: `$ asdf list all elixir`
+# - See all installed versions: `$ asdf list     elixir`
+# - Install latest version:     `$ asdf install  elixir latest`
+# - Show latest version:        `$ asdf latest   elixir`
+
+## ASDF ELIXIR
+# - install erlang first, then elixir
+# - The erlang version should match the otp version
+# - https://github.com/asdf-vm/asdf-elixirq
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../_setup/helpers.sh
+
+print_header "ASDF setup"
+bash $script_dir/setup_install_asdf
+bash $script_dir/setup_tool_versions

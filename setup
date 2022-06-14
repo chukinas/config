@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# . ./bashrc/setup.sh
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/_setup/helpers.sh
+
+echo
+echo "Updating apt-get"
+sudo apt-get update
+
+bash $script_dir/ack/setup
+bash $script_dir/asdf/setup

@@ -27,7 +27,7 @@
 --sort-files
 
 # ELIXIR AND PHOENIX
-# 
+#
 # Example: search only phoenix templates:
 # > ack --type=phoenix my_search_term
 #

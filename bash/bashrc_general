@@ -1,19 +1,11 @@
 #!/bin/bash
 
-# ~/.bashrc
-# ~/projects/dotfiles/dotfile/bash-general.sh
-# ~/projects/dotfiles/dotfile/bash-personal.sh
-# ~/projects/dotfiles/dotfile/bash-comoto.sh
-
 # To use this file and e.g. the comoto script,
 # create a file ~/.bashrc with the following lines, uncommented:
 # source ~/projects/dotfiles/dotfile/bash-general.sh
 # source ~/projects/dotfiles/dotfile/bash-comoto.sh
 
-# If I wanted to make them executables,
-# apparently I'd have to $ chmod +x <file-name>
-
-# https://linuxhint.com/bash_scripting_tutorial_beginners/ 
+# https://linuxhint.com/bash_scripting_tutorial_beginners/
 
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
@@ -137,25 +129,11 @@ fi
 # BELOW: my additions
 
 ###############################################################
-# => KEYBOARD CUSTOMIZATION
-###############################################################
-
-xmodmap /home/jc/projects/dotfiles/dotfile/xmodmap
-
-###############################################################
-# => ASDF
-###############################################################
-
-. $HOME/.asdf/asdf.sh
-. $HOME/.asdf/completions/asdf.bash
-
-###############################################################
 # => GIT
 ###############################################################
 
 # Alias my common git commands
 alias gst="git status"
-alias gcom="git commit -m "
 
 ###############################################################
 # => VIM
@@ -182,7 +160,8 @@ export VISUAL=nvim
 ###############################################################
 
 # Personal
-alias cdd="cd ~/projects/dotfiles/dotfile"
+alias cdd="cd ~/projects/dotfiles"
+alias cdvi="cd $HOME/.config/nvim"
 
 ###############################################################
 # => SEARCH
@@ -192,7 +171,7 @@ alias fd="fdfind"
 # Auto-added during fzf install (via git clone method)
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 # have FZF respect .gitignore
-# TODO I'm getting rid of this just for now so I can prove out that fzf works in my msi vim 
+# TODO I'm getting rid of this just for now so I can prove out that fzf works in my msi vim
 # export FZF_DEFAULT_COMMAND='fd --type f'
 
 ###############################################################
