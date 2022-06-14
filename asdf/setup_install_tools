@@ -38,3 +38,34 @@ then
 else
    print_fail 'lua not installed'
 fi
+
+echo 'Checking python'
+asdf install python
+if python2 --version &> /dev/null && python3 --version &> /dev/null
+then
+   print_success 'python is installed'
+else
+   print_fail 'python not installed'
+fi
+
+echo 'Checking node'
+# requires python
+asdf install nodejs
+if node --version &> /dev/null
+then
+   print_success 'node is installed'
+else
+   print_fail 'node not installed'
+fi
+
+echo 'Checking rust'
+asdf install rust
+if cargo --version &> /dev/null && rustc --version &> /dev/null
+then
+   print_success 'rust is installed'
+else
+   print_fail 'rust not installed'
+fi
+
+echo 'asdf list'
+asdf list

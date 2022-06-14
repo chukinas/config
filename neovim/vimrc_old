@@ -40,10 +40,6 @@
 " 5. Node must be installed in order for coc.nvim to work (see https://github.com/neoclide/coc.nvim)
 " 6. Open Vim, run :PackUpdate in install packages
 
-" ACK
-" TODO move this to top level readme?
-" 1. install via apt
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => COMOTO
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
