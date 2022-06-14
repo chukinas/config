@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# Standard Setup
+script_dir="$(dirname $0)";
+source $script_dir/../_setup/helpers.sh
+
+function install_asdf() {
+   echo "Removing current asdf install"
+   rm -rf ~/.asdf
+
+   echo
+   echo "Installing curl & git"
+   sudo apt-get install curl git
+
+   echo
+   echo "Cloning asdf repo"
+   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.10.0
+
+   echo
+   echo "asdf will be available after restarting shell"
+   exit_code=0
+}
+
+# TODO filename should be dynamic
+print_subheader $script_dir/setup_install_asdf_and_add_plugins
+
+#######################################
+# PART I: asdf is installed and updated to latest version
+#######################################
+
+#######################################
+# install if not found
+
+echo 'Looking for asdf'
+if asdf --version &> /dev/null
+then
+   echo 'Found'
+else
+   echo 'Not found'
+   install_asdf
+fi
+
+#######################################
+# update
+
+echo 'Updating'
+asdf update
+
+#######################################
+# check for success or failure on current asdf install
+
+# Print success or failure
+if asdf --version &> /dev/null
+then
+   print_success "asdf is installed"
+else
+   print_fail "asdf not installed"
+fi
+
+#######################################
+# PART II: Install plugins
+#######################################
+
+echo 'adding plugins'
+cut -d' ' -f1 $script_dir/tool-versions | xargs -n 1 asdf plugin add
+# TODO how can I check that this was successful?
+print_success 'plugins installed'

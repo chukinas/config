@@ -16,18 +16,18 @@ function print_header() {
 }
 
 function print_subheader() {
-   echo -en "${cyan}"
+   echo -e "${cyan}"
    echo $1
    echo "--------------------------------------------------"
    echo -en "${no_color}"
 }
 
 function print_success() {
-   echo -e "$green$1$no_color"
+   echo -e "${green}SUCCESS. $1$no_color\n"
 }
 
 function print_fail() {
-   echo -e "$red$1$no_color"
+   echo -e "${red}FAIL. $1$no_color\n"
 }
 
 function print_cmd() {

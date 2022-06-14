@@ -1,3 +1,7 @@
+TODO do I even want to install flameshot anymore?
+I think I might like the default clipper that comes with pop_os now.
+Or maybe not... It doesn't allow me to mark up a ss
+
 ## SCREENSHOTS W/ FLAMESHOT
 ### SETUP
 1. `sudo apt install flameshot`

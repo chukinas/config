@@ -1,0 +1,40 @@
+#!/bin/bash
+
+#######################################
+# Install tools (e.g. elixir and neovim) via asdf
+#######################################
+
+# TODO replace this with the fuller version
+script_dir="$(dirname $0)";
+source $script_dir/../_setup/helpers.sh
+
+# TODO make this dynamic
+print_subheader $script_dir/setup_install_tools
+
+
+echo 'Checking neovim'
+asdf install neovim
+if nvim --version &> /dev/null
+then
+   print_success 'neovim is installed'
+else
+   print_fail 'neovim not installed'
+fi
+
+echo 'Checking fzf'
+asdf install fzf
+if fzf --version &> /dev/null
+then
+   print_success 'fzf is installed'
+else
+   print_fail 'fzf not installed'
+fi
+
+echo 'Checking lua'
+asdf install lua
+if lua -v &> /dev/null
+then
+   print_success 'lua is installed'
+else
+   print_fail 'lua not installed'
+fi

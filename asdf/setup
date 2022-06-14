@@ -21,6 +21,13 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
 
-print_header "ASDF setup"
-bash $script_dir/setup_install_asdf
+#######################################
+# 1. Install asdf
+# 2. Add plugins
+# 3. Install tools
+#######################################
+
+print_header "ASDF"
+bash $script_dir/setup_install_asdf_and_add_plugins
 bash $script_dir/setup_tool_versions
+bash $script_dir/setup_install_tools

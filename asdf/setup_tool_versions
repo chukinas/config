@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO extract this. Many other scripts will need to do the same thing
+
 #######################################
 # SYMLINK ~/.tool-versions
 #######################################
@@ -33,7 +35,7 @@ function _ask_user_to_overwrite() {
 }
 
 print_subheader $0
-echo "Checking for $tool_versions_symlink"
+echo "Looking for $tool_versions_symlink"
 
 if [[ -L $tool_versions_symlink ]]; then
    current_target="$(readlink -f $tool_versions_symlink)"
@@ -63,10 +65,9 @@ fi
 
 # Print success or failure
 if [[ $exit_code = 0 ]]; then
-   print_success "SUCCESS. Symlink valid"
+   print_success "Symlink valid"
 else
-   print_fail "FAIL. Symlink not valid"
+   print_fail "$tool_versions_symlink symlinked"
 fi
-echo
 
 exit $exit_code

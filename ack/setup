@@ -3,12 +3,32 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
 
-print_header "Ack"
+print_header "ACK"
 
 print_subheader $0
 
-echo installing ack
-sudo apt-get install ack
+#######################################
+# Make sure ack is installed
 
-echo symlinking ackrc
+echo 'Looking for ack'
+if ack --version &> /dev/null
+then
+  echo 'Found'
+else
+  echo 'ack not found. Installing.'
+  sudo apt-get install ack
+fi
+if ack --version &> /dev/null
+then
+  print_success 'ack is installed'
+else
+  print_fail 'ack not installed'
+fi
+
+#######################################
+# Create Symlink
+
+echo 'symlinking ackrc'
 ln -sf $script_dir/ackrc $HOME/.ackrc
+print_success '.ackrc symlinked'
+# TODO I should actually check this

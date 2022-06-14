@@ -1,8 +1,8 @@
 [core]
-	editor = vim
+	  editor = neovim
 
 [init]
-	defaultBranch = main
+	  defaultBranch = main
 
 [rebase]
     autosquash = true

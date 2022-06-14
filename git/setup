@@ -1,3 +1,6 @@
+#!/bin/bash
+
+#
 # To use this file, create a master config file at ~/.gitconfig:
 # [user]
 #     email = <my email>
@@ -6,4 +9,12 @@
 #     path = .gitconfig_shared
 #
 # Then create a symlink to this file
+
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../_setup/helpers.sh
+
+print_header 'GIT'
+
+bash $script_dir/setup_gh_cli
 

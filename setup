@@ -5,9 +5,14 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/_setup/helpers.sh
 
+clear
 echo
-echo "Updating apt-get"
+print_subheader $script_dir/setup
+
+echo "About to update apt & apt-get"
+sudo apt update
 sudo apt-get update
 
+bash $script_dir/git/setup
 bash $script_dir/ack/setup
 bash $script_dir/asdf/setup

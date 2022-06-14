@@ -1,0 +1,25 @@
+#!/bin/bash
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../_setup/helpers.sh
+
+print_subheader $script_dir/setup_gh_cli
+
+echo 'Looking for gh'
+if gh --version &> /dev/null
+then
+  echo Found
+else
+  echo gh is not installed!
+  curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+  echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+  sudo apt update
+  sudo apt install gh
+fi
+
+if gh --version &> /dev/null
+then
+  print_success 'gh is installed'
+else
+  print_fail 'gh not install'
+fi
