@@ -16,10 +16,3 @@ alias cdvi="cd $NVIM_CONFIG_DIR"
 alias vi="nvim"
 alias vid="cd $CONFIG_DIR;nvim;cd -"
 alias viv="cd $NVIM_CONFIG_DIR;nvim;cd -"
-
-# Quickly open a config file from the command line
-# fuzzy find a config file (neovim config or general config, i.e. this repo)
-# and open it in nvim
-# TODO should this env var be exported?
-all_config_dir=$HOME/projects/all_config
-vic() { nvim $(cd $all_config_dir; fzf); }
