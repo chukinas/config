@@ -29,5 +29,8 @@ source $config_dir/git/bashrc
 # keyboard bindings like R-Caps-Lock -> R-Crtl
 source $config_dir/keyboard/bashrc
 
-# asdf config
+# neovim config
 source $config_dir/neovim/bashrc
+
+# fzf config
+source $config_dir/fzf/bashrc
