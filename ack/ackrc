@@ -1,4 +1,4 @@
-# .ackrc is located in ~/.ackrc
+# TODO in nvim, using :Ack works, but throws some error down below
 #
 # Common options
 # -cl               count by file
@@ -7,6 +7,7 @@
 # -i                ignore case
 # -w                whole words only
 # --help-types      show list of all types ack knows about
+# -Q, --literal     quote all metacharacters: pattern is literal
 #
 # Search files whose paths match a pattern:
 # > fd garage | ack --type=phx --files-from=- bike
