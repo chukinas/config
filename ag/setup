@@ -1,0 +1,34 @@
+#!/bin/bash
+
+source $JJC_CONFIG_DIR/_setup/helpers.sh
+
+print_header "AG (i.e. the Silver Searcher)"
+
+# TODO is this right?
+# Not with sourcing this file, no...
+print_subheader $0
+
+#######################################
+# Install if not already installed
+
+echo 'Looking for ag'
+if ag --version &> /dev/null
+then
+  echo 'Found'
+else
+  echo 'Not found. Installing.'
+  # TODO update first?
+  # TODO update everytime? Or only do that in the
+  sudo apt install silversearcher-ag
+fi
+
+
+#######################################
+# Confirm installation
+
+if ag --version &> /dev/null
+then
+  print_success 'ag is installed'
+else
+  print_fail 'ag not installed'
+fi

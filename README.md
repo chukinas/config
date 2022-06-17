@@ -46,3 +46,4 @@ bash setup
       - setup: symlink to .projections.json
 - [ ] /git
       - setup: symlink to ./gitconfig
+- [ ] add padding to terminal. It's hard to see the text b/c the blue outline

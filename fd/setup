@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# fd is a file finder, a good replacement for find
+
+# TODO add this to the main setup file
+
+# TODO should I be using `apt` elsewhere in my config?
+# https://itsfoss.com/apt-vs-apt-get-difference/
+sudo apt install fd-find
+
+# Print success or failure
+if fd-find --version &> /dev/null
+then
+   print_success "fd is installed"
+else
+   print_fail "fd not installed"
+fi
+

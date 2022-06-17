@@ -7,17 +7,9 @@ bashrc_path=~/.bashrc
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
 
-RED='\033[0;31m'
-CYAN='\033[1;36m'
-NC='\033[0m' # No Color
+mv_old_bashrc() { mv $bashrc ~/.bashrc_old}
 
-echo -e "${CYAN}\n-----------------------------------------"
-echo ".bashrc setup"
-echo -e "-----------------------------------------\n${NC}"
-
-echo -e "\n"
-
-if test -f "$bashrc_path"; then
+if [[ -f "$bashrc_path" ]]; then
   # Alert user to the fact there's already stuff in the bashrc
   echo -e "$bashrc_path already exists.\n\n-- start of contents --\n"
   cat "$bashrc_path"
@@ -29,12 +21,3 @@ if test -f "$bashrc_path"; then
 else
   echo "$bashrc_path does NOT exist."
 fi
-
-echo -e "I ${RED}love${NC} Stack Overflow"
-
-
-
-# SCRIPT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-# echo "$SCRIPT_DIR"
-# echo "$BASH_SOURCE"
-# echo "$( dirname -- $BASH_SOURCE)"

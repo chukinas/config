@@ -1,4 +1,4 @@
-#!/b:in/bash
+#!/bin/bash
 # main entry point for my bashrc
 
 # TODO take a look at ben stein's to see what I can steal
@@ -9,6 +9,7 @@
 ########################################
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+JJC_CONFIG_DIR=$(readlink -f $script_dir/..)
 
 source $script_dir/bashrc_general
 source $script_dir/bashrc_personal

@@ -2,12 +2,12 @@
 #
 # Common options
 # -cl               count by file
-# --type=.ex        search only .ex files
 # --type=template   search only phoenix templates (as custom defined below)
 # -i                ignore case
 # -w                whole words only
 # --help-types      show list of all types ack knows about
 # -Q, --literal     quote all metacharacters: pattern is literal
+# -m, --max-count=X only return X matches from each file
 #
 # Search files whose paths match a pattern:
 # > fd garage | ack --type=phx --files-from=- bike
@@ -47,3 +47,6 @@ template:ext:eex,leex
 --ignore-dir=priv
 --ignore-dir=.elixir_ls
 --ignore-dir=doc
+
+# TODO maybe someday look into replacing ack with (The silver searcher)
+# https://github.com/ggreer/the_silver_searcher

@@ -14,3 +14,7 @@ Then I need to symlink ~/.config/nvim/ to that repo
 add a bashrc that contains nvim-specific stuff
 
 Can I run :healthcheck from bash?
+
+add my neovim config as submodile?
+https://chrisjean.com/git-submodules-adding-using-removing-and-updating/
+https://git-scm.com/book/en/v2/Git-Tools-Submodules#_git_submodules
