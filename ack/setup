@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# TODO replace with ag (silver searcher)
-# TODO would need to update my nvim config
+# FIX replace with ag (silver searcher)
+# FIX would need to update my nvim config
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
@@ -27,12 +27,3 @@ then
 else
   print_fail 'ack not installed'
 fi
-
-#######################################
-# Create Symlink
-
-# TODO replace the symlink with ACKRC env var
-echo 'symlinking ackrc'
-ln -sf $script_dir/ackrc $HOME/.ackrc
-print_success '.ackrc symlinked'
-# TODO I should actually check this

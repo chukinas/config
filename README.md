@@ -47,3 +47,10 @@ bash setup
 - [ ] /git
       - setup: symlink to ./gitconfig
 - [ ] add padding to terminal. It's hard to see the text b/c the blue outline
+- [ ] change my gh handle to chukinas
+- [ ] address any FIX comments
+
+## Notes
+
+To make a file executable:
+chmod u+x filename

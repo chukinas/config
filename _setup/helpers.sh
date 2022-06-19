@@ -33,3 +33,13 @@ function print_fail() {
 function print_cmd() {
    echo -e "$blue$1$no_color"
 }
+
+
+
+# TODO delete me later
+
+function say_hi()
+{
+   echo "HI!!!!!!!"
+   echo $0
+}

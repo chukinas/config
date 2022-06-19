@@ -3,6 +3,7 @@
 
 # TODO take a look at ben stein's to see what I can steal
 # https://gist.github.com/therealbenstein/40bca4fd9f6d365ec3cd491c6091336f
+# TODO use apt ... update everything?
 
 ########################################
 # Source primary bash configs
@@ -21,17 +22,10 @@ source $script_dir/bashrc_comoto
 
 config_dir=$script_dir/..
 
-# asdf config
+source $config_dir/ack/bashrc
 source $config_dir/asdf/bashrc
-
-# git config
 source $config_dir/git/bashrc
-
-# keyboard bindings like R-Caps-Lock -> R-Crtl
 source $config_dir/keyboard/bashrc
-
-# neovim config
 source $config_dir/neovim/bashrc
-
-# fzf config
 source $config_dir/fzf/bashrc
+source $config_dir/datagrip/bashrc

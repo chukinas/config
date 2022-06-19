@@ -1,0 +1,6 @@
+# datagrip is a jetbrains program that connects to all the comoto databases
+# It's only used on my comoto machines
+# TODO only conditionally run this. I think I need a JJC_CONFIG_COMOTO env var
+# TODO I need to install this
+
+alias dg="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh 2>/dev/null &"

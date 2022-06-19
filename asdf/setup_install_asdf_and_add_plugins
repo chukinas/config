@@ -21,8 +21,7 @@ function install_asdf() {
    exit_code=0
 }
 
-# TODO filename should be dynamic
-print_subheader $script_dir/setup_install_asdf_and_add_plugins
+print_subheader 'install asdf and add plugins'
 
 #######################################
 # PART I: asdf is installed and updated to latest version

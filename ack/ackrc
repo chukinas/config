@@ -1,4 +1,4 @@
-# TODO in nvim, using :Ack works, but throws some error down below
+# FIX in nvim, using :Ack works, but throws some error down below
 #
 # Common options
 # -cl               count by file
@@ -47,6 +47,3 @@ template:ext:eex,leex
 --ignore-dir=priv
 --ignore-dir=.elixir_ls
 --ignore-dir=doc
-
-# TODO maybe someday look into replacing ack with (The silver searcher)
-# https://github.com/ggreer/the_silver_searcher

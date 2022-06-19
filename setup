@@ -5,7 +5,7 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 JJC_CONFIG_DIR=$(readlink -f $script_dir)
 
-source $script_dir/_setup/helpers.sh
+source $JJC_CONFIG_DIR/_setup/helpers.sh
 
 clear
 echo
@@ -18,3 +18,6 @@ sudo apt-get update
 bash $script_dir/git/setup
 bash $script_dir/ack/setup
 bash $script_dir/asdf/setup
+
+# TODO temp
+say_hi
