@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# defaults
+tail=100
+
+# TODO fix hard coding
+cd ~/monorepo
+
+show_logs="docker-compose logs -f --tail=$tail $(_comoto_cli_app_name $1)"
+
+echo
+echo $show_logs
+echo
+
+eval $show_logs
