@@ -6,8 +6,6 @@ export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
 
 export PATH="$COMOTO_CLI_DIR/lib":$PATH
 
-echo $JJC_CONFIG_DIR is the JJC_CONFIG_DIR
-
 subcommands=$COMOTO_CLI_DIR/lib
 
 _comoto_cli_app_name() {
@@ -21,42 +19,33 @@ _comoto_cli_app_name() {
 }
 export -f _comoto_cli_app_name
 
+export COMOTO_CLI_MONOREPO_DIR=~/monorepo
+
 _parse_params() {
-  flag=0
-  param=''
 
   while :; do
     case "${1-}" in
     -h | --help) usage ;;
     logs)
-      echo $PATH | grep dot
-      echo "called moto logs!"
       shift
       $subcommands/logs $@
       exit $?;;
-    # -v | --verbose) set -x ;;
-    # --no-color) NO_COLOR=1 ;;
-    # -f | --flag) flag=1 ;; # example flag
-    # -p | --param) # example named parameter
-    #   param="${2-}"
-    #   shift
-    #   ;;
+    bounce)
+      shift
+      $subcommands/bounce $@
+      exit $?;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
     esac
     shift
   done
 
-  args=("$@")
-
+  # args=("$@")
   # check required params and arguments
   # [[ -z "${param-}" ]] && die "Missing required parameter: param"
   # [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
-
   return 0
 }
-
-echo "successfully called moto!"
 
 _parse_params "$@"
 

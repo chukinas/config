@@ -72,5 +72,5 @@ jc-docker-down()
   cd -
 }
 
-# Add moto script to path
-export PATH="$JJC_CONFIG_DIR/moto":$PATH
+# TODO make the comoto_cli available
+source $JJC_CONFIG_DIR/moto/bashrc

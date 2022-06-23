@@ -3,8 +3,9 @@
 # defaults
 tail=100
 
-# TODO fix hard coding
-cd ~/monorepo
+cd $COMOTO_CLI_MONOREPO_DIR
+
+echo $(pwd)
 
 show_logs="docker-compose logs -f --tail=$tail $(_comoto_cli_app_name $1)"
 

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Add moto script to path
+export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
+export PATH="$COMOTO_CLI_DIR":$PATH
+
+# TODO rename lib to subcommands?
+complete -W "$(ls $COMOTO_CLI_DIR/lib)" moto

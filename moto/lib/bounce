@@ -1,0 +1,11 @@
+#!/bin/bash
+
+cd $COMOTO_CLI_MONOREPO_DIR
+
+bounce_containers="cd $COMOTO_CLI_MONOREPO_DIR && docker-compose down && docker-compose up"
+
+echo
+echo $bounce_containers
+echo
+
+eval $bounce_containers
