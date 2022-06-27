@@ -1,8 +1,18 @@
 #!/bin/bash
 
 print_and_eval_command() {
-  echo -e "\nExecuting:\n\n\t$1\n"
-  eval $1
+
+  if [ $1 = "--include-type" ] ; then
+    cmd=$2
+    maybe_type="\n$(type $2)\n"
+  else
+    cmd=$1
+    maybe_type=""
+  fi
+
+  echo -e "\nExecuting:\n\n\t$cmd\n$maybe_type"
+
+  eval $cmd
 }
 
 source $COMOTO_CLI_MONOREPO_DIR/zlaverse/support/bash_functions.sh

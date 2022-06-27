@@ -32,6 +32,10 @@ _parse_params() {
       shift
       $subcommands/logs $@
       exit $?;;
+    repl)
+      shift
+      $subcommands/repl $@
+      exit $?;;
     bounce)
       shift
       $subcommands/bounce $@

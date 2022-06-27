@@ -1,0 +1,10 @@
+#!/bin/bash
+
+. $COMOTO_CLI_DIR/moto_helpers
+
+case $1 in
+  ecom) subcommand="ecom-bash" ;;
+  *) exit 1
+esac
+
+print_and_eval_command --include-type "$subcommand"
