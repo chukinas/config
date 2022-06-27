@@ -1,0 +1,24 @@
+#!/bin/bash
+
+. $COMOTO_CLI_DIR/moto_helpers
+
+commands=""
+
+add_rake_task() {
+  cmd="rake db:migrate:$1"
+  if [[ ! $commands = "" ]] ; then
+    commands="$commands && "
+  fi
+  commands="$commands$cmd"
+}
+
+while getopts "dlu" opt; do
+  case $opt in
+    d) add_rake_task "down" ;;
+    l) add_rake_task "lock" ;;
+    u) add_rake_task "up" ;;
+    *) echo "$0: usage: <<insert usage here>>" >&2; exit 1
+  esac
+done
+
+print_and_eval_command --include-type "ecom-bash '$commands'"

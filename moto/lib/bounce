@@ -2,7 +2,7 @@
 
 # TODO should this migrate as well?
 
-subcommand="cd $COMOTO_CLI_MONOREPO_DIR && docker-compose down && docker-compose up"
+subcommand="cd $COMOTO_CLI_MONOREPO_DIR && docker-compose down && docker-compose up -d && moto logs"
 
 source $COMOTO_CLI_DIR/moto_helpers
 

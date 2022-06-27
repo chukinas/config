@@ -54,23 +54,12 @@ alias cde='cd ~/monorepo/ecom'
 alias cdr='cd ~/monorepo/redline'
 alias cdz='cd ~/monorepo/zlaverse/dev' # the same as cd_zla
 
-jc-db()
-{
-  ecom-bash "rake db:migrate:lock"
-  ecom-bash "rake db:migrate:up"
-}
-
 # TODO does this work?
 jc-dialyzer()
 {
   rz-bash mix dialyzer --ignore-exit-status | tee dialyzer.txt
 }
 
-jc-docker-down()
-{
-  cd ~/monorepo/zlaverse/dev && docker-compose down
-  cd -
-}
-
 # TODO make the comoto_cli available
 source $JJC_CONFIG_DIR/moto/bashrc
+alias m=moto

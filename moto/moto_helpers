@@ -2,9 +2,9 @@
 
 print_and_eval_command() {
 
-  if [ $1 = "--include-type" ] ; then
+  if [ "$1" = "--include-type" ] ; then
     cmd=$2
-    maybe_type="\n$(type $2)\n"
+    maybe_type="\n$(type $2 2> /dev/null)\n"
   else
     cmd=$1
     maybe_type=""

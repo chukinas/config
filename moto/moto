@@ -1,6 +1,9 @@
 #!/bin/bash
 
 # https://github.com/icy/bash-coding-style#function-names
+# TODO add to healthcheck: bash 4+
+# TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
+# TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
 export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
 
@@ -27,25 +30,28 @@ _parse_params() {
 
   while :; do
     case "${1-}" in
-    -h | --help) usage ;;
-    logs)
-      shift
-      $subcommands/logs $@
-      exit $?;;
-    repl)
-      shift
-      $subcommands/repl $@
-      exit $?;;
-    bounce)
-      shift
-      $subcommands/bounce $@
-      exit $?;;
-    check)
-      shift
-      $subcommands/check $@
-      exit $?;;
-    -?*) die "Unknown option: $1" ;;
-    *) break ;;
+      -h | --help) usage ;;
+      logs)
+        shift
+        $subcommands/logs $@
+        exit $?;;
+      repl)
+        shift
+        $subcommands/repl $@
+        exit $?;;
+      db)
+        shift
+        $subcommands/db $@
+        exit $?;;
+      bounce)
+        shift
+        $subcommands/bounce $@
+        exit $?;;
+      check)
+        shift
+        $subcommands/check $@
+        exit $?;;
+      *) break ;;
     esac
     shift
   done

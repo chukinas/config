@@ -2,6 +2,8 @@
 
 . $COMOTO_CLI_DIR/moto_helpers
 
+# TODO add autocomplete
+
 case $1 in
   ecom) subcommand="ecom-bash" ;;
   *) exit 1
