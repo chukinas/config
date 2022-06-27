@@ -10,7 +10,7 @@ NVIM_CONFIG_DIR=$HOME/.config/nvim
 export VISUAL=nvim
 
 # cd into nvim config
-alias cdvi="cd $NVIM_CONFIG_DIR"
+alias cdv="cd $NVIM_CONFIG_DIR"
 
 # open nvim in various directories
 alias vi="nvim"

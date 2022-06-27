@@ -15,7 +15,7 @@
     rumi = rebase -i upstream/master
     rumf = !git fetch upstream master && git rebase upstream/master && git all
     rumif = !git fetch upstream master && git rebase -i upstream/master
-    pf = !git push -f && git all
+    pf = !moto check && git push -f && git all -n 20
     m = !git fetch upstream master && git checkout master && git merge upstream/master && git push
     bn = !git m && git checkout -b $1 && git all && :
     fix = !git commit --fixup $1 && :

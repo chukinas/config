@@ -1,0 +1,12 @@
+#!/bin/bash
+
+print_and_eval_command() {
+  echo -e "\nExecuting:\n\n\t$1\n"
+  eval $1
+}
+
+source $COMOTO_CLI_MONOREPO_DIR/zlaverse/support/bash_functions.sh
+
+# TODO make a copy of those functions
+# get helpful functions for printing in color
+source $COMOTO_CLI_DIR/../_setup/helpers.sh

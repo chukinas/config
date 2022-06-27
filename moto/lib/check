@@ -1,0 +1,34 @@
+#!/bin/bash
+
+# Catch errors locally that would stop a Circle CI workflow.
+# Dialyzer and Credo
+
+source $COMOTO_CLI_DIR/moto_helpers
+
+_credo() {
+  if [[ $# -ne 0 ]]
+  then
+    # TODO send this to sterr
+    # TODO fix hard coding
+    echo "$0: Usage: moto redline check"
+    exit 1
+  fi
+
+  # TODO copy this pattern to the other scripts
+  # TODO can `mix credo` be in single quotes?
+  print_and_eval_command "cd $COMOTO_CLI_MONOREPO_DIR && rz-bash 'mix credo'"
+
+  credo_exit_code=$?
+
+  echo
+  if [[ ! $credo_exit_code -ne 0 ]]
+  then
+    print_success 'Credo check succeeded'
+  else
+    print_fail 'Credo check failed'
+  fi
+
+  return $credo_exit_code
+}
+
+_credo

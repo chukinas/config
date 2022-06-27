@@ -1,16 +1,12 @@
 #!/bin/bash
 
 # defaults
-tail=100
+tail=10
 
 cd $COMOTO_CLI_MONOREPO_DIR
 
-echo $(pwd)
+subcommand="docker-compose logs -f --tail=$tail $(_comoto_cli_app_name $1)"
 
-show_logs="docker-compose logs -f --tail=$tail $(_comoto_cli_app_name $1)"
+source $COMOTO_CLI_DIR/moto_helpers
 
-echo
-echo $show_logs
-echo
-
-eval $show_logs
+print_and_eval_command "$subcommand"

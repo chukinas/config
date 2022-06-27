@@ -8,6 +8,8 @@ export PATH="$COMOTO_CLI_DIR/lib":$PATH
 
 subcommands=$COMOTO_CLI_DIR/lib
 
+# TODO move to helpers
+# TODO Then remove the export
 _comoto_cli_app_name() {
   case $1 in
     cg) echo "cycle-gear-redline-webapp" ;;
@@ -33,6 +35,10 @@ _parse_params() {
     bounce)
       shift
       $subcommands/bounce $@
+      exit $?;;
+    check)
+      shift
+      $subcommands/check $@
       exit $?;;
     -?*) die "Unknown option: $1" ;;
     *) break ;;
