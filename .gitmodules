@@ -4,3 +4,4 @@
 	branch = jjc
 
 	# TODO make a note in this subrepo that I should always work from jjc branch
+	# https://stackoverflow.com/questions/29882960/changing-an-existing-submodules-branch

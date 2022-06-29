@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# ANSI color-- use these vars to make outpus in different colors
+#   and formats. Color names that end with 'f' are foreground colors,
+#   and those ending in 'b' are background colors
+
+# from p40 of 101 wicked cool shell scripts
+# also: https://www.lihaoyi.com/post/BuildyourownCommandLinewithANSIescapecodes.html#decorations
+
+esc="\033"
+
+create_colors() {
+  number=$1
+  color=$2
+  declare -g ${color}f="${esc}[3${number}m"
+  declare -g ${color}b="${esc}[4${number}m"
+}
+
+create_formatting() {
+  on_number=$1
+  off_number=$2
+  name=$3
+  declare -g ${name}on="${esc}[${on_number}m"
+  declare -g ${name}off="${esc}[2${off_number}m"
+}
+
+initANSI() {
+  create_colors 0 black
+  create_colors 1 red
+  create_colors 2 green
+  create_colors 3 yellow
+  create_colors 4 blue
+  create_colors 5 purple
+  create_colors 6 cyan
+  create_colors 7 white
+
+  create_formatting 1 2 bold    # bold
+  create_formatting 3 3 italic  # italic
+  create_formatting 4 4 ul      # underline
+  create_formatting 7 7 inv     # invert fg and bg
+
+  reset="${esc}[0m"
+}
+
+initANSI
+
+unset esc create_colors create_formatting initANSI
+
+# echo -e "${boldon}$cyan hi $reset"
+# echo -e "${boldon}${yellowf} hi $reset"
+# echo -e "${boldon}${yellowb}${greenf} hi $reset"

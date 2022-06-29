@@ -1,0 +1,60 @@
+#!/bin/bash
+
+# NAME
+#   create_symlink - creates symlinks and safely copies off the old file if it exists
+#
+# SYNOPSIS
+#   create_symlink TARGET LINK_NAME
+#
+# DESCRIPTION
+#
+#   TARGET is the thing you're linking to
+#   LINK_NAME is the name of the link
+
+if [[ $# -ne 2 ]] ; then
+  echo "Usage: $0: create_symlink TARGET LINK_NAME" >&2
+  return 1
+fi
+
+target="$(realpath $1)" ; link_name="$2"
+
+if [[ ! -d $target ]] ; then
+  echo "$0: error: target must be a valid path" >&2
+  return 1
+fi
+
+config_dir=$(dirname $0)/..
+
+. $config_dir/lib/ansi_color
+
+backup_existing_file() {
+  backup_dir="$config_dir/.bak"
+  backup_dir=$(realpath $backup_dir)
+  mkdir -p $backup_dir
+
+  current_datetime=$(date "+%Y%m%d_%H%M%S")
+  old_filename=$(basename $link_name)
+  new_path="$backup_dir/${current_datetime}_$old_filename"
+
+  echo -e "${yellowf}${boldon}moving $link_name to $new_path${reset}"
+  mv $link_name $new_path
+}
+
+create_link() {
+  echo "Creating"
+  ln -s $target $link_name
+}
+
+echo -e "Symlinking ${cyanf}${boldon}${link_name}${reset} -> ${bluef}${boldon}${target}${reset}"
+
+if [[ "$(readlink $link_name)" -ef $target ]] ; then
+  echo "Link already exists"
+elif [[ -e $link_name ]] ; then
+  echo "File already exists here, but isn't the desired link"
+  backup_existing_file
+  create_link
+else
+  echo "Link does not exist yet"
+  create_link
+fi
+

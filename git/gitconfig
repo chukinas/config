@@ -9,13 +9,13 @@
 
 [alias]
     lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
-    all = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit --all
+    all = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit -20 --all
     fixup = commit --fixup HEAD
     rum = rebase upstream/master
     rumi = rebase -i upstream/master
     rumf = !git fetch upstream master && git rebase upstream/master && git all
     rumif = !git fetch upstream master && git rebase -i upstream/master
-    pf = !moto check && git push -f && git all -n 20
+    pf = !moto check && git push -f && git all
     m = !git fetch upstream master && git checkout master && git merge upstream/master && git push
     bn = !git m && git checkout -b $1 && git all && :
     fix = !git commit --fixup $1 && :
