@@ -1,5 +1,29 @@
 # config
 
+## Installing this Config
+
+This repo contains submodules (at the time of writing: just the neovim config files)
+
+### Clone
+
+```
+gh repo clone config -- --recurse-submodules
+```
+
+If you've already cloned it in the normal way, then you have to manually init and update the submodules:
+
+```
+git submodule update --init --recursive
+```
+
+- https://git-scm.com/book/en/v2/Git-Tools-Submodules
+- https://git-scm.com/docs/gitmodules
+- When cloning the main repo, do so as normal, then...
+  - cd neovim/config
+  - git submodule init
+  - # Can we do that using path instead? and then not have to cd into it?
+  - git submodule update
+
 ## How to set up new System76 laptop
 
 ### Non-dev setup
