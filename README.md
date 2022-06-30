@@ -47,7 +47,9 @@ git submodule update --init --recursive
 ### Configure
 
 - [ ] zlaverse (comoto only) follow instructions:
-- [ ] terminal: change font-size to 8
+- [ ] terminal: 
+  - change font-size to 8
+  - add border to popos windows
 
 
 
