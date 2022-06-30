@@ -1,1 +1,5 @@
+#?/bin/bash
+
+# GIT BASHRC
+
 alias gst="git status"
