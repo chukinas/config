@@ -3,6 +3,7 @@
 . $COMOTO_CLI_DIR/moto_helpers
 
 # TODO add autocomplete
+# TODO error out when given an invalid $1
 
 case $1 in
   ecom) subcommand="ecom-bash" ;;
