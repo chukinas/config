@@ -18,6 +18,5 @@ sudo apt-get update
 bash $script_dir/git/setup
 bash $script_dir/ack/setup
 bash $script_dir/asdf/setup
-
-# TODO temp
-say_hi
+# TODO rename this dir to nvim
+bash $script_dir/neovim/setup

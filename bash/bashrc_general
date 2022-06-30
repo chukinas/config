@@ -136,27 +136,14 @@ fi
 alias cdd="cd ~/projects/dotfiles"
 
 ###############################################################
-# => SEARCH
-###############################################################
-
-alias fd="fdfind"
-# Auto-added during fzf install (via git clone method)
-[ -f ~/.fzf.bash ] && source ~/.fzf.bash
-# have FZF respect .gitignore
-# TODO I'm getting rid of this just for now so I can prove out that fzf works in my msi vim
-# export FZF_DEFAULT_COMMAND='fd --type f'
-
-###############################################################
 # => AUTO-ADD or UNCATEGORIZED
 ###############################################################
 
 set -o noclobber
 
 export PATH="$HOME/.local/bin:$PATH"
+
 # Add yarn global bin to PATH:
-export PATH="$(yarn global bin):$PATH"
-
-# Load private env vars
-source ~/.bashrc_private 2>/dev/null
-
-export DOTFILES=~/projects/dotfiles/dotfile
+if [[ -e yarn ]] ; then
+  export PATH="$(yarn global bin):$PATH"
+fi

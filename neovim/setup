@@ -1,0 +1,18 @@
+#!/bin/bash
+
+neovim_dir=$(dirname $0)
+config_dir=$neovim_dir/..
+
+. $config_dir/_setup/helpers.sh
+
+print_header 'NEOVIM'
+
+print_subheader "Create symlink"
+$config_dir/lib/create_symlink $neovim_dir/config ~/.config/nvim
+
+print_subheader "Update config module"
+echo "[updating ... TODO]"
+
+echo
+# TODO these print functions should call out to the ansi_colors module
+print_success "Neovim set up"
