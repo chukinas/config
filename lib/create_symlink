@@ -41,15 +41,26 @@ backup_existing_file() {
 }
 
 create_link() {
-  echo "Creating"
+  echo "Creating symlink"
   ln -s $target $link_name
 }
 
+# Start Main Script
+###################
+
 echo -e "Symlinking ${cyanf}${boldon}${link_name}${reset} -> ${bluef}${boldon}${target}${reset}"
 
-if [[ "$(readlink $link_name)" -ef $target ]] ; then
-  echo "Link already exists"
+if [[ -h "$link_name" ]] ; then
+  echo "Symlink found"
+  if [[ "$(readlink $link_name)" -ef $target ]] ; then
+    echo "Has correct target"
+  else
+    echo "Has wrong target"
+    backup_existing_file
+    create_link
+  fi
 elif [[ -e $link_name ]] ; then
+  # TODO this SHOULD catch the case where a symlink is pointing to the wrong thing... but isn't
   echo "File already exists here, but isn't the desired link"
   backup_existing_file
   create_link

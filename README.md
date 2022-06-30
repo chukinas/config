@@ -7,7 +7,11 @@ This repo contains submodules (at the time of writing: just the neovim config fi
 ### Clone
 
 ```
-gh repo clone config -- --recurse-submodules
+$MY_CONFIG=$HOME/projects/config
+mkdir -p $MY_CONFIG
+cd $MY_CONFIG
+git clone https://github.com/jonathanchukinas/config.git . --recurse-submodules
+bash setup
 ```
 
 If you've already cloned it in the normal way, then you have to manually init and update the submodules:
@@ -40,15 +44,7 @@ git submodule update --init --recursive
 - [ ] dropbox: download from site, install with eddy, set up selective sync
 - [ ] printer (hardware, optional): connect and print test page
 
-### Configure dotfiles
-
-```
-$MY_CONFIG=$HOME/projects/config
-mkdir -p $MY_CONFIG
-cd $MY_CONFIG
-git clone https://github.com/jonathanchukinas/dotfiles.git .
-bash setup
-```
+### Configure
 
 - [ ] zlaverse (comoto only) follow instructions:
 - [ ] terminal: change font-size to 8

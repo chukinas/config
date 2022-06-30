@@ -32,7 +32,7 @@ jc-gitsync()
 
 alias jc-docker="cd_zla && docker-compose stop && docker-compose up -d && jc-logs"
 source ~/monorepo/zlaverse/support/bash_functions.sh
-source /usr/share/google-cloud-sdk/completion.bash.inc
+source /usr/share/google-cloud-sdk/completion.bash.inc 2>/dev/null
 
 cg-bash-noninteractive()
 {

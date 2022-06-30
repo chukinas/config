@@ -133,7 +133,7 @@ fi
 ###############################################################
 
 # Personal
-alias cdd="cd ~/projects/dotfiles"
+alias cdd="cd ~/projects/config"
 
 ###############################################################
 # => AUTO-ADD or UNCATEGORIZED
