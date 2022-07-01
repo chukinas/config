@@ -5,16 +5,194 @@
 #   Sets up the Comoto CLI
 #   e.g. makes sure that gh is installed and set up
 
-# TODO should this migrate as well?
+# HELPERS FOR PRINTING OUTPUT TO USER
+#######################################
 
-sudo apt update
+current_command='comoto_cli setup'
+
+# TODO decouple this from my personal config script
+. $JJC_CONFIG_DIR/moto/lib/print "$current_command"
+
+# COMOTO_CLI_RC
+#######################################
+
+comoto_cli_rc="$HOME/.comoto_cli_rc"
+
+print_header "Checking for configuration file $comoto_cli_rc"
+if [[ -f "$comoto_cli_rc" ]]; then
+  print_info 'Found'
+elif print_confirm 'Not found. Create it?'; then
+  print_info 'Creating...'
+  # TODO use heredoc
+  echo '#!/bin/bash' > "$comoto_cli_rc"
+  echo '' >> "$comoto_cli_rc"
+  echo '# Configuration file for the Comoto CLI' >> "$comoto_cli_rc"
+  print_info 'Done'
+else
+  print_info 'Exiting'
+  exit 1
+fi
+
+print_info 'Sourcing'
+. "$comoto_cli_rc"
+
+comoto_cli_rc_build_setting() {
+  echo "$current_command $1"
+}
+
+# TODO rename comoto_cli_set
+# Add setting to config
+comoto_cli_rc_set() {
+  comoto_cli_rc_build_setting $1 >> $comoto_cli_rc
+}
+
+# return 0 if setting is found in config
+comoto_cli_rc_check() {
+  # TODO this logic should be extracted to lib
+  [[ ! -z $(grep "$(comoto_cli_rc_build_setting "$1")" $comoto_cli_rc) ]]
+}
+
+# ENSURE APT CACHE UP TO DATE
+#######################################
+
+print_header 'Checking that apt cache is up to date'
+$JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
+
+# GITHUB CLI SETUP
+#######################################
+
+print_header 'Checking for github cli (gh)'
+if gh --version ; then
+  print_info 'gh found'
+else
+  print_info "gh not found. Please install, then rerun $current_command. Exiting."
+  exit 1
+fi
 
 # Setup up gh completion
+print_header 'Checking for gh autocompletion'
 sudo apt install bash-completion
 
+print_header 'Ensuring gh is correctly set up'
+comoto_cli_setting=skip_gh_auth_status
+if comoto_cli_rc_check $comoto_cli_setting ; then
+  print_info "Skipping gh auth check. Reenable this check by removing the '$(comoto_cli_rc_build_setting $comoto_cli_setting)' line from $comoto_cli_rc"
+else
+  print_exec "gh auth status"
+  print_info "The above output should say that you're logged in as ____ and that operations are configured to use ssh protocol."
+  print_confirm "Please confirm. Select [n] to exit, fix it, then run $current_command again" || (print_info 'Exiting' && exit 1)
+  if print_confirm "Skip this check next time?"; then
+    comoto_cli_rc_set $comoto_cli_setting
+  fi
+fi
 
-# subcommand="echo 'you just run: moto setup'"
-# source $COMOTO_CLI_DIR/moto_helpers
-# print_and_eval_command "$subcommand"
+# COMOTO PROJECTS DIRECTORY
+#######################################
+# All comoto projects get installed
+# into a single directory determined by
+# the developer.
+#######################################
 
+# User must have first set an environment variable
+print_header 'Checking for $COMOTO_PROJECTS_DIR environment variable'
+if [[ -z "$COMOTO_PROJECTS_DIR" ]] ; then
+  print_info "Not found"
+  print_info 'Set a $COMOTO_PROJECTS_DIR environment variable with a value of the directory you wish to clone all comoto repos into.'
+  print_info 'Exiting'
+  exit 1
+else
+  print_info "Found: $COMOTO_PROJECTS_DIR"
+fi
 
+# The directory must exist
+print_header "Checking for $COMOTO_PROJECTS_DIR"
+if [[ -d "$COMOTO_PROJECTS_DIR" ]] ; then
+  print_info "Found"
+else
+  print_info "Not a directory"
+  if print_confirm "Create directory ${COMOTO_PROJECTS_DIR}?" ; then
+    print_info "Creating directory..."
+    mkdir -p $COMOTO_PROJECTS_DIR
+    print_info "Done"
+  else
+    print_info 'Exiting'
+    exit 1
+  fi
+fi
+
+# FORK AND CLONE MONOREPO
+#######################################
+
+repo_name=monorepo
+repo_dir="$COMOTO_PROJECTS_DIR/$repo_name"
+
+ensure_forked_monorepo() {
+  print_header "Checking for $repo_name fork in your github account"
+  print_info 'Found'
+  print_info 'TODO: implement (JJC already has this forked)'
+  return 0
+}
+
+clone_monorepo() {
+  print_header "Cloning $repo_name"
+  print_exec "gh repo clone $repo_name $repo_dir"
+}
+
+print_header "Checking for $repo_dir"
+if [[ -d "$repo_dir" ]]; then
+  print_info 'Found'
+else
+  print_info 'Not found'
+  ensure_forked_monorepo
+  clone_monorepo
+fi
+
+upstream='git@github.com:revzilla/monorepo.git'
+print_header "Checking for upstream '$upstream'"
+cmd="git remote -v show upstream"
+if print_exec "$cmd" && eval "$cmd" | grep "$upstream"; then
+  print_info 'Found'
+elif print_info "Not found. Creating" && git remote add upstream $upstream; then
+  print_info 'Done'
+else
+  print_info 'Not found and could not be created'
+  print_info 'Exiting'
+  exit 1
+fi
+
+# ANSIBLE
+#######################################
+
+print_header 'Setting up Ansible'
+ansible_dir="$HOME/.ansible"
+if [[ -d $ansible_dir ]]; then
+  print_info "Found $ansible_dir"
+else
+  print_info "$ansible_dir not found. Creating"
+  print_exec 'mkdir ~/.ansible'
+fi
+print_exec 'echo restrantalfanc > ~/.ansible/dev.txt'
+
+# LINUX SETUP
+#######################################
+# Running the existing zlaverse setup script...
+# TODO this only handles linux...
+#######################################
+
+monorepo_dir=$repo_dir
+print_exec "cd $monorepo_dir/zlaverse/dev"
+print_confirm "You may be asked to enter a 'BECOME password'. This is an ansible thing. Enter your linux user password if/when that happens. Enter [Yy] to continue"
+# TODO
+# print_exec './linux-setup.sh'
+
+# DOCKER and Google Cloud
+#######################################
+
+# TODO warn about ...
+# https://revzilla.atlassian.net/wiki/spaces/TECH/pages/382304327/Set+Up+Dev+Environment+Linux
+
+# COMPLETE!
+#######################################
+
+print_header 'Complete!'
+echo

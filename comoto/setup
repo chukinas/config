@@ -1,0 +1,16 @@
+#!/bin/bash
+
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../_setup/helpers.sh
+
+# TODO move all the other comoto / monorepo stuff into here
+# TODO move the datagrip stuff in here
+# TODO is there any other dir that is only used on Comoto machines?
+
+# MONOREPO SETUP
+################
+
+print_header 'Comoto Stuff'
+# TODO move this to moto setup?
+print_subheader Monorepo
+

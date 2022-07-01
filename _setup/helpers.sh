@@ -1,9 +1,12 @@
 #!bin/bash
 
+script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
+source $script_dir/../lib/ansi_color
+
 red='\033[1;31m'
 green='\033[1;32m'
 blue='\033[1;34m'
-cyan='\033[0;36m'
+cyan="${cyanf}${boldon}"
 light_cyan='\033[1;36m'
 no_color='\033[0m'
 

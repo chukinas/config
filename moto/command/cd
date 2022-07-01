@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Usage:
+#   moto cd comoto
+#   moto cd monorepo
+#   moto cd redline
+#   moto cd ecom
+
+# HELPERS FOR PRINTING OUTPUT TO USER
+#######################################
+
+# TODO implement completion
+# comoto_cli_command_completion() {
+#   complete -W "comoto monorepo ecom redline" moto
+# }
+
+comoto_cli_command_execute() {
+
+  local current_command="comoto_cli cd"
+  local where_to=$1
+
+  # TODO now that this is a function, these out functions are exposed...
+  # TODO decouple this from my personal config script
+  . $JJC_CONFIG_DIR/moto/lib/print "$current_command"
+
+  usage="Usage: $current_command <comoto|monorepo|ecom|redline>"
+
+  if [[ $# -ne 1 ]]; then
+    print_info "$usage" >&2
+    return 1
+  fi
+
+  case "$where_to" in
+    comoto)   target="$COMOTO_PROJECTS_DIR";;
+    monorepo) target="$COMOTO_PROJECTS_DIR/monorepo";;
+    ecom)     target="$COMOTO_PROJECTS_DIR/monorepo/ecom";;
+    redline)  target="$COMOTO_PROJECTS_DIR/monorepo/redline";;
+    *)        print_info "$usage" >&2; return 1
+  esac
+
+  print_exec "cd $target"
+}

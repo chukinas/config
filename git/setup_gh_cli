@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO there's a bit of overlap b/w this and comoto cli
+
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
 
@@ -13,7 +15,7 @@ else
   echo gh is not installed!
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-  sudo apt update
+  $JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
   sudo apt install gh
 fi
 

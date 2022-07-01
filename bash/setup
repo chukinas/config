@@ -21,3 +21,4 @@ if [[ -f "$bashrc_path" ]]; then
 else
   echo "$bashrc_path does NOT exist."
 fi
+

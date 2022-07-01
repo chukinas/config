@@ -5,11 +5,6 @@
 # TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
-export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
-
-# TODO no need to export since this var is already exported?
-export PATH="$COMOTO_CLI_DIR/command":$PATH
-
 # TODO this can / should come before above statement
 command_dir=$COMOTO_CLI_DIR/command
 

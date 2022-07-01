@@ -38,18 +38,20 @@ git submodule update --init --recursive
   - [x] set as default
   - [x] sign into rz google
   - [x] sign into personal google
+  - [x] port over bookmarks
 - [x] 1password
    - [x] install from site
    - [x] add chrome plugin
-- [ ] dropbox: download from site, install with eddy, set up selective sync
-- [ ] printer (hardware, optional): connect and print test page
+- [x] dropbox: download from site, install with eddy, set up selective sync
+- [x] printer (hardware, optional): connect and print test page
 
 ### Configure
 
 - [ ] zlaverse (comoto only) follow instructions:
-- [ ] terminal: 
-  - change font-size to 8
-  - add border to popos windows
+- [x] terminal:
+  - [x] change font-size to 9
+  - [x] add border to popos windows
+  - [x] download and install nerd-fonts (instructions are somewhere else in this project)
 
 
 

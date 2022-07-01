@@ -2,12 +2,52 @@
 
 # This file needs to be sourced by your .bashrc in order for the Comoto CLI to work correctly
 
+
 # Add moto script to path
 export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
-export PATH="$COMOTO_CLI_DIR":$PATH
+
+export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
+
+# cd to Comoto CLI  dir
+alias cdc="cd $COMOTO_CLI_DIR"
 
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
 
 # TODO move this to inside moto script
 complete -W "$(ls $COMOTO_CLI_DIR/command)" moto
+
+echo_help() {
+  # TODO make this a command (non-exexcutable)
+  echo "TODO: flesh out this help message"
+  exit 0
+}
+
+moto() {
+  if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
+    echo "no args!"
+    echo_help
+  fi
+
+  # Run command if valid or throw error
+  potential_command_path=$COMOTO_CLI_DIR/command/$1
+  shift
+  if [[ -x $potential_command_path ]] ; then
+    # TODO maybe I shouldn't make a distinction between these two types.
+    # TODO maybe they should all follow the same pattern of sourcing followed by a function call?
+    $potential_command_path $@
+  elif [[ -e $potential_command_path ]]; then
+    unset -f comoto_cli_command_execute
+    . $potential_command_path
+    if [[ $(type -t comoto_cli_command_execute) == function ]]; then
+      comoto_cli_command_execute $@
+      return $?
+    else
+      echo "Error - expected $potential_command_path to expose a comoto_cli_command_execute function"
+      return 1
+    fi
+  else
+    echo "No such command" >&2
+    return 1
+  fi
+}

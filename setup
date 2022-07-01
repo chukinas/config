@@ -14,7 +14,7 @@ print_subheader $script_dir/setup
 echo "About to update apt & apt-get"
 # NOTE: apt is the newer one
 # https://itsfoss.com/apt-vs-apt-get-difference/
-sudo apt update
+$JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
 sudo apt-get update
 
 bash $script_dir/git/setup
@@ -22,3 +22,5 @@ bash $script_dir/ack/setup
 bash $script_dir/asdf/setup
 # TODO rename this dir to nvim
 bash $script_dir/neovim/setup
+# TODO this is only part of comoto setup
+bash $script_dir/comoto/setup

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# update_apt_only_if_old_cache
+# Run this instead of `apt update` to prevent running it if it's already been run in the last hour.
+
+if [ -z "$(find /var/cache/apt/pkgcache.bin -mmin -60)" ]; then
+  echo "old apt update cache. running `apt update`"
+  # TODO apparently you're not supposed to use `apt` in scripts. Switch to apt-get?
+  sudo apt update
+else
+  echo 'apt is up to date'
+fi
