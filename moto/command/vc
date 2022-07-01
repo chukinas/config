@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Usage: moto vc
+#
+#   Wrappers around git and gh commands.
+#   Makes it easier to e.g.
+
+# TODO should this migrate as well?
+
+subcommand="echo 'you just run: moto vc'"
+
+source $COMOTO_CLI_DIR/moto_helpers
+
+# TODO Rename print_and_eval_subcommand
+print_and_eval_command "$subcommand"

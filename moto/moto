@@ -11,7 +11,7 @@ export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
 export PATH="$COMOTO_CLI_DIR/command":$PATH
 
 # TODO this can / should come before above statement
-subcommands=$COMOTO_CLI_DIR/command
+command_dir=$COMOTO_CLI_DIR/command
 
 # TODO move to ./lib
 # TODO Then remove the export
@@ -28,43 +28,20 @@ export -f _comoto_cli_app_name
 
 export COMOTO_CLI_MONOREPO_DIR=~/monorepo
 
-_parse_params() {
-
-  while :; do
-    case "${1-}" in
-      -h | --help) usage ;;
-      logs)
-        shift
-        $subcommands/logs $@
-        exit $?;;
-      repl)
-        shift
-        $subcommands/repl $@
-        exit $?;;
-      db)
-        shift
-        $subcommands/db $@
-        exit $?;;
-      bounce)
-        shift
-        $subcommands/bounce $@
-        exit $?;;
-      check)
-        shift
-        $subcommands/check $@
-        exit $?;;
-      *) break ;;
-    esac
-    shift
-  done
-
-  # args=("$@")
-  # check required params and arguments
-  # [[ -z "${param-}" ]] && die "Missing required parameter: param"
-  # [[ ${#args[@]} -eq 0 ]] && die "Missing script arguments"
-  return 0
+echo_help() {
+  echo "TODO: flesh out this help message"
+  exit 0
 }
 
-_parse_params "$@"
+# Maybe show help
+[[ $# -eq 0 ]] && echo_help
+[[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] && echo_help
 
-exit 0
+# Run command if valid or throw error
+potential_command_path=$command_dir/$1
+if [[ -e $potential_command_path ]] ; then
+  shift
+  $potential_command_path $@
+else
+  echo "TODO: print error message" >&2
+fi

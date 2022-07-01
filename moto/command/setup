@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Usage: moto setup
+#
+#   Sets up the Comoto CLI
+#   e.g. makes sure that gh is installed and set up
+
+# TODO should this migrate as well?
+
+sudo apt update
+
+# Setup up gh completion
+sudo apt install bash-completion
+
+
+# subcommand="echo 'you just run: moto setup'"
+# source $COMOTO_CLI_DIR/moto_helpers
+# print_and_eval_command "$subcommand"
+
+

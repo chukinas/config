@@ -12,6 +12,8 @@ echo
 print_subheader $script_dir/setup
 
 echo "About to update apt & apt-get"
+# NOTE: apt is the newer one
+# https://itsfoss.com/apt-vs-apt-get-difference/
 sudo apt update
 sudo apt-get update
 

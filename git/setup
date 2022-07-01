@@ -14,15 +14,19 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 source $script_dir/../_setup/helpers.sh
 
+
 # Start Main Script
 ###################
 
 print_header 'GIT'
 
+# CONFIG
+###################
+
+print_subheader 'set global config'
 # TODO I don't like this being directly in the config
 # use symlinking instead?
 # how though then to have different settings per computer (e.g. email)?
-print_subheader 'set global config'
 git config --global user.name     "chukinas"
 git config --global include.path  $script_dir/gitconfig
 echo
@@ -30,5 +34,16 @@ echo '~/.gitconfig:'
 echo
 cat ~/.gitconfig
 
+# GITHUB CLI
+###################
+
 bash $script_dir/setup_gh_cli
 
+# SSH
+###################
+
+public_ssh_keys() {
+  ssh_dir=~/.ssh
+  [[ -d $ssh_dir ]]
+
+}
