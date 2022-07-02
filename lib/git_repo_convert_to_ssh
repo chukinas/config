@@ -1,0 +1,48 @@
+#!/bin/bash
+
+#   git_repo_convert_to_shh - if the current git repo's remote(s) is https, convert it to ssh
+
+remote_names="$(git remote -v | cut -f1 | uniq)"
+
+# Make sure there's only one remote. I don't feel like handling for anything else
+remote_count="$(echo $remote_names | wc -w)"
+if [[ remote_count -ne 1 ]] ; then
+  echo "Error: there must be exactly one remote. Found $remote_count: $remote_names" >&2
+  echo "Exiting"
+  exit 1
+fi
+
+
+remote="$remote_names"
+echo "remote: $remote"
+
+# TODO fix my calling cut twice
+current_url="$(git remote -v | cut -f2 | cut -f1 -d' ' |  uniq)"
+echo "current url: $current_url"
+case $current_url in
+  https://github.com/*)
+    repo="${current_url#https://github.com/}"
+    ;;
+  *)
+    echo "Error: expected url to be https"  >&2
+    exit 1
+    ;;
+esac
+echo "current repo: $repo"
+
+# TODO I'm sure there's a better way to do text substitution...
+proposed_url="git@github.com:$repo"
+echo "proposed url: $proposed_url"
+
+# TODO this is the second time I've used this method. DRY it out.
+while true; do
+    read -p "Confirm that we are making this change [Yn] " yn
+    case $yn in
+        [Yy]* ) break;;
+        [Nn]* ) exit 1;;
+        * ) echo "Please answer yes or no.";;
+    esac
+done
+
+git remote set-url $remote $proposed_url
+git remote -v
