@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# Usage:
+#   moto path comoto
+#   moto path monorepo
+#   moto path redline
+#   moto path ecom
+
+# HELPERS FOR PRINTING OUTPUT TO USER
+#######################################
+
+# TODO should `cd` depend on this?
+comoto_cli_command_execute() {
+
+  local current_command="comoto_cli path"
+  local where_to=$1
+
+  # TODO now that this is a function, these out functions are exposed...
+  # TODO decouple this from my personal config script
+  . $JJC_CONFIG_DIR/moto/lib/print "$current_command"
+
+  usage="Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
+
+  if [[ $# -ne 1 ]]; then
+    print_info "$usage" >&2
+    return 1
+  fi
+
+  case "$where_to" in
+    comoto)   target="$COMOTO_PROJECTS_DIR";;
+    monorepo) target="$COMOTO_PROJECTS_DIR/monorepo";;
+    ecom)     target="$COMOTO_PROJECTS_DIR/monorepo/ecom";;
+    redline)  target="$COMOTO_PROJECTS_DIR/monorepo/redline";;
+    zla)      target="$COMOTO_PROJECTS_DIR/monorepo/zlaverse/dev";;
+    *)        print_info "$usage" >&2; return 1
+  esac
+
+  echo "$target"
+}

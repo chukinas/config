@@ -30,8 +30,11 @@ jc-gitsync()
 
 }
 
+# TODO make the comoto_cli available
+source $JJC_CONFIG_DIR/moto/bashrc
+
 alias jc-docker="cd_zla && docker-compose stop && docker-compose up -d && jc-logs"
-source ~/monorepo/zlaverse/support/bash_functions.sh
+source $(moto path monorepo)/zlaverse/support/bash_functions.sh
 source /usr/share/google-cloud-sdk/completion.bash.inc 2>/dev/null
 
 cg-bash-noninteractive()
@@ -59,7 +62,3 @@ jc-dialyzer()
 {
   rz-bash mix dialyzer --ignore-exit-status | tee dialyzer.txt
 }
-
-# TODO make the comoto_cli available
-source $JJC_CONFIG_DIR/moto/bashrc
-alias m=moto
