@@ -171,7 +171,8 @@ else
   print_info "$ansible_dir not found. Creating"
   print_exec 'mkdir ~/.ansible'
 fi
-print_exec 'echo restrantalfanc > ~/.ansible/dev.txt'
+
+print_exec 'echo ristrantalfanc > ~/.ansible/dev.txt'
 
 # LINUX SETUP
 #######################################
@@ -183,7 +184,7 @@ monorepo_dir=$repo_dir
 print_exec "cd $monorepo_dir/zlaverse/dev"
 print_confirm "You may be asked to enter a 'BECOME password'. This is an ansible thing. Enter your linux user password if/when that happens. Enter [Yy] to continue"
 # TODO
-# print_exec './linux-setup.sh'
+print_exec './linux-setup.sh'
 
 # DOCKER and Google Cloud
 #######################################

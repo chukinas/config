@@ -8,6 +8,7 @@ config_dir=$neovim_dir/..
 print_header 'NEOVIM'
 
 print_subheader "Create symlink"
+# TODO replace this with $JJC_CONFIG_DIR ?
 $config_dir/lib/create_symlink $neovim_dir/config ~/.config/nvim
 
 print_subheader "Update config module"

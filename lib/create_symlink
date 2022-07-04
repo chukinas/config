@@ -18,8 +18,10 @@ fi
 
 target="$(realpath $1)" ; link_name="$2"
 
+# TODO why did I use -d ? .bashrc for example is definitely not a directory
 if [[ ! -d $target ]] ; then
   echo "$0: error: target must be a valid path" >&2
+  # TODO apparently this can't be a return? Must be an exit?
   return 1
 fi
 

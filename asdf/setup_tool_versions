@@ -17,6 +17,7 @@ tool_versions_target=$script_dir/tool-versions
 exit_code=1
 
 
+# TODO replace this with ../lib/create_symlink?
 function _create_symlink() {
    ln -sf $tool_versions_target $tool_versions_symlink
    echo "Creating symlink $tool_versions_symlink -> $tool_versions_target"

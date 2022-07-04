@@ -67,5 +67,17 @@ else
    print_fail 'rust not installed'
 fi
 
+echo 'Checking erlang'
+asdf install erlang
+if erlang --version &>/dev/null
+then
+   print_success 'erlang is installed'
+else
+   print_fail 'erlang not installed'
+fi
+
+# From: https://github.com/asdf-vm/asdf-erlang#ubuntu-2004-lts
+# sudo apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk
+
 echo 'asdf list'
 asdf list

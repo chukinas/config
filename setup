@@ -3,11 +3,12 @@
 # . ./bashrc/setup.sh
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-JJC_CONFIG_DIR=$(readlink -f $script_dir)
+export JJC_CONFIG_DIR=$(readlink -f $script_dir)
+
+echo "running main setup script with script dir of $JJC_CONFIG_DIR"
 
 source $JJC_CONFIG_DIR/_setup/helpers.sh
 
-clear
 echo
 print_subheader $script_dir/setup
 
@@ -17,6 +18,12 @@ echo "About to update apt & apt-get"
 $JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
 sudo apt-get update
 
+
+echo "main setup line 22"
+
+[[ -f "$JJC_CONFIG_DIR/bash/setup" ]] && echo "it really is a file"
+bash $JJC_CONFIG_DIR/bash/setup
+# TODO change these $script_dir to $JJC_CONFIG_DIR
 bash $script_dir/git/setup
 bash $script_dir/ack/setup
 bash $script_dir/asdf/setup
