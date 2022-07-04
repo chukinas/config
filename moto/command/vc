@@ -11,13 +11,17 @@ source $COMOTO_CLI_DIR/moto_helpers
 subcommand="$1"
 shift
 
+# TODO get rid of that nvim setting that doesn't un-visualize after indenting
+
+# TODO add help that says that the filter string can include either the pr or jira number
 case $subcommand in
-  checkout)
+  checkout|view)
     filter_string="$1"
     if [[ $# -eq 1 && -n $filter_string ]]
     then
+      comoto_cli cd monorepo
       pr_number="$(gh pr list | grep $filter_string | cut -f1)"
-      gh pr checkout $pr_number
+      gh pr $subcommand $pr_number
     else
       echo "TODO add better error message" >&2
     fi

@@ -17,8 +17,8 @@ print_and_eval_command() {
   eval $cmd
 }
 
-source $COMOTO_CLI_MONOREPO_DIR/zlaverse/support/bash_functions.sh
+. $(comoto_cli path monorepo)/zlaverse/support/bash_functions.sh
 
 # TODO make a copy of those functions
 # get helpful functions for printing in color
-source $COMOTO_CLI_DIR/../_setup/helpers.sh
+. $COMOTO_CLI_DIR/../_setup/helpers.sh

@@ -54,3 +54,5 @@ comoto_cli() {
 
 alias moto=comoto_cli
 alias m=comoto_cli
+
+export -f comoto_cli
