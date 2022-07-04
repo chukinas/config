@@ -5,11 +5,25 @@
 #   Wrappers around git and gh commands.
 #   Makes it easier to e.g.
 
-# TODO should this migrate as well?
-
-subcommand="echo 'you just run: moto vc'"
-
 source $COMOTO_CLI_DIR/moto_helpers
 
-# TODO Rename print_and_eval_subcommand
-print_and_eval_command "$subcommand"
+# TODO add completion for the subcommands
+subcommand="$1"
+shift
+
+case $subcommand in
+  checkout)
+    filter_string="$1"
+    if [[ $# -eq 1 && -n $filter_string ]]
+    then
+      pr_number="$(gh pr list | grep $filter_string | cut -f1)"
+      gh pr checkout $pr_number
+    else
+      echo "TODO add better error message" >&2
+    fi
+    ;;
+  *)
+    echo "TODO add better error message" >&2
+    exit 1
+    ;;
+esac

@@ -54,10 +54,11 @@ jc-format-elixir()
 }
 
 # OTHER
-alias cdm='cd ~/monorepo'
-alias cde='cd ~/monorepo/ecom'
-alias cdr='cd ~/monorepo/redline'
-alias cdz='cd ~/monorepo/zlaverse/dev' # the same as cd_zla
+alias cdm='moto cd monorepo'
+alias cde='moto cd ecom'
+alias cdr='moto cd redline'
+# TODO should zla be changed to zlaverse ?
+alias cdz='moto cd zla' # the same as cd_zla
 
 # TODO does this work?
 jc-dialyzer()
