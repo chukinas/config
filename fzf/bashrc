@@ -18,7 +18,7 @@ export FZF_DEFAULT_COMMAND='fdfind --type file --follow'
 vic()
 {
 
-  local all_config_dir=$HOME/projects/all_config
+  local all_config_dir=$JJC_CONFIG_DIR
 
   echo
   cd $all_config_dir
