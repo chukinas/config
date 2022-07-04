@@ -2,6 +2,7 @@
 
 # TODO should this migrate as well?
 
+# TODO Where is this dir variable defined? I think it can be replaced with $(comoto_cli cd monorepo)
 subcommand="cd $COMOTO_CLI_MONOREPO_DIR && docker-compose down && docker-compose up -d && moto logs"
 
 source $COMOTO_CLI_DIR/moto_helpers

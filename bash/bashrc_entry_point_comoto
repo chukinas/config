@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO rename this file ../bashrc/entrypoint/comoto
+# TODO maybe while I'm creating all these symlinks... maybe I should just have a symlink at ~/.jjc_config_dir that everything points thru...
 
 # pnpm
 # TODO this jc isn't necessarilly correct...
