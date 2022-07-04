@@ -1,11 +1,17 @@
+#!/bin/bash
+
+# TODO rename this file ../bashrc/entrypoint/comoto
+
 # pnpm
 # TODO this jc isn't necessarilly correct...
 export PNPM_HOME="/home/jc/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
-dotfiles_dir=~/projects/config
-source "${dotfiles_dir}/bash/bashrc"
+# TODO should this be defined here in this way?
+export JJC_CONFIG_DIR=~/projects/config
+
+source $JJC_CONFIG_DIR/bash/bashrc
 
 # TODO why is this here?
 # Shouldn't it be in the nvim dir?
