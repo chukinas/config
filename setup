@@ -2,32 +2,28 @@
 
 # . ./bashrc/setup.sh
 
+clear
+
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 export JJC_CONFIG_DIR=$(readlink -f $script_dir)
 
-echo "running main setup script with script dir of $JJC_CONFIG_DIR"
-
-source $JJC_CONFIG_DIR/_setup/helpers.sh
+. $JJC_CONFIG_DIR/_setup/helpers.sh
 
 echo
-print_subheader $script_dir/setup
+print_header $script_dir/setup
 
 echo "About to update apt & apt-get"
 # NOTE: apt is the newer one
 # https://itsfoss.com/apt-vs-apt-get-difference/
+# TODO apparently I shouldn't use apt in scripts .. go back to apt-get
 $JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
 sudo apt-get update
 
-
-echo "main setup line 22"
-
-[[ -f "$JJC_CONFIG_DIR/bash/setup" ]] && echo "it really is a file"
 bash $JJC_CONFIG_DIR/bash/setup
-# TODO change these $script_dir to $JJC_CONFIG_DIR
-bash $script_dir/git/setup
-bash $script_dir/ack/setup
-bash $script_dir/asdf/setup
+bash $JJC_CONFIG_DIR/git/setup
+bash $JJC_CONFIG_DIR/ack/setup
+bash $JJC_CONFIG_DIR/asdf/setup
 # TODO rename this dir to nvim
-bash $script_dir/neovim/setup
+bash $JJC_CONFIG_DIR/neovim/setup
 # TODO this is only part of comoto setup
-bash $script_dir/comoto/setup
+bash $JJC_CONFIG_DIR/comoto/setup

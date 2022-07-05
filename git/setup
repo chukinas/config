@@ -1,19 +1,8 @@
 #!/bin/bash
 
 # GIT SETUP
-#
-# To use this file, create a master config file at ~/.gitconfig:
-# [user]
-#     email = <my email>
-#     name = Jonathan Chukinas
-# [include]
-#     path = .gitconfig_shared
-#
-# Then create a symlink to this file
 
-script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-source $script_dir/../_setup/helpers.sh
-
+. $JJC_CONFIG_DIR/_setup/helpers.sh
 
 # Start Main Script
 ###################
@@ -28,7 +17,7 @@ print_subheader 'set global config'
 # use symlinking instead?
 # how though then to have different settings per computer (e.g. email)?
 git config --global user.name     "chukinas"
-git config --global include.path  $script_dir/gitconfig
+git config --global include.path  $JJC_CONFIG_DIR/git/gitconfig
 echo
 echo '~/.gitconfig:'
 echo
@@ -37,7 +26,7 @@ cat ~/.gitconfig
 # GITHUB CLI
 ###################
 
-bash $script_dir/setup_gh_cli
+bash $JJC_CONFIG_DIR/git/setup_gh_cli
 
 # SSH
 ###################
@@ -45,5 +34,4 @@ bash $script_dir/setup_gh_cli
 public_ssh_keys() {
   ssh_dir=~/.ssh
   [[ -d $ssh_dir ]]
-
 }

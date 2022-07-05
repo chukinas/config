@@ -12,6 +12,7 @@ export FZF_DEFAULT_OPTS='--height 40%'
 export FZF_DEFAULT_COMMAND='fdfind --type file --follow'
 # TODO reinstate the default command?
 
+# TODO this still isn't working right. It doesn't open nvim with the right config
 # Quickly open a config file from the command line
 # fuzzy find a config file (neovim config or general config, i.e. this repo)
 # and open it in my editor

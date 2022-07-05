@@ -16,5 +16,4 @@ alias vid="cd $CONFIG_DIR;vi;cd -"
 alias viv="cd $NVIM_CONFIG_DIR;vi;cd -"
 
 # set default editor
-export VISUAL=vi
-
+export VISUAL=nvim
