@@ -44,5 +44,10 @@ comoto_cli_command_execute() {
   [[ $? -ne 0 ]] && echo $usage >&2 && return 1
 
   # TODO handle for incorrect targets
+  # TODO this should read more like the config/lib version
+  # Comoto CLI: Executing:
+  #
+  #     cd ....
+  #
   print_exec "cd $(comoto_cli path $where_to)"
 }

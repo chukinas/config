@@ -189,6 +189,25 @@ print_exec './linux-setup.sh'
 # DOCKER and Google Cloud
 #######################################
 
+# gcloud init
+# I'm asked to login...
+# y
+# opens browser where I log into google
+# select "allow"
+# ... I noted all the rest of the instructions and pitfalls in the confluence doc
+
+# Redline Config
+#######################################
+
+# redline.yml updates...
+
+# Bring up Containers
+#######################################
+
+comoto_cli cd monorepo
+docker-compose pull
+docker-compose up -d
+
 # TODO warn about ...
 # https://revzilla.atlassian.net/wiki/spaces/TECH/pages/382304327/Set+Up+Dev+Environment+Linux
 

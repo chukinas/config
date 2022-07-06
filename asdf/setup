@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO move other setup files into here
+
 #######################################
 # 1. Install asdf
 # 2. Add plugins

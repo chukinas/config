@@ -17,3 +17,5 @@ source $JJC_CONFIG_DIR/bash/bashrc
 # TODO why is this here?
 # Shouldn't it be in the nvim dir?
 export MYVIMRC=~/projects/config/neovim/config/init.lua
+source /usr/share/google-cloud-sdk/completion.bash.inc
+source /home/jc/projects/comoto/monorepo/zlaverse/dev/../../zlaverse/support/bash_functions.sh

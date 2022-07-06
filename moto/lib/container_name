@@ -1,0 +1,18 @@
+#!/bin/bash
+
+# TODO use this in the main moto script
+
+if [[ $# -eq 1 ]]
+then
+  app_abbreviation="$1"
+else
+  exit 1
+fi
+
+case $app_abbreviation in
+  cg) echo "cycle-gear-redline-webapp" ;;
+  jp) echo  "jp-cycles-redline-webapp" ;;
+  rz) echo   "revzilla-redline-webapp" ;;
+  *) exit 1
+esac
+exit 0

@@ -18,7 +18,9 @@ _credo() {
 
   # TODO copy this pattern to the other scripts
   # TODO can `mix credo` be in single quotes?
-  print_and_eval_command "cd $COMOTO_CLI_MONOREPO_DIR && rz-bash 'mix credo'"
+  # TODO I don't think the cd is necessary
+  # TODO add the rz-repl to comoto_cli
+  print_and_eval_command "comoto_cli cd monorepo && rz-bash 'mix credo'"
 
   credo_exit_code=$?
 

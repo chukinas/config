@@ -3,10 +3,13 @@
 # defaults
 tail=10
 
-cd $COMOTO_CLI_MONOREPO_DIR
+app_name="$($COMOTO_CLI_DIR/lib/container_name $1)"
 
-subcommand="docker-compose logs -f --tail=$tail $(_comoto_cli_app_name $1)"
+# Exit if that wasn't a proper abbreviation
+[[ $? -ne 0 ]] && echo "fail! the command expects a single arg" >&2 && exit 1
 
-source $COMOTO_CLI_DIR/moto_helpers
+subcommand="comoto_cli cd monorepo && docker-compose logs -f --tail=$tail $app_name"
+
+. $COMOTO_CLI_DIR/moto_helpers
 
 print_and_eval_command "$subcommand"

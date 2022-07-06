@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# comoto_cli bash
+
+. $COMOTO_CLI_DIR/moto_helpers
+
+# TODO add autocomplete
+# TODO error out when given an invalid $1
+
+case $1 in
+  cg|jp|rz) subcommand="$1-bash" ;;
+  *) echo "TODO this is error msg" >&2 && exit 1
+esac
+
+print_and_eval_command --include-type "$subcommand"

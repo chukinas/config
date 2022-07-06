@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# subcommands:
+#   - restart
+#   - log
+#   - bash ... no...

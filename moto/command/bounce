@@ -3,8 +3,11 @@
 # TODO should this migrate as well?
 
 # TODO Where is this dir variable defined? I think it can be replaced with $(comoto_cli cd monorepo)
-subcommand="cd $COMOTO_CLI_MONOREPO_DIR && docker-compose down && docker-compose up -d && moto logs"
+# TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
+subcommand="comoto_cli cd monorepo && docker-compose down && docker-compose up -d && cd - && comoto_cli logs"
 
 source $COMOTO_CLI_DIR/moto_helpers
 
 print_and_eval_command "$subcommand"
+
+# TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps

@@ -2,10 +2,13 @@
 
 # This file needs to be sourced by your .bashrc in order for the Comoto CLI to work correctly
 
+# TODO somewhere in all bash stuff I source the zla bash helpers twice. Rectify.
+
 
 # Add moto script to path
 export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/moto"
 
+# TODO rename COMOTO_PROJECT_ROOT?
 export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
 
 # cd to Comoto CLI  dir
