@@ -44,6 +44,7 @@ git submodule update --init --recursive
    - [x] add chrome plugin
 - [x] dropbox: download from site, install with eddy, set up selective sync
 - [x] printer (hardware, optional): connect and print test page
+- [ ] set up flameshot
 
 ### Configure
 

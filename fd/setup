@@ -1,11 +1,17 @@
 #!/bin/bash
 
+. $JJC_CONFIG_DIR/_setup/helpers.sh
+
+print_header "FD"
+
 # fd is a file finder, a good replacement for find
 
+# TODO this isn't set up on my new sys76 machine
 # TODO add this to the main setup file
 
 # TODO should I be using `apt` elsewhere in my config?
 # https://itsfoss.com/apt-vs-apt-get-difference/
+# TODO no, apparently you should be using the old apt-get instead
 sudo apt install fd-find
 
 # Print success or failure
