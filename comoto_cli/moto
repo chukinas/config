@@ -6,7 +6,7 @@
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
 # TODO this can / should come before above statement
-command_dir=$COMOTO_CLI_DIR/command
+command_dir="$COMOTO_CLI_ROOT/command"
 
 # TODO move to ./lib
 # TODO Then remove the export

@@ -6,19 +6,19 @@
 
 
 # Add moto script to path
-export COMOTO_CLI_DIR="$JJC_CONFIG_DIR/comoto_cli"
+export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
 
 # TODO rename COMOTO_PROJECT_ROOT?
 export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
 
 # cd to Comoto CLI  dir
-alias cdc="cd $COMOTO_CLI_DIR"
+alias cdc="cd $COMOTO_CLI_ROOT"
 
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
 
 # TODO move this to inside moto script
-complete -W "$(ls $COMOTO_CLI_DIR/command)" moto
+complete -W "$(ls $COMOTO_CLI_ROOT/command)" moto
 
 echo_help() {
   # TODO make this a command (non-exexcutable)
@@ -33,7 +33,7 @@ comoto_cli() {
   fi
 
   # Run command if valid or throw error
-  potential_command_path=$COMOTO_CLI_DIR/command/$1
+  potential_command_path=$COMOTO_CLI_ROOT/command/$1
   shift
   if [[ -x $potential_command_path ]] ; then
     # TODO maybe I shouldn't make a distinction between these two types.

@@ -3,7 +3,7 @@
 # comoto_cli bash
 
 command='comoto_cli bash'
-. $COMOTO_CLI_DIR/lib/print $command
+. $COMOTO_CLI_ROOT/lib/print $command
 
 # TODO add autocomplete
 # TODO error out when given an invalid $1

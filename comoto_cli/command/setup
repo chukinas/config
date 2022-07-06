@@ -11,7 +11,7 @@
 current_command='comoto_cli setup'
 
 # TODO decouple this from my personal config script
-. $COMOTO_CLI_DIR/lib/print "$current_command"
+. $COMOTO_CLI_ROOT/lib/print "$current_command"
 
 # COMOTO_CLI_RC
 #######################################

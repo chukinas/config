@@ -5,7 +5,7 @@
 # Catch errors locally that would stop a Circle CI workflow.
 # Dialyzer and Credo
 
-. $COMOTO_CLI_DIR/lib/print
+. $COMOTO_CLI_ROOT/lib/print
 
 _credo() {
   if [[ $# -ne 0 ]]

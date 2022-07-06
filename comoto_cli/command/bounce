@@ -3,7 +3,7 @@
 # USAGE: comoto_cli bounce <container-abbreviation>
 
 # TODO rename $COMOTO_CLI_ROOT
-. $COMOTO_CLI_DIR/lib/print 'comoto_cli bounce'
+. $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
 
 if [[ $# -eq 0 ]]
 then
@@ -14,7 +14,7 @@ elif [[ $# -gt 1 ]]
 then
   echo "error ... must have one or zero args" >&2
   exit 1
-elif container_name=$($COMOTO_CLI_DIR/lib/container_name $1)
+elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1)
 then
   # TODO check for bad abbrev
   # TODO this isn't working
