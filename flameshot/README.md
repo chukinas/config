@@ -1,13 +1,16 @@
-TODO do I even want to install flameshot anymore?
-I think I might like the default clipper that comes with pop_os now.
-Or maybe not... It doesn't allow me to mark up a ss
+# SCREENSHOTS W/ FLAMESHOT
 
-## SCREENSHOTS W/ FLAMESHOT
-### SETUP
+## SETUP
 1. `sudo apt install flameshot`
 2. Remove default `print` button keybinding
 3. Add custom keybinding: `print` -> `flameshot gui`
-### USAGE
+4. Set color to that bright green
+
+TODO ... I'm not sure steps 2 & 3 above are needed anymore.
+Maybe it's nice to leave them assigned to the befault screen capture,
+which is much better than it used to be.
+
+## USAGE
 - Press `print` key to start snapshot
 - Click and drag
 - Right-click in image to pick color
