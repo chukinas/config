@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO combine this with $JJC_CONFIG_DIR/lib?
+# TODO rename formatter?
+
 # HELPERS FOR PRINTING OUTPUT TO USER
 #######################################
 
@@ -31,9 +34,25 @@ print_confirm() {
   done
 }
 
+# TODO these next two should be combined into one
 # Print a command and then execute it.
 print_exec() {
   echo "$current_command: Executing: \`$1\`"
   eval "$1"
+}
+
+print_and_eval_command() {
+
+  if [ "$1" = "--include-type" ] ; then
+    cmd=$2
+    maybe_type="\n$(type $2 2> /dev/null)\n"
+  else
+    cmd=$1
+    maybe_type=""
+  fi
+
+  echo -e "\nExecuting:\n\n\t$cmd\n$maybe_type"
+
+  eval $cmd
 }
 

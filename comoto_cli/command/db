@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_DIR/moto_helpers
+. $COMOTO_CLI_DIR/lib/print
 
 commands=""
 

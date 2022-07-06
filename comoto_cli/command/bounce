@@ -3,7 +3,7 @@
 # USAGE: comoto_cli bounce <container-abbreviation>
 
 # TODO rename $COMOTO_CLI_ROOT
-. $COMOTO_CLI_DIR/moto_helpers
+. $COMOTO_CLI_DIR/lib/print 'comoto_cli bounce'
 
 if [[ $# -eq 0 ]]
 then

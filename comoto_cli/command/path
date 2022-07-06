@@ -17,7 +17,7 @@ comoto_cli_command_execute() {
 
   # TODO now that this is a function, these out functions are exposed...
   # TODO decouple this from my personal config script
-  . $JJC_CONFIG_DIR/moto/lib/print "$current_command"
+  . $COMOTO_CLI_DIR/lib/print "$current_command"
 
   usage="Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
 

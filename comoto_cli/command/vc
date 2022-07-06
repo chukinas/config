@@ -5,7 +5,7 @@
 #   Wrappers around git and gh commands.
 #   Makes it easier to e.g.
 
-source $COMOTO_CLI_DIR/moto_helpers
+. $COMOTO_CLI_DIR/lib/print
 
 usage() {
   echo 'Comoto CLI: Usage: comoto_cli vc <subcommand> <filter_string>'

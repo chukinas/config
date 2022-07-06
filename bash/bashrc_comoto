@@ -31,8 +31,7 @@ jc-gitsync()
 
 }
 
-# TODO make the comoto_cli available
-source $JJC_CONFIG_DIR/moto/bashrc
+. $JJC_CONFIG_DIR/comoto_cli/bashrc
 
 # TODO hasn't this been superceded yet?
 alias jc-docker="cd_zla && docker-compose stop && docker-compose up -d && jc-logs"

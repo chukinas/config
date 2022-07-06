@@ -11,7 +11,7 @@
 current_command='comoto_cli setup'
 
 # TODO decouple this from my personal config script
-. $JJC_CONFIG_DIR/moto/lib/print "$current_command"
+. $COMOTO_CLI_DIR/lib/print "$current_command"
 
 # COMOTO_CLI_RC
 #######################################

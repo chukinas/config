@@ -13,6 +13,6 @@ case $? in
   *) echo "TODO this is an epic fail!" >&2 && exit 1
 esac
 
-. $COMOTO_CLI_DIR/moto_helpers
+. $COMOTO_CLI_DIR/lib/print
 
 print_and_eval_command "$subcommand"

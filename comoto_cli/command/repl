@@ -2,7 +2,7 @@
 
 # comoto_cli repl <container-abbreviation>
 
-. $COMOTO_CLI_DIR/moto_helpers
+. $COMOTO_CLI_DIR/lib/print
 
 # TODO add autocomplete
 # TODO error out when given an invalid $1
