@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# TODO this is started but still doesn't really work
+
+filter_string="$1"
+
+if [[ $# -gt 1 || -z $filter_string ]]; then
+  echo 'whoops that is not how we use fn pr_number_from_filter_string' >&2
+  exit 1
+fi
+
+comoto_cli cd monorepo
+# TODO handle better for when multiple results come back
+# TODO the gh pr list command has a --search <query> flag that would be useful
+pr_number="$(comoto_cli cd monorepo > /dev/null && gh pr list | grep $filter_string | cut -f1)"
+pr_count=$(echo $pr_number | wc -w)
+
+if [[ $pr_count -eq 1 ]]; then
+  echo $pr_number
+else
+  echo "filter_string of $filter_string is too broad, results in $pr_count matches. Try again." >&2
+fi

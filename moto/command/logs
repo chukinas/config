@@ -4,11 +4,14 @@
 tail=10
 
 app_name="$($COMOTO_CLI_DIR/lib/container_name $1)"
+base_subcommand="comoto_cli cd monorepo && docker-compose logs -f --tail=$tail"
 
-# Exit if that wasn't a proper abbreviation
-[[ $? -ne 0 ]] && echo "fail! the command expects a single arg" >&2 && exit 1
-
-subcommand="comoto_cli cd monorepo && docker-compose logs -f --tail=$tail $app_name"
+case $? in
+  0) subcommand=$base_subcommand ;;
+  # TODO Exit if that wasn't a proper abbreviation
+  1) subcommand="$base_subcommand $app_name" ;;
+  *) echo "TODO this is an epic fail!" >&2 && exit 1
+esac
 
 . $COMOTO_CLI_DIR/moto_helpers
 

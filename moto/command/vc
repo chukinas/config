@@ -7,6 +7,15 @@
 
 source $COMOTO_CLI_DIR/moto_helpers
 
+usage() {
+  echo 'Comoto CLI: Usage: comoto_cli vc <subcommand> <filter_string>'
+}
+
+error() {
+  usage >&2
+  exit 1
+}
+
 # TODO add completion for the subcommands
 subcommand="$1"
 shift
@@ -27,11 +36,10 @@ case $subcommand in
       echo PR number: $pr_number
       gh pr $subcommand $pr_number
     else
-      echo "TODO add better error message" >&2
+      error
     fi
     ;;
   *)
-    echo "TODO add better error message" >&2
-    exit 1
+    error
     ;;
 esac
