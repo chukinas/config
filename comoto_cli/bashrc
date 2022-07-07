@@ -8,6 +8,7 @@
 # Add moto script to path
 export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
 
+# TODO this shouldn't be hardcoded in here
 # TODO rename COMOTO_PROJECT_ROOT?
 export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
 
