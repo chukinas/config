@@ -9,7 +9,8 @@
 
 [alias]
     lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
-    all = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit -20 --all
+    all = lol --all
+    latest = all -20
     fixup = commit --fixup HEAD
     rum = rebase upstream/master
     rumi = rebase -i upstream/master
