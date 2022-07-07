@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# This file needs to be sourced by your .bashrc in order for the Comoto CLI to work correctly
-
+# TODO rename this file to comoto_cli.bash?
 # TODO somewhere in all bash stuff I source the zla bash helpers twice. Rectify.
 
 
@@ -18,14 +17,15 @@ alias cdc="cd $COMOTO_CLI_ROOT"
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
 
-# TODO move this to inside moto script
-complete -W "$(ls $COMOTO_CLI_ROOT/command)" moto
-
 echo_help() {
   # TODO make this a command (non-exexcutable)
   echo "TODO: flesh out this help message"
   exit 0
 }
+
+# https://github.com/icy/bash-coding-style#function-names
+# TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
+# TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
 comoto_cli() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
@@ -60,3 +60,21 @@ alias moto=comoto_cli
 alias m=comoto_cli
 
 export -f comoto_cli
+
+# complete -C $COMOTO_CLI_ROOT/lib/completions comoto_cli
+# complete -C $COMOTO_CLI_ROOT/lib/completions moto
+# complete -C $COMOTO_CLI_ROOT/lib/completions m
+# complete -W "$(ls $COMOTO_CLI_ROOT/command)" moto
+
+_comoto_cli_completions() {
+  echo
+  echo "arg 1: $1"
+  echo "arg 2: $2"
+  echo "arg 3: $3"
+  echo "comp line: $COMP_LINE"
+  COMPREPLY+=("now")
+  COMPREPLY+=("tomorrow")
+  COMPREPLY+=("never")
+}
+
+complete -F _comoto_cli_completions m

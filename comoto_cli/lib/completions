@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# TODO add completion
+#  https://opensource.com/article/18/3/creating-bash-completion-script#:~:text=What%20is%20Bash%20completion%3F,key%20while%20typing%20a%20command.
+#  https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#Bash-Variables
+#  This file needs to be sourced by your .bashrc in order for the Comoto CLI to work correctly
+#  https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html
+
+echo "here we are"
+
+COMPREPLY+=("now")
+COMPREPLY+=("tomorrow")
+COMPREPLY+=("never")

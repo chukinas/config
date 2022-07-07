@@ -7,13 +7,19 @@
 
 . $COMOTO_CLI_ROOT/lib/print
 
+# TODO put underscrore in front of name
 usage() {
   echo 'Comoto CLI: Usage: comoto_cli vc <subcommand> <filter_string>'
 }
 
+# TODO put underscrore in front of name
 error() {
   usage >&2
   exit 1
+}
+
+_completion() {
+  echo (checkout view)
 }
 
 # TODO add completion for the subcommands
