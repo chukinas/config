@@ -1,10 +1,5 @@
 #!/bin/bash
 
-# To use this file and e.g. the comoto script,
-# create a file ~/.bashrc with the following lines, uncommented:
-# source ~/projects/dotfiles/dotfile/bash-general.sh
-# source ~/projects/dotfiles/dotfile/bash-comoto.sh
-
 # https://linuxhint.com/bash_scripting_tutorial_beginners/
 
 # ~/.bashrc: executed by bash(1) for non-login shells.

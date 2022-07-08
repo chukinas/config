@@ -2,5 +2,4 @@
 
 # fd
 
-# uncomment?
-# alias fd=fdfind
+alias fd=fdfind

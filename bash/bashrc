@@ -27,5 +27,6 @@ source $config_dir/asdf/bashrc
 source $config_dir/git/bashrc
 source $config_dir/keyboard/bashrc
 source $config_dir/neovim/bashrc
+source $JJC_CONFIG_DIR/fd/bashrc
 source $config_dir/fzf/bashrc
 source $config_dir/datagrip/bashrc
