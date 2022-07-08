@@ -14,9 +14,5 @@ asdf plugin add python
 print_subheader 'install python via asdf'
 asdf install python
 echo
-if python2 --version &> /dev/null && python3 --version &> /dev/null
-then
-   print_success 'python is installed'
-else
-   print_fail 'python not installed'
-fi
+report_on_installation python2
+report_on_installation python3

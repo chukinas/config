@@ -3,7 +3,7 @@
 neovim_dir=$(dirname $0)
 config_dir=$neovim_dir/..
 
-. $config_dir/_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
 
 print_header 'NEOVIM'
 

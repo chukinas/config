@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# Standard Setup
-script_dir="$(dirname $0)";
-source $script_dir/../_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
+
+command_name=asdf
 
 function install_asdf() {
    echo "Removing current asdf install"
@@ -20,6 +20,10 @@ function install_asdf() {
    echo "asdf will be available after restarting shell"
    exit_code=0
 }
+
+#######################################
+# start main script
+#######################################
 
 print_subheader 'install asdf and add plugins'
 
@@ -46,21 +50,15 @@ echo 'Updating'
 asdf update
 
 #######################################
-# check for success or failure on current asdf install
+# Confirm installation
 
-# Print success or failure
-if asdf --version &> /dev/null
-then
-   print_success "asdf is installed"
-else
-   print_fail "asdf not installed"
-fi
+report_on_installation $command_name
 
 #######################################
 # PART II: Install plugins
 #######################################
 
 echo 'adding plugins'
-cut -d' ' -f1 $script_dir/tool-versions | xargs -n 1 asdf plugin add
+cut -d' ' -f1 $JJC_CONFIG_DIR/asdf/tool-versions | xargs -n 1 asdf plugin add
 # TODO how can I check that this was successful?
 print_success 'plugins installed'

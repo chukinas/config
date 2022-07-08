@@ -6,7 +6,8 @@
 
 # TODO replace this with the fuller version
 script_dir="$(dirname $0)";
-source $script_dir/../_setup/helpers.sh
+
+. $JJC_CONFIG_DIR/lib/headers
 
 # TODO make this dynamic
 print_subheader $script_dir/setup_install_tools
@@ -14,58 +15,29 @@ print_subheader $script_dir/setup_install_tools
 
 echo 'Checking neovim'
 asdf install neovim
-if nvim --version &> /dev/null
-then
-   print_success 'neovim is installed'
-else
-   print_fail 'neovim not installed'
-fi
+report_on_installation -p neovim nvim
 
 echo 'Checking fzf'
 asdf install fzf
-if fzf --version &> /dev/null
-then
-   print_success 'fzf is installed'
-else
-   print_fail 'fzf not installed'
-fi
+report_on_installation fzf
 
 echo 'Checking lua'
 asdf install lua
-if lua -v &> /dev/null
-then
-   print_success 'lua is installed'
-else
-   print_fail 'lua not installed'
-fi
+report_on_installation lua
 
 echo 'Checking node'
 # requires python
 asdf install nodejs
-if node --version &> /dev/null
-then
-   print_success 'node is installed'
-else
-   print_fail 'node not installed'
-fi
+report_on_installation node
 
 echo 'Checking rust'
 asdf install rust
-if cargo --version &> /dev/null && rustc --version &> /dev/null
-then
-   print_success 'rust is installed'
-else
-   print_fail 'rust not installed'
-fi
+report_on_installation cargo
+report_on_installation rustc
 
 echo 'Checking erlang'
 asdf install erlang
-if erlang --version &>/dev/null
-then
-   print_success 'erlang is installed'
-else
-   print_fail 'erlang not installed'
-fi
+report_on_installation erl
 
 # From: https://github.com/asdf-vm/asdf-erlang#ubuntu-2004-lts
 # sudo apt-get -y install build-essential autoconf m4 libncurses5-dev libwxgtk3.0-gtk3-dev libwxgtk-webview3.0-gtk3-dev libgl1-mesa-dev libglu1-mesa-dev libpng-dev libssh-dev unixodbc-dev xsltproc fop libxml2-utils libncurses-dev openjdk-11-jdk

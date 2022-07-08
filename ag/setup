@@ -1,6 +1,12 @@
 #!/bin/bash
 
-source $JJC_CONFIG_DIR/_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
+
+command_name=ag
+
+#######################################
+# start main script
+#######################################
 
 print_header "AG (i.e. the Silver Searcher)"
 
@@ -10,7 +16,7 @@ print_subheader $JJC_CONFIG_DIR/ag/setup
 # Install if not already installed
 
 echo 'Looking for ag'
-if ag --version &> /dev/null
+if $JJC_CONFIG_DIR/lib/command_exists $command_name
 then
   echo 'Found'
 else
@@ -18,13 +24,7 @@ else
   sudo apt install silversearcher-ag
 fi
 
-
 #######################################
 # Confirm installation
 
-if ag --version &> /dev/null
-then
-  print_success 'ag is installed'
-else
-  print_fail 'ag not installed'
-fi
+report_on_installation $command_name

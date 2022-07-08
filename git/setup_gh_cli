@@ -3,7 +3,7 @@
 # TODO there's a bit of overlap b/w this and comoto cli
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-source $script_dir/../_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
 
 print_subheader $script_dir/setup_gh_cli
 
@@ -19,9 +19,4 @@ else
   sudo apt install gh
 fi
 
-if gh --version &> /dev/null
-then
-  print_success 'gh is installed'
-else
-  print_fail 'gh not install'
-fi
+report_on_installation gh

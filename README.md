@@ -60,8 +60,6 @@ git submodule update --init --recursive
 ## TODO
 
 - [ ] bash/main.sh -> bash/bashrc
-- [ ] ack/setup.sh
-- [ ] ack/main.sh
 - [ ] asdf/setup.sh
 - [ ] asdf/main.sh
 - [ ] can I configure my System76 terminal via a config file?

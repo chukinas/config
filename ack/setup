@@ -3,10 +3,16 @@
 # FIX replace with ag (silver searcher)
 # FIX would need to update my nvim config
 
-script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-source $script_dir/../_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
 
-print_header "ACK"
+command_name=ack
+command_exists() { $JJC_CONFIG_DIR/lib/command_exists $command_name; }
+
+#######################################
+# main script
+#######################################
+
+print_header $command_name
 
 print_subheader $0
 
@@ -14,16 +20,16 @@ print_subheader $0
 # Make sure ack is installed
 
 echo 'Looking for ack'
-if ack --version &> /dev/null
+if command_exists
 then
   echo 'Found'
 else
   echo 'ack not found. Installing.'
   sudo apt-get install ack
 fi
-if ack --version &> /dev/null
-then
-  print_success 'ack is installed'
-else
-  print_fail 'ack not installed'
-fi
+
+#######################################
+# print result
+
+report_on_installation $command_name
+
