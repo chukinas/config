@@ -24,7 +24,13 @@ bash $JJC_CONFIG_DIR/git/setup
 bash $JJC_CONFIG_DIR/ack/setup
 bash $JJC_CONFIG_DIR/asdf/setup
 bash $JJC_CONFIG_DIR/fd/setup
+
+
+# Requires ASDF to be set up already
 # TODO rename this dir to nvim
 bash $JJC_CONFIG_DIR/neovim/setup
+$JJC_CONFIG_DIR/python/setup
+
+
 # TODO this is only part of comoto setup
 bash $JJC_CONFIG_DIR/comoto/setup

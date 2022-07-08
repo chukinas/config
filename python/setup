@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# I install python with asdf, so make sure that's set up first.
+# That's also where i specify the versions of python2 and python3.
+
+. $JJC_CONFIG_DIR/lib/headers
+
+print_header 'PYTHON'
+
+print_subheader 'install asdf plugin'
+# TODO print this to the terminal before executing it
+asdf plugin add python
+
+print_subheader 'install python via asdf'
+asdf install python
+echo
+if python2 --version &> /dev/null && python3 --version &> /dev/null
+then
+   print_success 'python is installed'
+else
+   print_fail 'python not installed'
+fi

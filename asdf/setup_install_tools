@@ -39,15 +39,6 @@ else
    print_fail 'lua not installed'
 fi
 
-# echo 'Checking python'
-# asdf install python
-# if python2 --version &> /dev/null && python3 --version &> /dev/null
-# then
-#    print_success 'python is installed'
-# else
-#    print_fail 'python not installed'
-# fi
-
 echo 'Checking node'
 # requires python
 asdf install nodejs
