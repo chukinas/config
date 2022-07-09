@@ -1,29 +1,47 @@
 #!/bin/bash
 
-# USAGE: comoto_cli bounce <container-abbreviation>
+# USAGE: comoto_cli bounce <container_abbreviation>
 
-# TODO rename $COMOTO_CLI_ROOT
-. $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
+# TODO this command isn't working for some reason
+# TODO this command shouldn't take arguments. Instead, it should only take options.
+# TODO weeeellll.... is that true? Or does it just take an arbitrary number, and each arg has to be one of ...
+#   cg
+#   jp
+#   rz
+#   redline
+#   all (default)
+# TODO maybe this should go into the container command
 
-if [[ $# -eq 0 ]]
-then
-  # TODO Where is this dir variable defined? I think it can be replaced with $(comoto_cli cd monorepo)
-  # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
-  subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
-elif [[ $# -gt 1 ]]
-then
-  echo "error ... must have one or zero args" >&2
-  exit 1
-elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1)
-then
-  # TODO check for bad abbrev
-  # TODO this isn't working
-  subcommand="(comoto_cli cd monorepo docker restart $container_name) && comoto_cli logs $container_name"
-else
-  echo "error ... $1 is a bad arg" >&2
-  exit 1
-fi
+_comoto_cli_command_execute() {
+  # TODO rename $COMOTO_CLI_ROOT
+  . $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
 
-print_and_eval_command $subcommand
+  if [[ $# -eq 0 ]]
+  then
+    # TODO Where is this dir variable defined? I think it can be replaced with $(comoto_cli cd monorepo)
+    # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
+    subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
+  elif [[ $# -gt 1 ]]
+  then
+    echo "error ... must have one or zero args" >&2
+    exit 1
+  elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1)
+  then
+    # TODO check for bad abbrev
+    # TODO this isn't working
+    subcommand="(comoto_cli cd monorepo docker restart $container_name) && comoto_cli logs $container_name"
+  else
+    echo "error ... $1 is a bad arg" >&2
+    exit 1
+  fi
 
-# TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
+  print_and_eval_command $subcommand
+
+  # TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
+}
+
+_comoto_cli_command_completion() {
+  local valid_args=$($COMOTO_CLI_ROOT/lib/container_name -l)
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+}

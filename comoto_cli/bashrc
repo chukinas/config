@@ -10,9 +10,11 @@ export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
 # TODO this shouldn't be hardcoded in here
 # TODO rename COMOTO_PROJECT_ROOT?
 export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
+export COMOTO_PROJECT_ROOT=$COMOTO_PROJECTS_DIR
 
-# cd to Comoto CLI  dir
-alias cdc="cd $COMOTO_CLI_ROOT"
+
+# TODO this shouldn't live here..
+alias cdc="cd $COMOTO_PROJECT_ROOT"
 
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
@@ -33,25 +35,16 @@ comoto_cli() {
     echo_help
   fi
 
+  local command="$1"
   # Run command if valid or throw error
-  potential_command_path=$COMOTO_CLI_ROOT/command/$1
+  potential_command_path="$COMOTO_CLI_ROOT/command/$command"
   shift
-  if [[ -x $potential_command_path ]] ; then
-    # TODO maybe I shouldn't make a distinction between these two types.
-    # TODO maybe they should all follow the same pattern of sourcing followed by a function call?
-    $potential_command_path $@
-  elif [[ -e $potential_command_path ]]; then
-    unset -f comoto_cli_command_execute
+  if [[ -f $potential_command_path ]] ; then
+    unset -f _comoto_cli_command_execute
     . $potential_command_path
-    if [[ $(type -t comoto_cli_command_execute) == function ]]; then
-      comoto_cli_command_execute $@
-      return $?
-    else
-      echo "Error - expected $potential_command_path to expose a comoto_cli_command_execute function"
-      return 1
-    fi
+    _comoto_cli_command_execute $@
   else
-    echo "No such command" >&2
+    echo "No such command '$command' (TODO: improve error msg)" >&2
     return 1
   fi
 }
@@ -61,20 +54,23 @@ alias m=comoto_cli
 
 export -f comoto_cli
 
-# complete -C $COMOTO_CLI_ROOT/lib/completions comoto_cli
-# complete -C $COMOTO_CLI_ROOT/lib/completions moto
-# complete -C $COMOTO_CLI_ROOT/lib/completions m
-# complete -W "$(ls $COMOTO_CLI_ROOT/command)" moto
+_comoto_cli_completion() {
+  # https://devmanual.gentoo.org/tasks-reference/completion/index.html
 
-_comoto_cli_completions() {
-  echo
-  echo "arg 1: $1"
-  echo "arg 2: $2"
-  echo "arg 3: $3"
-  echo "comp line: $COMP_LINE"
-  COMPREPLY+=("now")
-  COMPREPLY+=("tomorrow")
-  COMPREPLY+=("never")
+  if [[ $COMP_CWORD -eq 1 ]] ; then
+    local cur_word="$2"
+    COMPREPLY=( $(compgen -W "$(ls $COMOTO_CLI_ROOT/command)" -- "$cur_word"))
+    return 0
+  fi
+
+  local cur_command="${COMP_WORDS[1]}"
+  local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
+  if [[ -f $cur_command_path ]] ; then
+    unset _comoto_cli_command_completion
+    . $cur_command_path
+    _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
+  else
+    echo -e "\n'${cur_command}' is an invalid command" >&2
+  fi
 }
-
-complete -F _comoto_cli_completions m
+complete -F _comoto_cli_completion comoto_cli m

@@ -5,17 +5,25 @@
 # Catch errors locally that would stop a Circle CI workflow.
 # Dialyzer and Credo
 
+echo "sourcing check"
+
 . $COMOTO_CLI_ROOT/lib/print
 
-_credo() {
-  if [[ $# -ne 0 ]]
-  then
-    # TODO send this to sterr
-    # TODO fix hard coding
-    echo "$0: Usage: moto check"
-    exit 1
-  fi
+echo "still u"
 
+_comoto_cli_command_usage() {
+  echo "Usage: comoto_cli check"
+}
+
+echo "still e"
+
+_comoto_cli_command_error() {
+  _comoto_cli_command_usage >&2
+}
+
+echo "still c"
+
+_credo() {
   # TODO copy this pattern to the other scripts
   # TODO can `mix credo` be in single quotes?
   # TODO I don't think the cd is necessary
@@ -35,4 +43,25 @@ _credo() {
   return $credo_exit_code
 }
 
-_credo
+echo "still d"
+
+_dialyzer() {
+  echo "TODO: implement the dialyzer check"
+  :
+}
+
+echo "still ..."
+
+_comoto_cli_command_execute() {
+  echo "arg count: $#"
+  # if [[ $# -ne 0 ]] ; then
+  #   _comoto_cli_command_error
+  #   exit 1
+  # else
+    _credo && _dialyzer
+  # fi
+}
+
+_comoto_cli_command_completion() {
+  :
+}

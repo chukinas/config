@@ -1,17 +1,25 @@
 #!/bin/bash
 
-# comoto_cli repl <container-abbreviation>
+# USAGE: comoto_cli repl <container-abbreviation>
 
-. $COMOTO_CLI_ROOT/lib/print
+_comoto_cli_command_execute() {
+  . $COMOTO_CLI_ROOT/lib/print
 
-# TODO add autocomplete
-# TODO error out when given an invalid $1
+  # TODO add autocomplete
+  # TODO error out when given an invalid $1
 
-case $1 in
-  # TODO is this correct or should this be in the "bash" command?
-  ecom) subcommand="ecom-bash" ;;
-  cg|jp|rz) subcommand="$1-iex" ;;
-  *) echo "TODO: this is an error" >&2 && exit 1
-esac
+  case $1 in
+    # TODO is this correct or should this be in the "bash" command?
+    ecom) subcommand="ecom-bash" ;;
+    cg|jp|rz) subcommand="$1-iex" ;;
+    *) echo "TODO: this is an error" >&2 && exit 1
+  esac
 
-print_and_eval_command --include-type "$subcommand"
+  print_and_eval_command --include-type "$subcommand"
+}
+
+_comoto_cli_command_completion() {
+  local valid_args="cg jp rz ecom"
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+}

@@ -8,14 +8,12 @@
 
 . $JJC_CONFIG_DIR/lib/ansi_color
 
-if [[ -z "$1" ]]; then
-  exit 0
-else
-  current_command="$1"
+if [[ -n "$1" ]]; then
+  current_command="$1: "
 fi
 
 print_info() {
-  echo "$current_command: $1"
+  echo "${current_command}$1"
 }
 
 print_header() {
@@ -25,7 +23,7 @@ print_header() {
 # TODO move this into lib
 print_confirm() {
   while true; do
-    read -p "$current_command: $1 [Y/n] " yn
+    read -p "${current_command}$1 [Y/n] " yn
     case $yn in
         [Yy]* ) return 0;;
         [Nn]* ) return 1;;
@@ -37,7 +35,7 @@ print_confirm() {
 # TODO these next two should be combined into one
 # Print a command and then execute it.
 print_exec() {
-  echo "$current_command: Executing: \`$1\`"
+  echo "${current_command}Executing: \`$1\`"
   eval "$1"
 }
 
@@ -51,7 +49,7 @@ print_and_eval_command() {
     maybe_type=""
   fi
 
-  echo -e "\nExecuting:\n\n\t$cmd\n$maybe_type"
+  echo -e "${current_command}\nExecuting:\n\n\t$cmd\n$maybe_type"
 
   eval $cmd
 }

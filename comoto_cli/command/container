@@ -4,3 +4,10 @@
 #   - restart
 #   - log
 #   - bash ... no...
+
+_comoto_cli_command_execute() {
+  echo 'not yet implemented'
+}
+_comoto_cli_command_completion() {
+  echo -n
+}

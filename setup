@@ -7,10 +7,9 @@ clear
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 export JJC_CONFIG_DIR=$(readlink -f $script_dir)
 
-. $JJC_CONFIG_DIR/_setup/helpers.sh
+. $JJC_CONFIG_DIR/lib/headers
 
-echo
-print_header $script_dir/setup
+print_title 'JJC CONFIG'
 
 echo "About to update apt & apt-get"
 # NOTE: apt is the newer one

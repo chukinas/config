@@ -2,8 +2,10 @@
 
 # TODO use this in the main moto script
 
-if [[ $# -eq 1 ]]
-then
+if [[ $# -eq 1 && $1 = "-l" ]] ; then
+  echo "cg jp rz"
+  exit 0
+elif [[ $# -eq 1 ]] ; then
   app_abbreviation="$1"
 else
   exit 1

@@ -36,8 +36,10 @@ jc-gitsync()
 # TODO hasn't this been superceded yet?
 alias jc-docker="cd_zla && docker-compose stop && docker-compose up -d && jc-logs"
 
-source $(comoto_cli path monorepo)/zlaverse/support/bash_functions.sh
-source /usr/share/google-cloud-sdk/completion.bash.inc 2>/dev/null
+# TODO switch this back once m path is fixed
+# source $(comoto_cli path monorepo)/zlaverse/support/bash_functions.sh
+. $HOME/projects/comoto/monorepo/zlaverse/support/bash_functions.sh
+. /usr/share/google-cloud-sdk/completion.bash.inc 2>/dev/null
 
 cg-bash-noninteractive()
 {

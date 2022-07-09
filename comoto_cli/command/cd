@@ -14,33 +14,34 @@
 #   complete -W "comoto monorepo ecom redline" moto
 # }
 
-comoto_cli_command_execute() {
+local current_command="comoto_cli cd"
+. $COMOTO_CLI_ROOT/lib/print "$current_command"
 
-  local current_command="comoto_cli cd"
-  local where_to=$1
+_usage() {
+  # TODO implement -e flag
+  # TODO DRY the usage out with path
+  echo "Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
+}
 
-  # TODO now that this is a function, these out functions are exposed...
-  # TODO decouple this from my personal config script
-  . $COMOTO_CLI_ROOT/lib/print "$current_command"
-
-  usage="Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
-
+_comoto_cli_command_execute() {
   if [[ $# -ne 1 ]]; then
-    print_info "$usage" >&2
+    _usage >&2
     return 1
   fi
 
+  local where_to=$1
+
   # TODO can this be used in an if so I don't have to do the `test
   path=$(comoto_cli path $where_to 2>/dev/null)
-
   # TODO DRY out usage. I don't want to have to add the target both here and there
   [[ $? -ne 0 ]] && echo $usage >&2 && return 1
 
   # TODO handle for incorrect targets
-  # TODO this should read more like the config/lib version
-  # Comoto CLI: Executing:
-  #
-  #     cd ....
-  #
-  print_exec "cd $(comoto_cli path $where_to)"
+  print_and_eval_command "cd $(comoto_cli path $where_to)"
+}
+
+_comoto_cli_command_completion() {
+  unset _comoto_cli_command_completion
+  . $COMOTO_CLI_ROOT/command/path
+  _comoto_cli_command_completion $*
 }
