@@ -1,8 +1,31 @@
 #!/bin/bash
 
-# USAGE: comoto_cli repl <container-abbreviation>
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME]
+
+Start an Ruby or IEX session in a container
+
+Options:
+  -h, --help  Print this help and exit
+
+Container Short Names:
+  ecom        (ruby) Ecom
+  cg          (IEx)  Cycle Gear
+  jp          (IEx)  J&P Cycles
+  rz          (IEx)  RevZilla
+
+EOF
+# TODO what's the actual name of the ruby repl?
+}
 
 _comoto_cli_command_execute() {
+  if [[ $1 =~ -h ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+
   . $COMOTO_CLI_ROOT/lib/print
 
   # TODO add autocomplete

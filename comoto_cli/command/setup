@@ -5,11 +5,31 @@
 #   Sets up the Comoto CLI
 #   e.g. makes sure that gh is installed and set up
 
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli setup [OPTIONS]
+
+Set up this app and the whole Comoto ecosystem
+
+Options:
+  -h, --help  Print this help and exit
+
+EOF
+}
+
+# TODO add functionality for aliasing this app
+
 # HELPERS FOR PRINTING OUTPUT TO USER
 #######################################
 
 # TODO break this up; it's ridiculously long
 _comoto_cli_command_execute() {
+  if [[ $1 =~ -h ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+
   current_command='comoto_cli setup'
 
   # TODO decouple this from my personal config script

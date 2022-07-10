@@ -1,10 +1,24 @@
 #!/bin/bash
 
-# Usage:
-#   moto path comoto
-#   moto path monorepo
-#   moto path redline
-#   moto path ecom
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli path [OPTIONS] [PATH_SHORT_NAME]
+
+Generate fully-qualified paths to common projects
+
+Options:
+  -h, --help  Print this help and exit
+
+Path Short Names:
+  comoto    $COMOTO_PROJECT_ROOT
+  monorepo  $COMOTO_PROJECT_ROOT/monorepo
+  ecom      $COMOTO_PROJECT_ROOT/monorepo/ecom
+  redline   $COMOTO_PROJECT_ROOT/monorepo/redline
+  zla       $COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev
+
+EOF
+}
 
 # TODO implement a way to add another argument to drill down into the main dir
 
@@ -27,6 +41,10 @@ _usage() {
 # TODO should `cd` depend on this?
 # TODO rename _comoto_cli_path_execute
 _comoto_cli_command_execute() {
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
 
   local current_command="comoto_cli path"
   local where_to=$1

@@ -1,7 +1,28 @@
 #!/bin/bash
 
-# USAGE: comoto_cli bounce <container_abbreviation>
+_comoto_cli_command_usage() {
+  cat <<EOF
 
+Usage: comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]
+
+Restart containers
+
+If no args are given, all containers are down/up'ed via 'docker-compose'.
+If passed a container short name, only that one container is bounced via
+'docker restart'.
+
+Options:
+  -h, --help  Print this help and exit
+
+Container Short Names:
+  cg          Cycle Gear
+  jp          J&P Cycles
+  rz          RevZilla
+
+EOF
+}
+
+# TODO add an -L option to suppress the logs
 # TODO this command isn't working for some reason
 # TODO this command shouldn't take arguments. Instead, it should only take options.
 # TODO weeeellll.... is that true? Or does it just take an arbitrary number, and each arg has to be one of ...
@@ -13,8 +34,12 @@
 # TODO maybe this should go into the container command
 
 _comoto_cli_command_execute() {
-  # TODO rename $COMOTO_CLI_ROOT
   . $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
+
+  if [[ $1 =~ -h ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
 
   if [[ $# -eq 0 ]]
   then

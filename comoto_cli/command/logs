@@ -1,9 +1,41 @@
 #!/bin/bash
 
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli logs [OPTIONS] [CONTAINERS]
+
+View the logs for one or several containers
+
+Options:
+  -h, --help      Print this help and exit
+  -t, --tail      Number of lines to print initially (default: 10)
+                  (Not yet implemented)
+
+Containers:
+  cg
+  jp
+  rz
+
+Examples
+  comoto_cli logs           # View all logs (All redline apps, ecom, services, etc)
+  comoto_cli logs cg        # View logs for Cycle Gear
+  comoto_cli logs redline   # View logs for all redline apps (i.e cg, jp, rz)
+  comoto_cli logs cg rz     # View logs for Cycle Gear and RevZilla
+  comoto_cli logs -h        # Print this help
+  comoto_cli logs --help    # Print this help
+
+EOF
+}
+
 # TODO should this be a subcommand for container?
 #   It has the same completion as bounce too
 
 _comoto_cli_command_execute() {
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
 
   # defaults
   tail=10

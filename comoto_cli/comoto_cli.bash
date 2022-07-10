@@ -2,6 +2,10 @@
 
 # TODO rename this file to comoto_cli.bash?
 # TODO somewhere in all bash stuff I source the zla bash helpers twice. Rectify.
+# TODO look into https://betterdev.blog/minimal-safe-bash-script-template/
+# TODO make sure commands fail if they require args. Do not auto-display help.
+
+# NOTE: I take a lot of design cues from the 'docker' cli, especially when it comes to the help/usage messages
 
 
 # Add moto script to path
@@ -19,20 +23,48 @@ alias cdc="cd $COMOTO_PROJECT_ROOT"
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
 
-echo_help() {
-  # TODO make this a command (non-exexcutable)
-  echo "TODO: flesh out this help message"
-  exit 0
-}
-
 # https://github.com/icy/bash-coding-style#function-names
 # TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
+_comoto_cli_usage() {
+  # TODO might be nice to take some cues from the gh help, like:
+  #   putting the description first
+  #   headers are in caps and bold
+  #   usage is on its own line and indented
+  #   The examples have '$' preceeding them
+  cat <<EOF
+
+Usage: comoto_cli [OPTIONS] COMMAND
+
+Common commands to assist in developing Comoto webapps
+
+Options:
+  -h, --help  Print this help and exit
+
+Commands:
+  bash        Open a terminal to a container
+  bounce      Restart containers
+  cd          Change directory to commonly-used directories like redline and ecom
+  check       Quality-control your code locally so you don't have to wait for Circle CI to catch it in 30 minutes
+  container   No-op for now, but will be the home for logging, bouncing, etc
+  db          Initial setup of a local database and migration helpers
+  logs        View the logs for one or several containers
+  path        Generate fully-qualified paths to common projects
+  repl        Start an IEx or Ruby session in a container
+  setup       Set up this app and the whole Comoto ecosystem
+  vc          Version Control helpers (git and gh wrappers)
+
+Run 'comoto_cli COMMAND --help' for more information on a command
+
+EOF
+# TODO add examples
+}
+
 comoto_cli() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
-    echo "no args!"
-    echo_help
+    _comoto_cli_usage
+    return 0
   fi
 
   local command="$1"

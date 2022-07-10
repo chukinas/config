@@ -1,10 +1,31 @@
 #!/bin/bash
 
-# Usage:
-#   moto cd comoto
-#   moto cd monorepo
-#   moto cd redline
-#   moto cd ecom
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli cd [OPTIONS] [PATH_SHORT_NAME]
+
+Change directory to commonly-used paths like redline and ecom
+
+Options:
+  -h, --help  Print this help and exit
+  -p, --path  Echo the path instead of changing directory
+              (Not yet implemented)
+
+Path Short Names:
+  comoto    $COMOTO_PROJECT_ROOT
+  monorepo  $COMOTO_PROJECT_ROOT/monorepo
+  ecom      $COMOTO_PROJECT_ROOT/monorepo/ecom
+  redline   $COMOTO_PROJECT_ROOT/monorepo/redline
+  zla       $COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev
+
+EOF
+}
+
+# TODO is the zla path above correct?
+# TODO maybe there shouldn't be a 'path' command. Maybe it should be replaced with -p option in the 'cd' command
+# TODO when I do that, I'll have to rework the option handling
+# TODO either way, lots of repetition right now
 
 # HELPERS FOR PRINTING OUTPUT TO USER
 #######################################
@@ -24,6 +45,13 @@ _usage() {
 }
 
 _comoto_cli_command_execute() {
+  # TODO make sure all the commands allow --help as well
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+  # TODO right now, 'comoto_cli cd --hel' produces a blank space, then exits. Should produce error instead
+
   if [[ $# -ne 1 ]]; then
     _usage >&2
     return 1

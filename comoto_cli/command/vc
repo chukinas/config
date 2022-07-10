@@ -1,9 +1,31 @@
 #!/bin/bash
 
-# Usage: moto vc
-#
-#   Wrappers around git and gh commands.
-#   Makes it easier to e.g.
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli vc [OPTIONS] SUBCOMMAND FILTER_STRING
+
+Version Control helpers (git and gh wrappers)
+
+Requires that the github CLI ('gh') be installed!
+
+The filter string is used to find a PR number.
+Then the corresponding gh command is called.
+It assumes the repo is the monorepo.
+
+Options:
+  -h, --help  Print this help and exit
+
+Subcommands:
+  view
+  checkout
+
+Examples:
+  comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'
+  comoto_cli vc checkout 'JPR-123'
+
+EOF
+}
 
 # TODO put underscrore in front of name
 usage() {
@@ -17,6 +39,12 @@ error() {
 }
 
 _comoto_cli_command_execute() {
+  # TODO make sure all commands handle --help
+  if [[ $1 =~ -h ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+
   . $COMOTO_CLI_ROOT/lib/print
 
   subcommand="$1"

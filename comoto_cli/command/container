@@ -1,12 +1,39 @@
 #!/bin/bash
 
-# subcommands:
-#   - restart
-#   - log
-#   - bash ... no...
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli container [OPTIONS] SUBCOMMAND
+
+No-op for now, but will be the home for logging, bouncing, etc
+
+Options:
+  -h, --help      Print this help and exit
+
+Subcommands:
+  bash    Interact with a container's shell
+  bounce  Restart containers
+  log     View log output
+
+Examples
+  comoto_cli container bounce       # Restart all containers
+  comoto_cli container bounce cg    # Restart the Cycle Gear container
+  comoto_cli container log rz       # View local RevZilla logs
+  comoto_cli container log --help   # Print help for the 'log' subcommand
+  comoto_cli container -h           # Print this help message
+  comoto_cli container --help       # Print this help message
+
+EOF
+}
 
 _comoto_cli_command_execute() {
-  echo 'not yet implemented'
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  else
+    echo >&2 'Not yet implemented'
+    return 1
+  fi
 }
 _comoto_cli_command_completion() {
   echo -n

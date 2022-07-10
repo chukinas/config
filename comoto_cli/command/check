@@ -1,27 +1,40 @@
 #!/bin/bash
 
-# Usage: moto check
+_comoto_cli_command_usage() {
+  cat <<EOF
 
-# Catch errors locally that would stop a Circle CI workflow.
-# Dialyzer and Credo
+Usage: comoto_cli check [OPTIONS] [CHECKS]
 
-echo "sourcing check"
+Quality-control your code locally so you don't have to wait for Circle CI to catch it in 30 minutes
+
+Options:
+  -h, --help      Print this help and exit
+
+Checks:
+  credo
+  dialyzer
+
+Examples
+  comoto_cli check                  # Run all (both credo and dialyzer)
+  comoto_cli check credo            # Run credo only
+  comoto_cli check dialyzer         # Run dialyzer only
+  comoto_cli check credo dialyzer   # Run both credo and dialyzer
+  comoto_cli check -h               # Print this help message
+  comoto_cli check --help           # Print this help message
+
+EOF
+# TODO add examples to the main comoto_cli help
+}
 
 . $COMOTO_CLI_ROOT/lib/print
 
-echo "still u"
-
-_comoto_cli_command_usage() {
+_comoto_cli_command_usage_short() {
   echo "Usage: comoto_cli check"
 }
 
-echo "still e"
-
 _comoto_cli_command_error() {
-  _comoto_cli_command_usage >&2
+  _comoto_cli_command_usage_short >&2
 }
-
-echo "still c"
 
 _credo() {
   # TODO copy this pattern to the other scripts
@@ -43,17 +56,19 @@ _credo() {
   return $credo_exit_code
 }
 
-echo "still d"
-
 _dialyzer() {
   echo "TODO: implement the dialyzer check"
   :
 }
 
-echo "still ..."
-
 _comoto_cli_command_execute() {
-  echo "arg count: $#"
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+  # TODO typing 'm check -he' should produce an error, but credo runs anyway
+  # TODO implement the credo and dialyzer args
+
   # if [[ $# -ne 0 ]] ; then
   #   _comoto_cli_command_error
   #   exit 1

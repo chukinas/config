@@ -1,5 +1,40 @@
 #!/bin/bash
 
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Usage: comoto_cli db [OPTIONS]
+       comoto_cli db SETUP_COMMAND
+       comoto_cli db MIGRATION_OPTIONS
+
+Initial setup of a local database and migration helpers
+
+Options:
+  -h, --help      Print this help and exit
+
+Setup commands:
+  setup     Download a sanitized db
+  restore   Restore (?)
+  reindex   Reindex (?)
+
+Migration options:
+  -d  Down-migration
+  -u  Up-migration
+  -l  Lock
+
+Examples
+  comoto_cli db setup
+  comoto_cli db restore
+  comoto_cli db reindex
+  comoto_cli db -lu       # Lock migrations, then migrate up
+  comoto_cli db -du       # Migrate down, then immediatedly up
+  comoto_cli db -d -u     # Migrate down, then immediatedly up
+
+EOF
+# TODO should the migrations come under a subcommand?
+# TODO and all the various setup stuff under a 'setup' subcommand?
+}
+
 . $COMOTO_CLI_ROOT/lib/print
 
 commands=""
@@ -85,7 +120,11 @@ _comoto_cli_db_parse_args() {
 }
 
 _comoto_cli_command_execute() {
-  echo "hello"
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+
   _comoto_cli_db_parse_args "$*"
   echo "Here are the actions to be taken by `comoto_cli db`: $_comoto_cli_db_actions"
 
