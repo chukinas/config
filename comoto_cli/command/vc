@@ -1,9 +1,14 @@
 #!/bin/bash
 
-_comoto_cli_command_usage() {
-  cat <<EOF
+# TODO put underscrore in front of name
+usage() {
+  echo 'Usage: comoto_cli vc [OPTIONS] SUBCOMMAND FILTER_STRING'
+}
 
-Usage: comoto_cli vc [OPTIONS] SUBCOMMAND FILTER_STRING
+_comoto_cli_command_usage() {
+  echo
+  usage
+  cat <<EOF
 
 Version Control helpers (git and gh wrappers)
 
@@ -28,14 +33,9 @@ EOF
 }
 
 # TODO put underscrore in front of name
-usage() {
-  echo 'Comoto CLI: Usage: comoto_cli vc <subcommand> <filter_string>'
-}
-
-# TODO put underscrore in front of name
 error() {
   usage >&2
-  exit 1
+  return 1
 }
 
 _comoto_cli_command_execute() {
@@ -56,6 +56,10 @@ _comoto_cli_command_execute() {
   # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
   case $subcommand in
     checkout|view)
+      if [[ $1 =~ ^(-h|--help)$ ]] ; then
+        _comoto_cli_command_usage
+        return 0
+      fi
       filter_string="$1"
       echo filter string: $filter_string
       if [[ $# -eq 1 && -n $filter_string ]]

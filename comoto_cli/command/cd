@@ -44,6 +44,7 @@ _usage() {
   echo "Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
 }
 
+# TODO move the *_execute fn to the bottom for each command
 _comoto_cli_command_execute() {
   # TODO make sure all the commands allow --help as well
   if [[ $1 =~ ^(-h|--help)$ ]] ; then
