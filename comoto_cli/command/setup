@@ -100,7 +100,7 @@ _comoto_cli_command_execute() {
   if comoto_cli_rc_check $comoto_cli_setting ; then
     print_info "Skipping gh auth check. Reenable this check by removing the '$(comoto_cli_rc_build_setting $comoto_cli_setting)' line from $comoto_cli_rc"
   else
-    print_exec "gh auth status"
+    print_and_eval_command "gh auth status"
     print_info "The above output should say that you're logged in as ____ and that operations are configured to use ssh protocol."
     print_confirm "Please confirm. Select [n] to exit, fix it, then run $current_command again" || (print_info 'Exiting' && exit 1)
     if print_confirm "Skip this check next time?"; then
@@ -157,7 +157,7 @@ _comoto_cli_command_execute() {
 
   clone_monorepo() {
     print_header "Cloning $repo_name"
-    print_exec "gh repo clone $repo_name $repo_dir"
+    print_and_eval_command "gh repo clone $repo_name $repo_dir"
   }
 
   print_header "Checking for $repo_dir"
@@ -172,7 +172,7 @@ _comoto_cli_command_execute() {
   upstream='git@github.com:revzilla/monorepo.git'
   print_header "Checking for upstream '$upstream'"
   cmd="git remote -v show upstream"
-  if print_exec "$cmd" && eval "$cmd" | grep "$upstream"; then
+  if print_and_eval_command "$cmd" && eval "$cmd" | grep "$upstream"; then
     print_info 'Found'
   elif print_info "Not found. Creating" && git remote add upstream $upstream; then
     print_info 'Done'
@@ -191,10 +191,10 @@ _comoto_cli_command_execute() {
     print_info "Found $ansible_dir"
   else
     print_info "$ansible_dir not found. Creating"
-    print_exec 'mkdir ~/.ansible'
+    print_and_eval_command 'mkdir ~/.ansible'
   fi
 
-  print_exec 'echo ristrantalfanc > ~/.ansible/dev.txt'
+  print_and_eval_command 'echo ristrantalfanc > ~/.ansible/dev.txt'
 
   # LINUX SETUP
   #######################################
@@ -203,10 +203,10 @@ _comoto_cli_command_execute() {
   #######################################
 
   monorepo_dir=$repo_dir
-  print_exec "cd $monorepo_dir/zlaverse/dev"
+  print_and_eval_command "cd $monorepo_dir/zlaverse/dev"
   print_confirm "You may be asked to enter a 'BECOME password'. This is an ansible thing. Enter your linux user password if/when that happens. Enter [Yy] to continue"
   # TODO
-  print_exec './linux-setup.sh'
+  print_and_eval_command './linux-setup.sh'
 
   # DOCKER and Google Cloud
   #######################################

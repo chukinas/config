@@ -32,15 +32,7 @@ print_confirm() {
   done
 }
 
-# TODO these next two should be combined into one
-# Print a command and then execute it.
-print_exec() {
-  echo "${current_command}Executing: \`$1\`"
-  eval "$1"
-}
-
 print_and_eval_command() {
-
   if [ "$1" = "--include-type" ] ; then
     cmd=$2
     maybe_type="\n$(type $2 2> /dev/null)\n"
@@ -49,7 +41,8 @@ print_and_eval_command() {
     maybe_type=""
   fi
 
-  echo -e "${current_command}\nExecuting:\n\n\t$cmd\n$maybe_type"
+  # echo -e "${current_command}\nExecuting:\n\n\t$cmd\n$maybe_type"
+  echo -e "\nCOMOTO CLI executing...\n\n\t$cmd\n$maybe_type"
 
   eval $cmd
 }
