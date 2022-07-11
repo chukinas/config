@@ -129,6 +129,7 @@ fi
 
 # Personal
 alias cdd="cd ~/projects/config"
+alias cddc="cd ~/projects/config/comoto_cli"
 
 ###############################################################
 # => AUTO-ADD or UNCATEGORIZED
@@ -142,3 +143,8 @@ export PATH="$HOME/.local/bin:$PATH"
 if [[ -e yarn ]] ; then
   export PATH="$(yarn global bin):$PATH"
 fi
+
+# Open a file in detached mode
+opend() {
+  open $* &
+}
