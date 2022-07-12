@@ -20,7 +20,13 @@ print_header() {
   echo ; print_info "$1"
 }
 
-# TODO move this into lib
+# Expects one argument string, e.g. "Are you sure you want to proceed?"
+# Usually used in an if statement, like:
+# if print_confirm 'Are you sure you want to proceed?' ; then
+#   do_something
+# else
+#   do_something_else
+# fi
 print_confirm() {
   while true; do
     read -p "${current_command}$1 [Y/n] " yn
@@ -41,8 +47,7 @@ print_and_eval_command() {
     maybe_type=""
   fi
 
-  # echo -e "${current_command}\nExecuting:\n\n\t$cmd\n$maybe_type"
-  echo -e "\nCOMOTO CLI executing...\n\n\t$cmd\n$maybe_type"
+  echo -e "\n${boldon}COMOTO CLI${boldoff} executing...\n\n\t$cmd\n$maybe_type"
 
   eval $cmd
 }

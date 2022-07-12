@@ -24,10 +24,14 @@ Options:
 Subcommands:
   view
   checkout
+  new
 
 Examples:
   comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'
   comoto_cli vc checkout 'JPR-123'
+
+  # Create and check out new branch 'JPR-123-my-short-description':
+  comoto_cli vc new jpr 123 my short   description
 
 EOF
 }
@@ -36,6 +40,26 @@ EOF
 error() {
   usage >&2
   return 1
+}
+
+# TODO move these to lib?
+_vc_new_branch_text() {
+  local project_prefix="$(echo "$1" | tr '[:lower:]' '[:upper:]')"
+  shift
+  local issue_number="$1"
+  shift
+  local short_description="$(echo "$*" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+  echo "$project_prefix-$issue_number-$short_description"
+}
+
+_vc_new_branch() {
+  local branch_name=$(_vc_new_branch_text $*)
+  . $COMOTO_CLI_ROOT/lib/print
+  # TODO this is printing something weird
+  if print_confirm "Create new branch? '$branch_name'" ; then
+    git checkout -b $branch_name
+    git push --set-upstream origin $branch_name
+  fi
 }
 
 _comoto_cli_command_execute() {
@@ -72,6 +96,9 @@ _comoto_cli_command_execute() {
       else
         error
       fi
+      ;;
+    new)
+      _vc_new_branch $*
       ;;
     *)
       error

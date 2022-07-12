@@ -1,23 +1,51 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/ansi_color
+
+# TODO move this to a lib file
+_help_header() {
+  text=$(echo $1 | tr '[:lower:]' '[:upper:]' )
+  echo -e "${boldon}${text}:${reset}"
+}
+
+# TODO move this to a lib file
+_indent_print() {
+  echo -e "  $*"
+}
+
+# TODO follow this strategy in other commands
 _comoto_cli_command_usage() {
-  cat <<EOF
+  local comoto_project_root=${COMOTO_PROJECT_ROOT:-"${redf}\$COMOTO_PROJECT_ROOT${reset}"}
+  # TODO this should be added to a "checkhealth function"
+  if [[ -d $COMOTO_PROJECT_ROOT ]] ; then
+    local your_project_root_msg="${greenf}${boldon}SUCCESS:${boldoff} \$COMOTO_PROJECT_ROOT is set to $COMOTO_PROJECT_ROOT${reset}"
+  else
+    local your_project_root_msg="${redf}${boldon}ERROR:${boldoff} \$COMOTO_PROJECT_ROOT is not set to a valid directory.${reset}"
+  fi
 
-Usage: comoto_cli path [OPTIONS] [PATH_SHORT_NAME]
-
-Generate fully-qualified paths to common projects
-
-Options:
-  -h, --help  Print this help and exit
-
-Path Short Names:
-  comoto    $COMOTO_PROJECT_ROOT
-  monorepo  $COMOTO_PROJECT_ROOT/monorepo
-  ecom      $COMOTO_PROJECT_ROOT/monorepo/ecom
-  redline   $COMOTO_PROJECT_ROOT/monorepo/redline
-  zla       $COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev
-
-EOF
+  echo
+  echo 'Generate fully-qualified paths to common projects'
+  echo
+  _help_header 'Usage'
+  _indent_print "comoto_cli path [OPTIONS] PATH_SHORT_NAME"
+  echo
+  _help_header 'Prerequisite'
+  _indent_print '$COMOTO_PROJECT_ROOT environment variable points to directory containing the monorepo.'
+  _indent_print $your_project_root_msg
+  echo
+  _help_header 'Options'
+  _indent_print '-h, --help  Print this help and exit'
+  echo
+  _help_header 'Path Short Names'
+  _indent_print "comoto      $comoto_project_root"
+  _indent_print "monorepo    $comoto_project_root/monorepo"
+  _indent_print "ecom        $comoto_project_root/monorepo/ecom"
+  _indent_print "redline     $comoto_project_root/monorepo/redline"
+  _indent_print "zla         $comoto_project_root/monorepo/zlaverse/dev"
+  echo
+  _help_header 'Examples'
+  _indent_print "comoto_cli path ecom   # echos out '$(comoto_cli path ecom)'"
+  echo
 }
 
 # TODO implement a way to add another argument to drill down into the main dir
