@@ -3,4 +3,31 @@
 # TODO only conditionally run this. I think I need a JJC_CONFIG_COMOTO env var
 # TODO I need to install this
 
-alias dg="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh 2>/dev/null &"
+# I have an email from 20210824 that says:
+# - a JetBrains DataGrip licence is connected to my work email.
+# - later, I registered on the site.
+# - I can go back to the site (I think I originally used a username and pw, but not I have my gh acct linked to it too)
+
+# To install, start with the confluence page: https://revzilla.atlassian.net/wiki/spaces/TECH/pages/2511143015/Set+up+DataGrip+for+Local+Connections
+# Since I don't use any other jetbrains products, I just use the standalone install: https://www.jetbrains.com/help/datagrip/installation-guide.html#standalone
+# ...
+# Actually, I just noticed that it's in the pop_os shop. Currently installing it.
+# Actually... I don't like that install. There's no cli command to open (that I could figure out), so I'm going back to the direct install
+
+# sudo tar xzf ~/Downloads/datagrip-2022.1.5.tar.gz -C /opt/
+
+
+# old alias from the MSI computer: alias dg="/opt/jetbrains/DataGrip-2021.2.1/bin/datagrip.sh 2>/dev/null &"
+alias dg="/opt/DataGrip-2022.1.5/bin/datagrip.sh &"
+
+# ok, so after setting the alias, I open the thing and walk through some menus.
+# I refused to share statistics
+# Next screen: "Do not import settings"
+# Somewhere in there, I had to sign into my jetbrains account to link the license too.
+
+# SETUP
+# Create a new project (call it e.g. 'comoto')
+
+
+# Then connect to staging db:
+# https://revzilla.atlassian.net/wiki/spaces/PLAT/pages/2365456415/Cloud+SQL+Datagrip+Connectivity
