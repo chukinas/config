@@ -37,15 +37,8 @@ EOF
 
 . $COMOTO_CLI_ROOT/lib/print
 
+# TODO `local command` instead?
 commands=""
-
-_add_rake_task() {
-  cmd="rake db:migrate:$1"
-  if [[ ! $commands = "" ]] ; then
-    commands="$commands && "
-  fi
-  commands="$commands$cmd"
-}
 
 [[ ! -d $COMOTO_PROJECTS_DIR ]] && echo '$COMOTO_DIR is not set. Make sure your ~/.bashrc sets that environment variable. Exiting.' >&2 && exit 1
 dumps_dir="$COMOTO_PROJECTS_DIR/.db-dumps"
@@ -108,15 +101,6 @@ _comoto_cli_db_parse_args() {
     _comoto_cli_db_actions+=("$1")
     return 0
   fi
-
-  while getopts "dlu" opt; do
-    case $opt in
-      d) _comoto_cli_db_actions+=("down" );;
-      l) _comoto_cli_db_actions+=("lock" );;
-      u) _comoto_cli_db_actions+=("up" );;
-      *) echo "$0: usage: <<insert usage here>>" >&2; return 1
-    esac
-  done
 }
 
 _comoto_cli_command_execute() {
@@ -126,29 +110,21 @@ _comoto_cli_command_execute() {
   fi
 
   _comoto_cli_db_parse_args "$*"
-  echo "Here are the actions to be taken by `comoto_cli db`: $_comoto_cli_db_actions"
 
-  # TODO reimplement
-  # for action in "$_comoto_cli_db_actions[@]"
-  # do
-  #   case action in
-  #     setup) _get_local_sanitized_db ;;
-  #     restore) _restore_db_from_dump ;;
-  #     reindex) cg-product-catalog-reindex ;;
-  #     down|lock|up) _add_rake_task "$action" ;;
-  #   esac
-  # done
-  # print_and_eval_command --include-type "ecom-bash '$commands'"
+  for action in "${_comoto_cli_db_actions[@]}"
+  do
+    echo $action
+    case $action in
+      setup) _get_local_sanitized_db ;;
+      restore) _restore_db_from_dump ;;
+      reindex) cg-product-catalog-reindex ;;
+    esac
+  done
+  # TODO break migrations out into subcommand
+  print_and_eval_command $commands
 }
 
 _comoto_cli_command_completion() {
-  # TODO add completion for the setup, etc subcommands
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-
-  # if [[ $1 == -* ]] ; then
-  #   # ONLY the -dlu options are allowed at this point, in any order, and repeated at will
-  #   COMPREPLY=( $(compgen -W "-d -u -l" -- "$cur_word") )
-  #   #COMPREPLY+=(another)
-  # fi
-  COMPREPLY=( $(compgen -W "-d -u -l setup restore reindex" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "setup restore reindex" -- "$cur_word"))
 }

@@ -59,7 +59,17 @@ _vc_new_branch() {
   if print_confirm "Create new branch? '$branch_name'" ; then
     git checkout -b $branch_name
     git push --set-upstream origin $branch_name
+    # TODO next steps that could be automated:
+    #   create PR
+    #   echo Jira link for each copy-paste into description
+    #   Add labels
   fi
+}
+
+add_labels_to_pr() {
+  # TODO a healthcheck would include checking that gh is installed.
+  # TODO maybe the default labels should be included in ~/.comoto_rc
+  gh pr edit --add-label 'wip' --add-label "team Hellmann's Deep" --add-label 'create staging' --add-label 'selenium tests'
 }
 
 _comoto_cli_command_execute() {

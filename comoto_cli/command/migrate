@@ -1,0 +1,62 @@
+#!/bin/bash
+
+. $COMOTO_CLI_ROOT/lib/print
+
+
+_comoto_cli_command_usage() {
+  cat <<EOF
+
+Migrate local copy of ecom database
+
+Usage: comoto_cli migrate [OPTIONS] ACTIONS
+
+Options:
+  -h, --help      Print this help and exit
+
+Actions:
+  -d  Down-migration
+  -u  Up-migration
+  -l  Lock
+
+Examples
+  comoto_cli migrate -lu       # Lock migrations, then migrate up
+  comoto_cli migrate -du       # Migrate down, then immediatedly up
+  comoto_cli migrate -d -u     # Migrate down, then immediatedly up
+
+EOF
+}
+
+# Accumulate rake tasks to be run in the local ecom shell
+local rake_tasks=''
+_add_rake_task() {
+  new_rake_task="rake db:migrate:$1"
+  if [[ -z $rake_tasks ]] ; then
+    rake_tasks="$new_rake_task"
+  else
+    rake_tasks="$rake_tasks && $new_rake_task"
+  fi
+}
+
+_comoto_cli_command_completion() {
+  local cur_word="${COMP_WORDS[$COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "-d -u -l" -- "$cur_word"))
+}
+
+_comoto_cli_command_execute() {
+  if [[ $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_command_usage
+    return 0
+  fi
+
+  OPTIND=1
+  while getopts "dlu" opt; do
+    case $opt in
+      d) _add_rake_task 'down';;
+      l) _add_rake_task 'lock';;
+      u) _add_rake_task 'up';;
+      *) echo "$0: usage: <<insert usage here>>" >&2; return 1
+    esac
+  done
+
+  print_and_eval_command "ecom-bash '$rake_tasks'"
+}
