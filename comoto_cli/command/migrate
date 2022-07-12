@@ -14,8 +14,8 @@ Options:
   -h, --help      Print this help and exit
 
 Actions:
-  -d  Down-migration
-  -u  Up-migration
+  -d  Migrate Down
+  -u  Migrate Up
   -l  Lock
 
 Examples
@@ -58,5 +58,5 @@ _comoto_cli_command_execute() {
     esac
   done
 
-  print_and_eval_command "ecom-bash '$rake_tasks'"
+  print_and_eval_command "comoto_cli bash ecom '$rake_tasks'"
 }

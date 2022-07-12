@@ -11,29 +11,35 @@ Options:
   -h, --help  Print this help and exit
 
 Container Short Names:
-  cg          Cycle Gear
-  jp          J&P Cycles
-  rz          RevZilla
+  ecom        The Ruby Ecom/Admin app
+  cg          Cycle Gear webapp
+  jp          J&P Cycles webapp
+  rz          RevZilla   webapp
 
 EOF
 }
 
-_comoto_cli_command_args="cg jp rz"
+_comoto_cli_command_args="ecom cg jp rz"
 
 _comoto_cli_command_execute() {
   command='comoto_cli bash'
   . $COMOTO_CLI_ROOT/lib/print $command
   . $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
 
-  # TODO add autocomplete
-  # TODO error out when given an invalid $1
 
   case $1 in
+    # TODO error out when given an invalid $1
     -h | --help) _comoto_cli_command_usage; return 0;;
-    cg|jp|rz) subcommand="$1-bash" ;;
+    # TODO for now, there's only allowed to be one command. I should remove that restriction though
+    ecom|cg|jp|rz)
+      orig_alias="$1-bash"
+      shift
+      subcommand="$orig_alias '$*'"
+      ;;
     *) echo "TODO this is error msg" >&2 && exit 1
   esac
 
+  # TODO include a flag to suppress output. That'll be useful when one command (e.g. migrate) calls another (like this one)
   print_and_eval_command --include-type "$subcommand"
 }
 
