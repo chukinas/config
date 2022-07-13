@@ -41,17 +41,14 @@ _comoto_cli_command_execute() {
     return 0
   fi
 
-  if [[ $# -eq 0 ]]
-  then
-    # TODO Where is this dir variable defined? I think it can be replaced with $(comoto_cli cd monorepo)
+  if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
-    subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
-  elif [[ $# -gt 1 ]]
-  then
+    # TODO extract path into the library
+    subcommand="(cd $(comoto_cli path monorepo) && docker-compose down && docker-compose up -d) && comoto_cli logs"
+  elif [[ $# -gt 1 ]] ; then
     echo "error ... must have one or zero args" >&2
     exit 1
-  elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1)
-  then
+  elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1) ; then
     # TODO check for bad abbrev
     # TODO this isn't working
     subcommand="(comoto_cli cd monorepo docker restart $container_name) && comoto_cli logs $container_name"
@@ -60,7 +57,8 @@ _comoto_cli_command_execute() {
     exit 1
   fi
 
-  print_and_eval_command $subcommand
+  # TODO I shouldn't have to wrap this in quotes?
+  print_and_eval_command "$subcommand"
 
   # TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
 }
