@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Usage: comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME]
@@ -22,7 +22,7 @@ EOF
 
 _comoto_cli_command_execute() {
   if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 

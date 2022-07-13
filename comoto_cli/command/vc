@@ -5,7 +5,7 @@ usage() {
   echo 'Usage: comoto_cli vc [OPTIONS] SUBCOMMAND FILTER_STRING'
 }
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   echo
   usage
   cat <<EOF
@@ -75,7 +75,7 @@ add_labels_to_pr() {
 _comoto_cli_command_execute() {
   # TODO make sure all commands handle --help
   if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 
@@ -91,7 +91,7 @@ _comoto_cli_command_execute() {
   case $subcommand in
     checkout|view)
       if [[ $1 =~ ^(-h|--help)$ ]] ; then
-        _comoto_cli_command_usage
+        _comoto_cli_command_help
         return 0
       fi
       filter_string="$1"

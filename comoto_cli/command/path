@@ -14,7 +14,7 @@ _indent_print() {
 }
 
 # TODO follow this strategy in other commands
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   local comoto_project_root=${COMOTO_PROJECT_ROOT:-"${redf}\$COMOTO_PROJECT_ROOT${reset}"}
   # TODO this should be added to a "checkhealth function"
   if [[ -d $COMOTO_PROJECT_ROOT ]] ; then
@@ -70,7 +70,7 @@ _usage() {
 # TODO rename _comoto_cli_path_execute
 _comoto_cli_command_execute() {
   if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 

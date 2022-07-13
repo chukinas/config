@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Usage: comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]
@@ -37,7 +37,7 @@ _comoto_cli_command_execute() {
   . $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
 
   if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 

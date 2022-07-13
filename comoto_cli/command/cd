@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Usage: comoto_cli cd [OPTIONS] [PATH_SHORT_NAME]
@@ -48,7 +48,7 @@ _usage() {
 _comoto_cli_command_execute() {
   # TODO make sure all the commands allow --help as well
   if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
   # TODO right now, 'comoto_cli cd --hel' produces a blank space, then exits. Should produce error instead

@@ -3,7 +3,7 @@
 # TODO ensure that the ssh key has no pw
 # TODO ensure that you have read (and write?) access to the Comoto-Tech repo?
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Usage: comoto_cli setup [OPTIONS]
@@ -24,7 +24,7 @@ EOF
 # TODO break this up; it's ridiculously long
 _comoto_cli_command_execute() {
   if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 

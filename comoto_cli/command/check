@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Usage: comoto_cli check [OPTIONS] [CHECKS]
@@ -63,7 +63,7 @@ _dialyzer() {
 
 _comoto_cli_command_execute() {
   if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
   # TODO typing 'm check -he' should produce an error, but credo runs anyway

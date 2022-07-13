@@ -3,7 +3,7 @@
 . $COMOTO_CLI_ROOT/lib/print
 
 
-_comoto_cli_command_usage() {
+_comoto_cli_command_help() {
   cat <<EOF
 
 Migrate local copy of ecom database
@@ -44,7 +44,7 @@ _comoto_cli_command_completion() {
 
 _comoto_cli_command_execute() {
   if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_usage
+    _comoto_cli_command_help
     return 0
   fi
 
