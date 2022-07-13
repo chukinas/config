@@ -94,3 +94,6 @@ print_help_li() {
   echo -e "  $*"
 }
 
+print_help_ex() {
+  echo -e "  \$ $*"
+}
