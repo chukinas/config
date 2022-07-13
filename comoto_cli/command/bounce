@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
 _comoto_cli_command_summary='Restart containers'
 _comoto_cli_command_usage='comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]'
 
@@ -33,7 +35,6 @@ EOF
 # TODO maybe this should go into the container command
 
 _comoto_cli_command_execute() {
-  . $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
 
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README

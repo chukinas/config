@@ -36,19 +36,34 @@ _comoto_cli_help() {
   print_help_li 'comoto_cli [OPTIONS] COMMAND'
   print_help_h2 Options
   print_help_li '-h, --help  Print this help and exit'
+
+  # Determine indent for COMMAND summaries
+  # Loop thru command names, find longest one, add 3
+  local max_char_count
+  max_char_count=0
+  for file in $COMOTO_CLI_ROOT/command/*
+  do
+    filename=$(basename $file)
+    char_count=${#filename}
+    if [[ $char_count -gt $max_char_count ]] ; then
+      max_char_count=$char_count
+    fi
+  done
+  local command_summary_indent=$((max_char_count + 3))
+
+  # Print the COMMAND summaries
   print_help_h2 Commands
-  . $COMOTO_CLI_ROOT/command/bash
-  print_help_li "bash        $_comoto_cli_command_summary"
-  print_help_li "bounce      Restart containers"
-  print_help_li "cd          Change directory to commonly-used directories like redline and ecom"
-  print_help_li "check       Quality-control your code locally so you don't have to wait for Circle CI to catch it in 30 minutes"
-  print_help_li "container   No-op for now, but will be the home for logging, bouncing, etc"
-  print_help_li "db          Initial setup of a local database and migration helpers"
-  print_help_li "logs        View the logs for one or several containers"
-  print_help_li "path        Generate fully-qualified paths to common projects"
-  print_help_li "repl        Start an IEx or Ruby session in a container"
-  print_help_li "setup       Set up this app and the whole Comoto ecosystem"
-  print_help_li "vc          Version Control helpers (git and gh wrappers)"
+  for file in $COMOTO_CLI_ROOT/command/*
+  do
+    filename=$(basename $file)
+    # TODO handle for missing summary
+    unset _comoto_cli_command_summary
+    . $file
+    whitespace_to_append=$((3 + $max_char_count - ${#filename}))
+    command_name_with_whitespace=$(printf "%s%*s" "$filename" "$whitespace_to_append" '')
+    print_help_li "$command_name_with_whitespace$_comoto_cli_command_summary"
+  done
+
   print_help_h2 Examples
   # TODO use the *_ex function in the other helps as well
   print_help_ex "comoto_cli cd redline        # change to monorepo's redline directory"
@@ -58,7 +73,6 @@ _comoto_cli_help() {
   echo
   echo "Run 'comoto_cli COMMAND --help' for more information on a command"
   echo
-  # TODO add examples
 }
 
 # Expects a single argument: path to a command script
