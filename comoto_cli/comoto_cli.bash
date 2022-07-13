@@ -33,6 +33,7 @@ _comoto_cli_usage() {
   #   headers are in caps and bold
   #   usage is on its own line and indented
   #   The examples have '$' preceeding them
+  . $COMOTO_CLI_ROOT/command/bash
   cat <<EOF
 
 Usage: comoto_cli [OPTIONS] COMMAND
@@ -43,7 +44,7 @@ Options:
   -h, --help  Print this help and exit
 
 Commands:
-  bash        Open a terminal to a container
+  bash        $_comoto_cli_command_summary
   bounce      Restart containers
   cd          Change directory to commonly-used directories like redline and ecom
   check       Quality-control your code locally so you don't have to wait for Circle CI to catch it in 30 minutes

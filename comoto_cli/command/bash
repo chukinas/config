@@ -1,62 +1,60 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
+
+_comoto_cli_command_summary='Open a terminal to a container'
+
 _comoto_cli_command_usage() {
-  cat <<EOF
-
-Usage: comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME
-
-Open a terminal to a container
-
-Options:
-  -h, --help  Print this help and exit
-
-Container Short Names:
-  ecom        The Ruby Ecom/Admin app
-  cg          Cycle Gear webapp
-  jp          J&P Cycles webapp
-  rz          RevZilla   webapp
-
-EOF
+  print_help_h1 $_comoto_cli_command_summary
+  print_help_h2 Usage
+  print_help_li 'comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
+  print_help_h2 Options
+  print_help_li '-h, --help  Print this help and exit'
+  print_help_h2 Container Short Names
+  print_help_li 'ecom        The Ruby Ecom/Admin app'
+  print_help_li 'cg          Cycle Gear webapp'
+  print_help_li 'jp          J&P Cycles webapp'
+  print_help_li 'rz          RevZilla   webapp'
+  print_help_h2 Examples
+  print_help_li 'comoto_cli bash rz         # Bash into local RevZilla container. Local session.'
+  print_help_li "comoto_cli bash cg whoami  # echos 'deploy' then exits"
+  echo
 }
 
-_comoto_cli_command_args="ecom cg jp rz"
-
 _comoto_cli_command_execute() {
-  command='comoto_cli bash'
-  . $COMOTO_CLI_ROOT/lib/print $command
-  . $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
-
-
+  # Get the container identifier
+  local container_name
   case $1 in
-    # TODO error out when given an invalid $1
     -h | --help) _comoto_cli_command_usage; return 0;;
-    # TODO for now, there's only allowed to be one command. I should remove that restriction though
-    ecom|cg|jp|rz)
-      local subcommand="$1-bash"
-      shift
-      if [[ $# -gt 0 ]] ; then
-        # Noninteractive mode - run the command then exit the bash shell
-        local maybe_confirm_option='--confirm'
-        subcommand="$subcommand '$*'"
-      fi
-      ;;
-    *) echo "TODO this is error msg" >&2 && exit 1
+    ecom       ) container_name=$ZV_ECOM;;
+    cg         ) container_name=$ZV_CG  ;;
+    jp         ) container_name=$ZV_JP  ;;
+    rz         ) container_name=$ZV_RZ  ;;
+    # TODO test this behavior:
+    *          ) echo "TODO this is error msg" >&2 && return 1
   esac
 
-  # TODO replace these annoying full-length options with single-char ones
-  # TODO include a flag to suppress output. That'll be useful when one command (e.g. migrate) calls another (like this one)
-  if [[ -n $maybe_confirm_option ]] ; then
-    print_and_eval_command --include-type --confirm "$subcommand"
+  # If commands were passed, run execute them in the container,
+  # otherwise enter an interactive shell.
+  local bash_arg
+  shift
+  if [[ -z $1 ]] ; then
+    # Interactive shell
+    bash_arg="TERM=xterm-color bash -l"
   else
-    print_and_eval_command --include-type "$subcommand"
+    # Non-Interactive shell
+    bash_arg="$@"
   fi
+
+  print_and_eval_command "docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
 }
 
 _comoto_cli_command_completion() {
   local cur_arg="${COMP_WORDS[2]}"
   case $COMP_CWORD in
     2)
-      COMPREPLY=( $(compgen -W "$_comoto_cli_command_args" -- "$cur_arg") )
+      COMPREPLY=( $(compgen -W "ecom cg jp rz" -- "$cur_arg") )
       ;;
     *) ;;
   esac

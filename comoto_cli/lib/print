@@ -85,7 +85,7 @@ print_help_h1() {
 }
 
 print_help_h2() {
-  text=$(echo $1 | tr '[:lower:]' '[:upper:]' )
+  text=$(echo "$@" | tr '[:lower:]' '[:upper:]' )
   echo
   echo -e "${boldon}${text}:${reset}"
 }

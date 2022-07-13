@@ -1,9 +1,7 @@
 #!/bin/bash
 
-# Usage: moto setup
-#
-#   Sets up the Comoto CLI
-#   e.g. makes sure that gh is installed and set up
+# TODO ensure that the ssh key has no pw
+# TODO ensure that you have read (and write?) access to the Comoto-Tech repo?
 
 _comoto_cli_command_usage() {
   cat <<EOF
