@@ -43,11 +43,6 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   OPTIND=1
   while getopts "dlu" opt; do
     case $opt in

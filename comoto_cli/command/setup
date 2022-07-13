@@ -23,11 +23,6 @@ EOF
 
 # TODO break this up; it's ridiculously long
 _comoto_cli_command_execute() {
-  if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   current_command='comoto_cli setup'
 
   # TODO decouple this from my personal config script

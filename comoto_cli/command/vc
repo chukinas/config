@@ -90,10 +90,6 @@ _comoto_cli_command_execute() {
   # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
   case $subcommand in
     checkout|view)
-      if [[ $1 =~ ^(-h|--help)$ ]] ; then
-        _comoto_cli_command_help
-        return 0
-      fi
       filter_string="$1"
       echo filter string: $filter_string
       if [[ $# -eq 1 && -n $filter_string ]]

@@ -104,11 +104,6 @@ _comoto_cli_db_parse_args() {
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   _comoto_cli_db_parse_args "$*"
 
   for action in "${_comoto_cli_db_actions[@]}"

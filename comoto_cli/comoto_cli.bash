@@ -27,7 +27,7 @@ eval "$(gh completion -s bash)"
 # TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
-_comoto_cli_usage() {
+_comoto_cli_help() {
   # TODO might be nice to take some cues from the gh help, like:
   #   putting the description first
   #   headers are in caps and bold
@@ -64,21 +64,25 @@ EOF
 
 comoto_cli() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
-    _comoto_cli_usage
+    _comoto_cli_help
     return 0
   fi
 
   local command="$1"
-  # Run command if valid or throw error
-  potential_command_path="$COMOTO_CLI_ROOT/command/$command"
+  local potential_command_path="$COMOTO_CLI_ROOT/command/$command"
   shift
-  if [[ -f $potential_command_path ]] ; then
+
+  if [[ ! -f $potential_command_path ]] ; then
+    echo "No such command '$command' (TODO: improve error msg)" >&2
+    return 1
+  elif [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
+    unset -f _comoto_cli_command_help
+    . $potential_command_path
+    _comoto_cli_command_help
+  else
     unset -f _comoto_cli_command_execute
     . $potential_command_path
     _comoto_cli_command_execute $@
-  else
-    echo "No such command '$command' (TODO: improve error msg)" >&2
-    return 1
   fi
 }
 

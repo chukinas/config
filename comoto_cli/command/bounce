@@ -36,11 +36,6 @@ EOF
 _comoto_cli_command_execute() {
   . $COMOTO_CLI_ROOT/lib/print 'comoto_cli bounce'
 
-  if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     # TODO extract path into the library

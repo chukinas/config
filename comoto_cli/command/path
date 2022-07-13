@@ -69,11 +69,6 @@ _usage() {
 # TODO should `cd` depend on this?
 # TODO rename _comoto_cli_path_execute
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   local current_command="comoto_cli path"
   local where_to=$1
 

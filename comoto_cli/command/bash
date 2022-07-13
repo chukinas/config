@@ -26,7 +26,6 @@ _comoto_cli_command_execute() {
   # Get the container identifier
   local container_name
   case $1 in
-    -h | --help) _comoto_cli_command_help; return 0;;
     ecom       ) container_name=$ZV_ECOM;;
     cg         ) container_name=$ZV_CG  ;;
     jp         ) container_name=$ZV_JP  ;;

@@ -21,11 +21,6 @@ EOF
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   . $COMOTO_CLI_ROOT/lib/print
 
   # TODO add autocomplete

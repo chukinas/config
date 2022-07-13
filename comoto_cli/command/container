@@ -27,13 +27,8 @@ EOF
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  else
-    echo >&2 'Not yet implemented'
-    return 1
-  fi
+  echo >&2 'Not yet implemented'
+  return 1
 }
 _comoto_cli_command_completion() {
   echo -n

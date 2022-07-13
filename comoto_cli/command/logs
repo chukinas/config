@@ -32,11 +32,6 @@ EOF
 #   It has the same completion as bounce too
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
-
   # defaults
   tail=10
 

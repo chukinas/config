@@ -62,10 +62,6 @@ _dialyzer() {
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
   # TODO typing 'm check -he' should produce an error, but credo runs anyway
   # TODO implement the credo and dialyzer args
 
