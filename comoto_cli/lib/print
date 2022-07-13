@@ -78,3 +78,19 @@ print_and_eval_command() {
     eval $cmd
   fi
 }
+
+print_help_h1() {
+  echo
+  echo -e "$1"
+}
+
+print_help_h2() {
+  text=$(echo $1 | tr '[:lower:]' '[:upper:]' )
+  echo
+  echo -e "${boldon}${text}:${reset}"
+}
+
+print_help_li() {
+  echo -e "  $*"
+}
+
