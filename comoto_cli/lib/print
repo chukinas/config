@@ -8,6 +8,7 @@
 
 . $JJC_CONFIG_DIR/lib/ansi_color
 
+# TODO am i using this anymore?
 if [[ -n "$1" ]]; then
   current_command="$1: "
 fi
@@ -79,9 +80,17 @@ print_and_eval_command() {
   fi
 }
 
+print_usage_error() {
+  echo "Usage: $_comoto_cli_command_usage" >&2
+}
+
+#################################################
+# PRINT HELPERS FOR GENERATING HELP DOCUMENTATION
+#################################################
+
 print_help_h1() {
   echo
-  echo -e "$1"
+  echo -e "$@"
 }
 
 print_help_h2() {
@@ -91,9 +100,11 @@ print_help_h2() {
 }
 
 print_help_li() {
+  # TODO should this be `$@` ?
   echo -e "  $*"
 }
 
 print_help_ex() {
+  # TODO should this be `$@` ?
   echo -e "  \$ $*"
 }

@@ -1,11 +1,10 @@
 #!/bin/bash
 
+_comoto_cli_command_summary='No-op for now, but will be the home for logging, bouncing, etc'
+_comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
+
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli container [OPTIONS] SUBCOMMAND
-
-No-op for now, but will be the home for logging, bouncing, etc
 
 Options:
   -h, --help      Print this help and exit

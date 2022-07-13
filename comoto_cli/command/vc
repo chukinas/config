@@ -1,16 +1,15 @@
 #!/bin/bash
 
-# TODO put underscrore in front of name
+_comoto_cli_command_summary='Version Control helpers (git and gh wrappers)'
+_comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
+
+# TODO DRY this function
 usage() {
-  echo 'Usage: comoto_cli vc [OPTIONS] SUBCOMMAND FILTER_STRING'
+  echo "Usage: $_comoto_cli_command_usage"
 }
 
 _comoto_cli_command_help() {
-  echo
-  usage
   cat <<EOF
-
-Version Control helpers (git and gh wrappers)
 
 Requires that the github CLI ('gh') be installed!
 
@@ -34,12 +33,6 @@ Examples:
   comoto_cli vc new jpr 123 my short   description
 
 EOF
-}
-
-# TODO put underscrore in front of name
-error() {
-  usage >&2
-  return 1
 }
 
 # TODO move these to lib?
@@ -100,14 +93,16 @@ _comoto_cli_command_execute() {
         echo PR number: $pr_number
         gh pr $subcommand $pr_number
       else
-        error
+        print_usage_error
+        exit 1
       fi
       ;;
     new)
       _vc_new_branch $*
       ;;
     *)
-      error
+      print_usage_error
+      exit 1
       ;;
   esac
 

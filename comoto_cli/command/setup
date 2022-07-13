@@ -1,14 +1,13 @@
 #!/bin/bash
 
+_comoto_cli_command_summary='Set up this app and the whole Comoto ecosystem'
+_comoto_cli_command_usage='comoto_cli setup [OPTIONS]'
+
 # TODO ensure that the ssh key has no pw
 # TODO ensure that you have read (and write?) access to the Comoto-Tech repo?
 
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli setup [OPTIONS]
-
-Set up this app and the whole Comoto ecosystem
 
 Options:
   -h, --help  Print this help and exit

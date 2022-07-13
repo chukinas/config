@@ -2,6 +2,9 @@
 
 . $COMOTO_CLI_ROOT/lib/ansi_color
 
+_comoto_cli_command_summary='Generate fully-qualified paths to common projects'
+_comoto_cli_command_usage='comoto_cli path [OPTIONS] PATH_SHORT_NAME'
+
 # TODO move this to a lib file
 _help_header() {
   text=$(echo $1 | tr '[:lower:]' '[:upper:]' )
@@ -24,11 +27,6 @@ _comoto_cli_command_help() {
   fi
 
   echo
-  echo 'Generate fully-qualified paths to common projects'
-  echo
-  _help_header 'Usage'
-  _indent_print "comoto_cli path [OPTIONS] PATH_SHORT_NAME"
-  echo
   _help_header 'Prerequisite'
   _indent_print '$COMOTO_PROJECT_ROOT environment variable points to directory containing the monorepo.'
   _indent_print $your_project_root_msg
@@ -49,25 +47,10 @@ _comoto_cli_command_help() {
 }
 
 # TODO implement a way to add another argument to drill down into the main dir
-
-# HELPERS FOR PRINTING OUTPUT TO USER
-#######################################
-
-local valid_args="comoto monorepo ecom redline zla"
-
-_usage() {
-  msg="Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
-  if [[ $1 == -e && -n $2 ]] ; then
-    actual_cmd="comoto_cli path $2"
-    echo -e "${msg}\n${actual_cmd}" >&2
-  else
-    echo $msg
-  fi
-}
-
 # TODO should I retool this to set a $COMOTO_CLI_CUR_PATH ?
 # TODO should `cd` depend on this?
 # TODO rename _comoto_cli_path_execute
+
 _comoto_cli_command_execute() {
   local current_command="comoto_cli path"
   local where_to=$1
@@ -77,8 +60,8 @@ _comoto_cli_command_execute() {
   . $COMOTO_CLI_ROOT/lib/print "$current_command"
 
   if [[ $# -ne 1 ]]; then
-    print_info "$usage" >&2
-    return 1
+    print_usage_error
+    exit 1
   fi
 
   case "$where_to" in
@@ -88,8 +71,8 @@ _comoto_cli_command_execute() {
     redline)  target="$COMOTO_PROJECTS_DIR/monorepo/redline";;
     zla)      target="$COMOTO_PROJECTS_DIR/monorepo/zlaverse/dev";;
     *)
-      _usage -e "$@"
-      return 1
+      print_usage_error
+      exit 1
   esac
 
   echo "$target"
@@ -97,5 +80,5 @@ _comoto_cli_command_execute() {
 
 _comoto_cli_command_completion() {
   [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+  COMPREPLY=( $(compgen -W "comoto monorepo ecom redline zla" -- "$1") )
 }

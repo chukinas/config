@@ -1,11 +1,11 @@
 #!/bin/bash
 
+_comoto_cli_command_summary='Translate zla bash_functions to comoto_cli commands'
+_comoto_cli_command_usage='comoto_cli hist [ZLA_BASH_FUNCTION]'
+
 . $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_help() {
-  print_help_h1 'Translate zla bash_functions to comoto_cli commands'
-  print_help_h2 'Usage'
-  print_help_li 'comoto_cli hist [ZLA_BASH_FUNCTION]'
   print_help_h2 'Options'
   print_help_li '-h, --help  Print this help and exit'
   print_help_h2 'Examples'

@@ -1,11 +1,12 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
+_comoto_cli_command_summary='View the logs for one or several containers'
+_comoto_cli_command_usage='comoto_cli logs [OPTIONS] [CONTAINERS]'
+
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli logs [OPTIONS] [CONTAINERS]
-
-View the logs for one or several containers
 
 Options:
   -h, --help      Print this help and exit
@@ -42,10 +43,8 @@ _comoto_cli_command_execute() {
     0) subcommand=$base_subcommand ;;
     # TODO Exit if that wasn't a proper abbreviation
     1) subcommand="$base_subcommand $app_name" ;;
-    *) echo "TODO this is an epic fail!" >&2 && exit 1
+    *) echo print_usage_error && exit 1
   esac
-
-  . $COMOTO_CLI_ROOT/lib/print
 
   print_and_eval_command "$subcommand"
 }

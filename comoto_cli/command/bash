@@ -1,14 +1,12 @@
 #!/bin/bash
 
+_comoto_cli_command_summary='Open a terminal to a container'
+_comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
+
 . $COMOTO_CLI_ROOT/lib/print
 . $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
 
-_comoto_cli_command_summary='Open a terminal to a container'
-
 _comoto_cli_command_help() {
-  print_help_h1 $_comoto_cli_command_summary
-  print_help_h2 Usage
-  print_help_li 'comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
   print_help_h2 Options
   print_help_li '-h, --help  Print this help and exit'
   print_help_h2 Container Short Names
@@ -30,8 +28,7 @@ _comoto_cli_command_execute() {
     cg         ) container_name=$ZV_CG  ;;
     jp         ) container_name=$ZV_JP  ;;
     rz         ) container_name=$ZV_RZ  ;;
-    # TODO test this behavior:
-    *          ) echo "TODO this is error msg" >&2 && return 1
+    *          ) print_usage_error && exit 1
   esac
 
   # If commands were passed, run execute them in the container,

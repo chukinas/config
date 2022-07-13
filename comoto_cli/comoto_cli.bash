@@ -27,6 +27,7 @@ eval "$(gh completion -s bash)"
 # TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
+. $COMOTO_CLI_ROOT/lib/ansi_color
 . $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_help() {
@@ -60,6 +61,34 @@ _comoto_cli_help() {
   # TODO add examples
 }
 
+# Expects a single argument: path to a command script
+_comoto_cli_render_command_help() {
+
+  # CLEAR VARS & SOURCE COMMAND SCRIPT
+  command_path="$1"
+  unset _comoto_cli_command_summary
+  unset -f _comoto_cli_command_help
+  . $command_path
+
+  # RENDER SUMMARY
+  if [[ -n $_comoto_cli_command_summary ]] ; then
+    print_help_h1 $_comoto_cli_command_summary
+  else
+    print_help_h1 "${yellowf}${boldon}SCRIPT INCOMPLETE:${boldoff} Make sure $command_path has a ${boldon}_comoto_cli_command_summary${boldoff} variable ${reset}"
+  fi
+
+  # RENDER USAGE
+  print_help_h2 'Usage'
+  if [[ -n $_comoto_cli_command_usage ]] ; then
+    print_help_li $_comoto_cli_command_usage
+  else
+    # maybe DRY this out?
+    print_help_li "${yellowf}${boldon}SCRIPT INCOMPLETE:${boldoff} Make sure $command_path has a ${boldon}_comoto_cli_command_usage${boldoff} variable ${reset}"
+  fi
+
+  _comoto_cli_command_help
+}
+
 comoto_cli() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
     _comoto_cli_help
@@ -74,9 +103,7 @@ comoto_cli() {
     echo "No such command '$command' (TODO: improve error msg)" >&2
     return 1
   elif [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
-    unset -f _comoto_cli_command_help
-    . $potential_command_path
-    _comoto_cli_command_help
+    _comoto_cli_render_command_help $potential_command_path
   else
     unset -f _comoto_cli_command_execute
     . $potential_command_path

@@ -1,13 +1,10 @@
 #!/bin/bash
 
+_comoto_cli_command_summary='Initial setup of a local database and migration helpers'
+_comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
+
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli db [OPTIONS]
-       comoto_cli db SETUP_COMMAND
-       comoto_cli db MIGRATION_OPTIONS
-
-Initial setup of a local database and migration helpers
 
 Options:
   -h, --help      Print this help and exit

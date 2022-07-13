@@ -2,13 +2,11 @@
 
 . $COMOTO_CLI_ROOT/lib/print
 
+_comoto_cli_command_summary='Migrate local copy of ecom database'
+_comoto_cli_command_usage='comoto_cli migrate [OPTIONS] ACTIONS'
 
 _comoto_cli_command_help() {
   cat <<EOF
-
-Migrate local copy of ecom database
-
-Usage: comoto_cli migrate [OPTIONS] ACTIONS
 
 Options:
   -h, --help      Print this help and exit
@@ -50,7 +48,7 @@ _comoto_cli_command_execute() {
       l) _add_db_migrate_task 'lock';;
       u) _add_db_migrate_task 'up';;
       # TODO add a usage function
-      *) echo "$0: usage: <<insert usage here>>" >&2; return 1
+      *) print_usage_error && exit 1
     esac
   done
 

@@ -1,11 +1,12 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
+_comoto_cli_command_summary='Quality-control your code locally, before it gets to Circle CI'
+_comoto_cli_command_usage='comoto_cli check [OPTIONS] [CHECKS]'
+
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli check [OPTIONS] [CHECKS]
-
-Quality-control your code locally so you don't have to wait for Circle CI to catch it in 30 minutes
 
 Options:
   -h, --help      Print this help and exit
@@ -24,16 +25,6 @@ Examples
 
 EOF
 # TODO add examples to the main comoto_cli help
-}
-
-. $COMOTO_CLI_ROOT/lib/print
-
-_comoto_cli_command_usage_short() {
-  echo "Usage: comoto_cli check"
-}
-
-_comoto_cli_command_error() {
-  _comoto_cli_command_usage_short >&2
 }
 
 _credo() {
@@ -64,13 +55,7 @@ _dialyzer() {
 _comoto_cli_command_execute() {
   # TODO typing 'm check -he' should produce an error, but credo runs anyway
   # TODO implement the credo and dialyzer args
-
-  # if [[ $# -ne 0 ]] ; then
-  #   _comoto_cli_command_error
-  #   exit 1
-  # else
-    _credo && _dialyzer
-  # fi
+  _credo && _dialyzer
 }
 
 _comoto_cli_command_completion() {

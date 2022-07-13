@@ -1,11 +1,12 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
+_comoto_cli_command_summary='Change directory to commonly-used paths like redline and ecom'
+_comoto_cli_command_usage='comoto_cli cd [OPTIONS] PATH_SHORT_NAME'
+
 _comoto_cli_command_help() {
   cat <<EOF
-
-Usage: comoto_cli cd [OPTIONS] [PATH_SHORT_NAME]
-
-Change directory to commonly-used paths like redline and ecom
 
 Options:
   -h, --help  Print this help and exit
@@ -22,34 +23,21 @@ Path Short Names:
 EOF
 }
 
-# TODO is the zla path above correct?
 # TODO maybe there shouldn't be a 'path' command. Maybe it should be replaced with -p option in the 'cd' command
 # TODO when I do that, I'll have to rework the option handling
 # TODO either way, lots of repetition right now
 
-# HELPERS FOR PRINTING OUTPUT TO USER
-#######################################
-
-# TODO implement completion
-# comoto_cli_command_completion() {
-#   complete -W "comoto monorepo ecom redline" moto
-# }
-
-local current_command="comoto_cli cd"
-. $COMOTO_CLI_ROOT/lib/print "$current_command"
-
-_usage() {
-  # TODO implement -e flag
-  # TODO DRY the usage out with path
-  echo "Usage: $current_command <comoto|monorepo|ecom|redline|zla>"
+_comoto_cli_command_completion() {
+  unset _comoto_cli_command_completion
+  . $COMOTO_CLI_ROOT/command/path
+  _comoto_cli_command_completion $*
 }
 
-# TODO move the *_execute fn to the bottom for each command
 _comoto_cli_command_execute() {
   # TODO right now, 'comoto_cli cd --hel' produces a blank space, then exits. Should produce error instead
 
   if [[ $# -ne 1 ]]; then
-    _usage >&2
+    print_usage_error
     return 1
   fi
 
@@ -58,14 +46,8 @@ _comoto_cli_command_execute() {
   # TODO can this be used in an if so I don't have to do the `test
   path=$(comoto_cli path $where_to 2>/dev/null)
   # TODO DRY out usage. I don't want to have to add the target both here and there
-  [[ $? -ne 0 ]] && echo $usage >&2 && return 1
+  [[ $? -ne 0 ]] && print_usage_error && exit 1
 
   # TODO handle for incorrect targets
   print_and_eval_command "cd $(comoto_cli path $where_to)"
-}
-
-_comoto_cli_command_completion() {
-  unset _comoto_cli_command_completion
-  . $COMOTO_CLI_ROOT/command/path
-  _comoto_cli_command_completion $*
 }
