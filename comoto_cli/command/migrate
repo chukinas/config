@@ -28,7 +28,7 @@ EOF
 
 # Accumulate rake tasks to be run in the local ecom shell
 local rake_tasks=''
-_add_rake_task() {
+_add_db_migrate_task() {
   new_rake_task="rake db:migrate:$1"
   if [[ -z $rake_tasks ]] ; then
     rake_tasks="$new_rake_task"
@@ -51,12 +51,14 @@ _comoto_cli_command_execute() {
   OPTIND=1
   while getopts "dlu" opt; do
     case $opt in
-      d) _add_rake_task 'down';;
-      l) _add_rake_task 'lock';;
-      u) _add_rake_task 'up';;
+      d) _add_db_migrate_task 'down';;
+      l) _add_db_migrate_task 'lock';;
+      u) _add_db_migrate_task 'up';;
+      # TODO add a usage function
       *) echo "$0: usage: <<insert usage here>>" >&2; return 1
     esac
   done
 
-  print_and_eval_command "comoto_cli bash ecom '$rake_tasks'"
+  # No need to use the normal print_and_eval_command, since the bash command will do it for us.
+  comoto_cli bash ecom $rake_tasks
 }

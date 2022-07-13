@@ -29,7 +29,7 @@ print_header() {
 # fi
 print_confirm() {
   while true; do
-    read -p "${current_command}$1 [Y/n] " yn
+    read -p "$1 [Y/n] " yn
     case $yn in
         [Yy]* ) return 0;;
         [Nn]* ) return 1;;
@@ -39,16 +39,42 @@ print_confirm() {
 }
 
 print_and_eval_command() {
-  if [ "$1" = "--include-type" ] ; then
-    cmd=$2
-    maybe_type="\n$(type $2 2> /dev/null)\n"
+  local include_type  confirm   cmd
+
+  for arg in "$@"
+  do
+    case $arg in
+      "--include-type") include_type='true' ;;
+      "--confirm"     ) confirm='true' ;;
+      *               ) cmd="$arg"; break;;
+    esac
+  done
+
+  if [[ -n $cmd ]] ; then
+    echo
+    echo -e "${boldon}COMOTO CLI${boldoff} executing..."
+    echo
+    echo -e "\t$cmd"
+    echo
   else
-    cmd=$1
-    maybe_type=""
+    echo 'TODO whoops!' >&2
+    return 1
   fi
 
-  echo -e "\n${boldon}COMOTO CLI${boldoff} executing...\n\n\t$cmd\n$maybe_type"
+  # TODO why the odd amount of white space
+  if [[ $include_type == 'true' ]] ; then
+    echo -e "$(type $cmd 2> /dev/null)"
+    echo
+  fi
 
-  eval $cmd
+  if [[ $confirm == 'true' ]] ; then
+    if print_confirm 'Proceed?' ; then
+      echo
+      eval $cmd
+    else
+      echo
+    fi
+  else
+    eval $cmd
+  fi
 }
-
