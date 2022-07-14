@@ -10,21 +10,25 @@ _comoto_cli_command_help() {
 
 Options:
   -h, --help      Print this help and exit
-  -t, --tail      Number of lines to print initially (default: 10)
-                  (Not yet implemented)
+  -t              Tail: number of lines to print initially (default: 10)
 
 Containers:
   cg
   jp
   rz
+  redline         (not yet implemented)
 
 Examples
   comoto_cli logs           # View all logs (All redline apps, ecom, services, etc)
   comoto_cli logs cg        # View logs for Cycle Gear
   comoto_cli logs redline   # View logs for all redline apps (i.e cg, jp, rz)
   comoto_cli logs cg rz     # View logs for Cycle Gear and RevZilla
+
   comoto_cli logs -h        # Print this help
   comoto_cli logs --help    # Print this help
+
+  comoto_cli logs jp        # View last 10 (the default) J&P Cycles log rows, then stream all incoming
+  comoto_cli logs -t 100 jp # View last 100 J&P Cycles log rows, then stream all incoming
 
 EOF
 }
@@ -39,8 +43,13 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
-  # defaults
-  tail=10
+  if [[ $1 == '-t' ]] ; then
+    tail="$2"
+    shift
+    shift
+  else
+    tail=10
+  fi
 
   app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
 
