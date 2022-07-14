@@ -32,25 +32,22 @@ EOF
 # TODO should this be a subcommand for container?
 #   It has the same completion as bounce too
 
+_comoto_cli_command_completion() {
+  unset _comoto_cli_command_completion
+  . $COMOTO_CLI_ROOT/command/bounce
+  _comoto_cli_command_completion $*
+}
+
 _comoto_cli_command_execute() {
   # defaults
   tail=10
 
   app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
-  base_subcommand="comoto_cli cd monorepo && docker-compose logs -f --tail=$tail"
 
   case $? in
-    0) subcommand=$base_subcommand ;;
-    # TODO Exit if that wasn't a proper abbreviation
-    1) subcommand="$base_subcommand $app_name" ;;
+    0|1) ;;
     *) echo print_usage_error && exit 1
   esac
 
-  print_and_eval_command "$subcommand"
-}
-
-_comoto_cli_command_completion() {
-  unset _comoto_cli_command_completion
-  . $COMOTO_CLI_ROOT/command/bounce
-  _comoto_cli_command_completion $*
+  print_and_eval_command "($(comoto_cli cd -t monorepo) && docker-compose logs -f --tail=$tail $app_name)"
 }

@@ -4,7 +4,8 @@
 # TODO add functions that'll check dialyzer and credo before pushing
 # TODO it should also recompile with --warnings-as-errors so I catch those CircleCI dealbreakers
 
-alias jc-logs="cdm && docker-compose logs -f --tail=100 revzilla-redline-webapp"
+alias jc-logs="comoto_cli cd monorepo && docker-compose logs -f --tail=10 revzilla-redline-webapp"
+alias jclogsjp="comoto_cli cd monorepo && docker-compose logs -f --tail=10 jp-cycles-redline-webapp"
 
 jc-gitsync()
 {
@@ -56,11 +57,11 @@ jc-format-elixir()
 }
 
 # OTHER
-alias cdm='moto cd monorepo'
-alias cde='moto cd ecom'
-alias cdr='moto cd redline'
+alias cdm='comoto_cli cd monorepo'
+alias cde='comoto_cli cd ecom'
+alias cdr='comoto_cli cd redline'
 # TODO should zla be changed to zlaverse ?
-alias cdz='moto cd zla' # the same as cd_zla
+alias cdz='comoto_cli cd zla'
 
 # TODO does this work?
 jc-dialyzer()

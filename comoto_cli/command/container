@@ -3,6 +3,9 @@
 _comoto_cli_command_summary='No-op for now, but will be the home for logging, bouncing, etc'
 _comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
 
+# TODO add the ability to "shut down" just a single container to hopefully improve recompile times for the
+# one that I'm actually interested in
+
 _comoto_cli_command_help() {
   cat <<EOF
 

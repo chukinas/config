@@ -10,6 +10,7 @@ _comoto_cli_command_help() {
 
 Options:
   -h, --help  Print this help and exit
+  -t          Echo command text only
   -p, --path  Echo the path instead of changing directory
               (Not yet implemented)
 
@@ -36,6 +37,13 @@ _comoto_cli_command_completion() {
 _comoto_cli_command_execute() {
   # TODO right now, 'comoto_cli cd --hel' produces a blank space, then exits. Should produce error instead
 
+  if [[ $1 == '-t' ]] ; then
+    local text_only='true'
+    shift
+  else
+    local text_only='false'
+  fi
+
   if [[ $# -ne 1 ]]; then
     print_usage_error
     return 1
@@ -48,6 +56,11 @@ _comoto_cli_command_execute() {
   # TODO DRY out usage. I don't want to have to add the target both here and there
   [[ $? -ne 0 ]] && print_usage_error && exit 1
 
+  cmd="cd $(comoto_cli path $where_to)"
   # TODO handle for incorrect targets
-  print_and_eval_command "cd $(comoto_cli path $where_to)"
+  if [[ $text_only == 'true' ]] ; then
+    echo $cmd
+  else
+    print_and_eval_command "$cmd"
+  fi
 }
