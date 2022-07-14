@@ -2,6 +2,8 @@
 
 . $COMOTO_CLI_ROOT/lib/print
 
+# TODO -p flag is inconsistent with the print-only flag in at least one other command
+
 _comoto_cli_command_summary='View the logs for one or several containers'
 _comoto_cli_command_usage='comoto_cli logs [OPTIONS] [CONTAINERS]'
 
@@ -11,6 +13,7 @@ _comoto_cli_command_help() {
 Options:
   -h, --help      Print this help and exit
   -t              Tail: number of lines to print initially (default: 10)
+  -p              Print command to stout; do not execute
 
 Containers:
   cg
@@ -43,13 +46,18 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
-  if [[ $1 == '-t' ]] ; then
-    tail="$2"
-    shift
-    shift
-  else
-    tail=10
-  fi
+  local tail=10
+  local print_only='false'
+
+  OPTIND=1
+  while getopts "t:p" opt; do
+    case $opt in
+      t) tail=$OPTARG ;;
+      p) print_only='true' ;;
+      *) echo "$0: error" >&2; exit 1
+    esac
+  done
+  shift $((OPTIND-1))
 
   app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
 
@@ -58,5 +66,10 @@ _comoto_cli_command_execute() {
     *) echo print_usage_error && exit 1
   esac
 
-  print_and_eval_command "($(comoto_cli cd -t monorepo) && docker-compose logs -f --tail=$tail $app_name)"
+  cmd="($(comoto_cli cd -t monorepo) && docker-compose logs -f --tail=$tail $app_name)"
+  if [[ $print_only == 'true' ]] ; then
+    echo "$cmd"
+  else
+    print_and_eval_command "$cmd"
+  fi
 }
