@@ -24,6 +24,7 @@ Subcommands:
   view
   checkout
   new
+  checkin
 
 Examples:
   comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'
@@ -82,6 +83,9 @@ _comoto_cli_command_execute() {
   # TODO add help that says that the filter string can include either the pr or jira number
   # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
   case $subcommand in
+    checkin)
+      print_and_eval_command "comoto_cli check && git push -f && git latest"
+      ;;
     checkout|view)
       filter_string="$1"
       echo filter string: $filter_string
@@ -109,7 +113,7 @@ _comoto_cli_command_execute() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_args="checkout view"
+  local valid_args="checkout view checkin"
   [[ $# -gt 1 ]] && return 1
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
   # TODO add completion for the subcommands
