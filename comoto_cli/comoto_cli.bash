@@ -41,12 +41,11 @@ _comoto_cli_help() {
 
   # Determine indent for COMMAND summaries
   # Loop thru command names, find longest one, add 3
-  local max_char_count
-  max_char_count=0
+  local max_char_count=0
   for file in $COMOTO_CLI_ROOT/command/*
   do
-    filename=$(basename $file)
-    char_count=${#filename}
+    local filename=$(basename $file)
+    local char_count=${#filename}
     if [[ $char_count -gt $max_char_count ]] ; then
       max_char_count=$char_count
     fi
@@ -57,12 +56,12 @@ _comoto_cli_help() {
   print_help_h2 Commands
   for file in $COMOTO_CLI_ROOT/command/*
   do
-    filename=$(basename $file)
+    local filename=$(basename $file)
     # TODO handle for missing summary
     unset _comoto_cli_command_summary
     . $file
-    whitespace_to_append=$((3 + $max_char_count - ${#filename}))
-    command_name_with_whitespace=$(printf "%s%*s" "$filename" "$whitespace_to_append" '')
+    local whitespace_to_append=$((3 + $max_char_count - ${#filename}))
+    local command_name_with_whitespace=$(printf "%s%*s" "$filename" "$whitespace_to_append" '')
     print_help_li "$command_name_with_whitespace$_comoto_cli_command_summary"
   done
 
@@ -77,7 +76,8 @@ _comoto_cli_help() {
   echo
 }
 
-# Expects a single argument: path to a command script
+# Expects a single argument: path to a command script.
+# Prints the help for that script, then exits.
 _comoto_cli_render_command_help() {
 
   # CLEAR VARS & SOURCE COMMAND SCRIPT
@@ -105,6 +105,32 @@ _comoto_cli_render_command_help() {
   _comoto_cli_command_help
 }
 
+# Entry point for <TAB> command completion for 'comoto_cli'
+_comoto_cli_completion() {
+  # TODO does this include --help?
+  # https://devmanual.gentoo.org/tasks-reference/completion/index.html
+
+  # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
+  if [[ $COMP_CWORD -eq 1 ]] ; then
+    local cur_word="$2"
+    COMPREPLY=( $(compgen -W "$(ls $COMOTO_CLI_ROOT/command)" -- "$cur_word"))
+    return 0
+  fi
+
+  # Complete options or args for the command (e.g. 'comoto_cli logs r<TAB>')
+  local cur_command="${COMP_WORDS[1]}"
+  local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
+  if [[ -f $cur_command_path ]] ; then
+    unset _comoto_cli_command_completion
+    . $cur_command_path
+    # Exclude 'comoto_cli' and the command from the words sent over to the
+    # command's completion function.
+    _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
+  else
+    echo -e "\n'${cur_command}' is an invalid command" >&2
+  fi
+}
+
 comoto_cli() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
     _comoto_cli_help
@@ -127,29 +153,6 @@ comoto_cli() {
   fi
 }
 
-alias moto=comoto_cli
 alias m=comoto_cli
-
 export -f comoto_cli
-
-_comoto_cli_completion() {
-  # TODO does this include --help?
-  # https://devmanual.gentoo.org/tasks-reference/completion/index.html
-
-  if [[ $COMP_CWORD -eq 1 ]] ; then
-    local cur_word="$2"
-    COMPREPLY=( $(compgen -W "$(ls $COMOTO_CLI_ROOT/command)" -- "$cur_word"))
-    return 0
-  fi
-
-  local cur_command="${COMP_WORDS[1]}"
-  local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
-  if [[ -f $cur_command_path ]] ; then
-    unset _comoto_cli_command_completion
-    . $cur_command_path
-    _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
-  else
-    echo -e "\n'${cur_command}' is an invalid command" >&2
-  fi
-}
 complete -F _comoto_cli_completion comoto_cli m

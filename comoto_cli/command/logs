@@ -40,9 +40,10 @@ EOF
 #   It has the same completion as bounce too
 
 _comoto_cli_command_completion() {
-  unset _comoto_cli_command_completion
-  . $COMOTO_CLI_ROOT/command/bounce
-  _comoto_cli_command_completion $*
+  # TODO introduce logic for excluding the options once we're started on the args
+  option_words="--help -t -p"
+  arg_words="cg jp rz redline"
+  COMPREPLY=( $(compgen -W "$option_words $arg_words" -- "${COMP_WORDS[$COMP_CWORD]}") )
 }
 
 _comoto_cli_command_execute() {
