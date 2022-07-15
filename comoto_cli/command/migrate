@@ -10,6 +10,8 @@ _comoto_cli_command_help() {
 
 Options:
   -h, --help      Print this help and exit
+  -c              Confirm before executing command.
+                  Useful for previewing a command before committing to it.
 
 Actions:
   -d  Migrate Down
@@ -37,13 +39,15 @@ _add_db_migrate_task() {
 
 _comoto_cli_command_completion() {
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-  COMPREPLY=( $(compgen -W "-d -u -l" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "-h --help -c -d -u -l" -- "$cur_word"))
 }
 
 _comoto_cli_command_execute() {
+  local confirmation_option='-C'
   OPTIND=1
-  while getopts "dlu" opt; do
+  while getopts "cdlu" opt; do
     case $opt in
+      c) confirmation_option='-c';;
       d) _add_db_migrate_task 'down';;
       l) _add_db_migrate_task 'lock';;
       u) _add_db_migrate_task 'up';;
@@ -52,6 +56,5 @@ _comoto_cli_command_execute() {
     esac
   done
 
-  # No need to use the normal print_and_eval_command, since the bash command will do it for us.
-  comoto_cli bash ecom $rake_tasks
+  print_and_eval_command $confirmation_option "comoto_cli bash ecom '$rake_tasks'"
 }
