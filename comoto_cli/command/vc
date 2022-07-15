@@ -84,7 +84,8 @@ _comoto_cli_command_execute() {
   # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
   case $subcommand in
     checkin)
-      print_and_eval_command "comoto_cli check && git push -f && git latest"
+      # TODO what happens if this is run when not in monorepo?
+      print_and_eval_command "comoto_cli check && git push -f && git latest && gh pr checks --watch --interval"
       ;;
     checkout|view)
       filter_string="$1"

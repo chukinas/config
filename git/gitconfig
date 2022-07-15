@@ -16,6 +16,6 @@
     rumi = rebase -i upstream/master
     rumf = !git fetch upstream master && git rebase upstream/master && git all
     rumif = !git fetch upstream master && git rebase -i upstream/master
-    m = !git fetch upstream master && git checkout master && git merge upstream/master && git push
+    m = !git fetch upstream master && git checkout master && git merge upstream/master && git push && git latest
     bn = !git m && git checkout -b $1 && git all && :
     fix = !git commit --fixup $1 && :

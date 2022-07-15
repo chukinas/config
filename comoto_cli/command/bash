@@ -21,6 +21,16 @@ _comoto_cli_command_help() {
   echo
 }
 
+_comoto_cli_command_completion() {
+  local cur_arg="${COMP_WORDS[2]}"
+  case $COMP_CWORD in
+    2)
+      COMPREPLY=( $(compgen -W "ecom cg jp rz" -- "$cur_arg") )
+      ;;
+    *) ;;
+  esac
+}
+
 _comoto_cli_command_execute() {
   local print_only='false'
   if [[ $1 == '-p' ]] ; then
@@ -57,14 +67,4 @@ _comoto_cli_command_execute() {
     print_and_eval_command "$cmd"
   fi
 
-}
-
-_comoto_cli_command_completion() {
-  local cur_arg="${COMP_WORDS[2]}"
-  case $COMP_CWORD in
-    2)
-      COMPREPLY=( $(compgen -W "ecom cg jp rz" -- "$cur_arg") )
-      ;;
-    *) ;;
-  esac
 }
