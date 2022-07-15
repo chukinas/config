@@ -13,7 +13,7 @@ Options:
 
 Checks:
   credo
-  dialyzer
+  dialyzer        (not yet implemented)
 
 Examples
   comoto_cli check                  # Run all (both credo and dialyzer)
@@ -22,6 +22,8 @@ Examples
   comoto_cli check credo dialyzer   # Run both credo and dialyzer
   comoto_cli check -h               # Print this help message
   comoto_cli check --help           # Print this help message
+
+All checks are run in the local rz container.
 
 EOF
 # TODO add examples to the main comoto_cli help
@@ -32,7 +34,8 @@ _credo() {
   # TODO can `mix credo` be in single quotes?
   # TODO I don't think the cd is necessary
   # TODO add the rz-repl to comoto_cli
-  print_and_eval_command "comoto_cli cd monorepo && rz-bash 'mix credo'"
+
+  comoto_cli bash rz 'mix credo'
 
   credo_exit_code=$?
 

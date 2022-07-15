@@ -46,7 +46,9 @@ print_and_eval_command() {
   do
     case $arg in
       "--include-type") include_type='true' ;;
-      "--confirm"     ) confirm='true' ;;
+      "-c"            ) confirm='true'      ;;
+      "--confirm"     ) confirm='true'      ;;
+      "-C"            ) confirm='false'      ;;
       *               ) cmd="$arg"; break;;
     esac
   done

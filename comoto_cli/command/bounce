@@ -34,6 +34,12 @@ EOF
 #   all (default)
 # TODO maybe this should go into the container command
 
+_comoto_cli_command_completion() {
+  local valid_args=$($COMOTO_CLI_ROOT/lib/container_name -l)
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+}
+
 _comoto_cli_command_execute() {
 
   if [[ $# -eq 0 ]] ; then
@@ -56,10 +62,4 @@ _comoto_cli_command_execute() {
   print_and_eval_command "$subcommand"
 
   # TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
-}
-
-_comoto_cli_command_completion() {
-  local valid_args=$($COMOTO_CLI_ROOT/lib/container_name -l)
-  [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
 }

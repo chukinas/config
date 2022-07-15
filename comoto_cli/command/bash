@@ -9,6 +9,7 @@ _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMA
 _comoto_cli_command_help() {
   print_help_h2 Options
   print_help_li '-h, --help  Print this help and exit'
+  print_help_li '-p          Echo the command to stoud; do not execute'
   print_help_h2 Container Short Names
   print_help_li 'ecom        The Ruby Ecom/Admin app'
   print_help_li 'cg          Cycle Gear webapp'
@@ -21,6 +22,12 @@ _comoto_cli_command_help() {
 }
 
 _comoto_cli_command_execute() {
+  local print_only='false'
+  if [[ $1 == '-p' ]] ; then
+    print_only='true'
+    shift
+  fi
+
   # Get the container identifier
   local container_name
   case $1 in
@@ -43,7 +50,13 @@ _comoto_cli_command_execute() {
     bash_arg="$@"
   fi
 
-  print_and_eval_command "docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
+  cmd="docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
+  if [[ $print_only == 'true' ]] ; then
+    echo "$cmd"
+  else
+    print_and_eval_command "$cmd"
+  fi
+
 }
 
 _comoto_cli_command_completion() {

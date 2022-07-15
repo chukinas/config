@@ -30,6 +30,8 @@ eval "$(gh completion -s bash)"
 . $COMOTO_CLI_ROOT/lib/ansi_color
 . $COMOTO_CLI_ROOT/lib/print
 
+# Print the help for 'comoto_cli'
+# Dynamically generates the list of commands and their summaries
 _comoto_cli_help() {
   print_help_h1 'Common commands to assist in developing Comoto webapps'
   print_help_h2 Usage
