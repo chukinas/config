@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# In order to run tests locally, the local db has to be seeded / set up correctly.
+# Two things need to happen:
+# 1. migrate the db up
+# 2. set the db test schema (that's what this script does)
+
+# This script does three things:
+# 1. by default (no options passed), it'll compare the current hash of the ecom schema
+#     with the hash from the last time the seeding happened. If they're different, it
+#     runs the seeding and stores that current hash for future reference.
+# 2. DELETE SAVED HASH (-d flag) removes that last saved hash.
+#     That's really here just for ease of testing the script
+# 3. FORCE UPDATE (-f flag) don't check the last hash. Just run the update script
+#     Useful if you suspect your data is corrupted.
+
+# TODO incorporate:
+#   https://revzilla.atlassian.net/wiki/spaces/TECH/pages/368083030/Creating+Database+Migrations
+#   https://github.com/revzilla/monorepo/wiki/Generate-database-schema-(ecom-schema.sql)-&-test-seed-sql-files-for-tests
+
+schema_path="$(comoto_cli path monorepo)/db/ecom-schema.sql"
+hash_path="$COMOTO_CLI_ROOT/.store/ecom_schema_hash"
+hash_dir="$(dirname $hash_path)"
+
+get_last_saved_hash() {
+  if [[ -f $hash_path ]] ; then
+    cat $hash_path
+  else
+    echo ''
+  fi
+}
+
+reload_test_schema() {
+  # . "$COMOTO_CLI_ZLA_BASH_FUNCTIONS" # TODO is this source necessary?
+  cg-load-test-schema
+}
+
+save_hash() {
+  if [[ ! -d $hash_dir ]] ; then
+    mkdir -p $hash_dir
+  fi
+  echo $1 > $hash_path
+}
+
+last_saved_hash="$(get_last_saved_hash)"
+current_hash="(sha1sum $schema_path | cut -d ' ' -f1)"
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+# DELETE LAST SAVED HASH (-d) or FORCE DB UPDATE (-f)
+if [[ $1 -eq '-d' ]] ; then
+  rm "$hash_path"
+  exit $?
+elif [[ $1 -eq '-f' ]] ; then
+  reload_test_schema && save_hash "$current_hash"
+  exit $?
+elif [[ $# -ne 0 ]]
+  echo "$0 is only allowed to have -d and -f options" >&2
+  exit 1
+fi
+
+# DEFAULT BEHAVIOR
+if [[ ! $last_saved_hash == $current_hash ]] ; then
+  reload_test_schema && save_hash "$current_hash"
+fi

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO if I enter a wrong container abbrev, it shows all. It should throw error instead
+
 . $COMOTO_CLI_ROOT/lib/print
 
 # TODO -p flag is inconsistent with the print-only flag in at least one other command

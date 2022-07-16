@@ -29,6 +29,7 @@ eval "$(gh completion -s bash)"
 
 . $COMOTO_CLI_ROOT/lib/ansi_color
 . $COMOTO_CLI_ROOT/lib/print
+export COMOTO_CLI_ZLA_BASH_FUNCTIONS="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh"
 
 # Print the help for 'comoto_cli'
 # Dynamically generates the list of commands and their summaries
