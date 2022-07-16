@@ -22,6 +22,11 @@ print_header() {
    echo -e "${reset}"
 }
 
+# TODO fix this dumb thing. Is the above print_header being overridden in comoto_cli?
+print_headerrr() {
+   print_header "$1"
+}
+
 print_subheader() {
    echo -e "$cyanf$boldon"
    echo $1

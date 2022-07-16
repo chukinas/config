@@ -2,4 +2,14 @@
 
 # GIT BASHRC
 
-alias gst="git status"
+. $JJC_CONFIG_DIR/lib/headers
+
+gst() {
+  clear
+  for cmd in 'git status' 'git latest' 'gh pr checks' ; do
+    # TODO combine this into one 'print_and_eval' function
+    print_headerrr "$cmd"
+    eval "$cmd"
+  done
+  echo
+}
