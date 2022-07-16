@@ -114,7 +114,7 @@ _comoto_cli_completion() {
   # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
   if [[ $COMP_CWORD -eq 1 ]] ; then
     local cur_word="$2"
-    COMPREPLY=( $(compgen -W "$(ls $COMOTO_CLI_ROOT/command)" -- "$cur_word"))
+    COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_word"))
     return 0
   fi
 
@@ -139,7 +139,7 @@ comoto_cli() {
   fi
 
   local command="$1"
-  local potential_command_path="$COMOTO_CLI_ROOT/command/$command"
+  local potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")"
   shift
 
   if [[ ! -f $potential_command_path ]] ; then

@@ -1,0 +1,75 @@
+#!/bin/bash
+
+# USAGE
+#   $COMOTO_CLI_ROOT/lib/command list [OPTIONS]
+#   $COMOTO_CLI_ROOT/lib/command path [OPTIONS] COMMAND
+#
+# OPTIONS
+#   -d      Looks in the supplied DIR for the command(s).
+#           If omitted, the default $COMOTO_CLI_ROOT/command dir is used.
+#
+# LIST
+#   Looks in the given directory and returns:
+#   - all dirs
+#   - any files not named '_main'
+#
+# PATH
+#   1. Looks for the command in the given directory.
+#   2. If that command is a file, return path to that file
+#   3. If that command is a dir, return path to DIR/_main
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+# ACTION
+action="$1"
+shift
+
+# DIRECTORY
+if [[ $1 == '-d' ]] ; then
+  if [[ -d $2 ]] ; then
+    command_dir="$2"
+    shift
+    shift
+  else
+    echo "$0: the '-d' option must be supplied a directory!" >&2
+    exit 1
+  fi
+else
+  command_dir="$COMOTO_CLI_ROOT/command"
+fi
+
+case "$action" in
+  list)
+    if [[ $# -eq 0 ]] ; then
+      ls $command_dir --hide _main
+      exit 0
+    else
+      echo "'$0 list' is only a allowed a '-d' option. You supplied additional arguments"
+    fi
+    ;;
+
+  path)
+    if [[ -z $1 ]] ; then
+      echo "'$0 path' must be supplied a COMMAND argument" >&2
+      exit 1
+    fi
+
+    command_path="$command_dir/$1"
+    if [[ -f "$command_path/_main" ]] ; then
+      echo "$command_path/_main"
+      exit 0
+    elif [[ -f $command_path ]] ; then
+      echo $command_path
+      exit 0
+    else
+      echo "$0: $command_path not found" >&2
+      exit 1
+    fi
+    ;;
+
+  *)
+    echo "$0 requires an action" >&2
+    exit 1
+esac

@@ -13,6 +13,7 @@ Options:
   -h, --help      Print this help and exit
 
 Subcommands:
+  focus   Pause Redline containers not in use to speed compile times on the current container
   bash    Interact with a container's shell
   bounce  Restart containers
   log     View log output
