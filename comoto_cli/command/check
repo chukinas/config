@@ -83,6 +83,7 @@ _comoto_cli_command_execute() {
   do
     case $arg in
       credo) _add_a_new_command "comoto_cli bash rz 'mix credo'" ;;
+      # TODO This actually needs its own script
       dialyzer) _add_a_new_command "comoto_cli bash rz 'mix dialyzer'" ;;
       *) print_usage_error && return 1 ;;
     esac

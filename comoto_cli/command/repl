@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO present user with y/n dialog if the node is already in use.
+# TODO add a -f option for killing ane existing connections to the node
+
 . $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Start an Ruby or IEX session in a container'

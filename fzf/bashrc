@@ -16,37 +16,34 @@ export FZF_DEFAULT_COMMAND='fdfind --type file --follow'
 # Quickly open a config file from the command line
 # fuzzy find a config file (neovim config or general config, i.e. this repo)
 # and open it in my editor
-vic()
-{
-
+vic() {
   local all_config_dir=$JJC_CONFIG_DIR
 
   echo
-  cd $all_config_dir
   echo "Searching $all_config_dir"
+  (
+    cd $all_config_dir
 
-  if [[ $# -eq 0 ]] ; then
-    # TODO should this env var be exported?
-    # TODO the main setup should include creating this file
-    # Of course that'll have to come after clonig the neovim config
-    echo
-    echo "USAGE:"
-    echo 'Token   Match type                  Description                         '
-    echo 'sbtrkt  fuzzy-match                 Items that match sbtrkt             '
-    echo "'wild   exact-match (quoted)        Items that include wild             "
-    echo '^music  prefix-exact-match          Items that start with music         '
-    echo '.mp3$   suffix-exact-match          Items that end with .mp3            '
-    echo '!fire   inverse-exact-match         Items that do not include fire      '
-    echo '!^music inverse-prefix-exact-match  Items that do not start with music  '
-    echo '!.mp3$  inverse-suffix-exact-match  Items that do not end with .mp3     '
-    echo
-    $VISUAL $(fzf)
-  else
-    echo $(pwd)
-    $VISUAL -o $(fzf -f $1)
-  fi
-
-  cd -
+    if [[ $# -eq 0 ]] ; then
+      # TODO should this env var be exported?
+      # TODO the main setup should include creating this file
+      # Of course that'll have to come after clonig the neovim config
+      echo
+      echo "USAGE:"
+      echo 'Token   Match type                  Description                         '
+      echo 'sbtrkt  fuzzy-match                 Items that match sbtrkt             '
+      echo "'wild   exact-match (quoted)        Items that include wild             "
+      echo '^music  prefix-exact-match          Items that start with music         '
+      echo '.mp3$   suffix-exact-match          Items that end with .mp3            '
+      echo '!fire   inverse-exact-match         Items that do not include fire      '
+      echo '!^music inverse-prefix-exact-match  Items that do not start with music  '
+      echo '!.mp3$  inverse-suffix-exact-match  Items that do not end with .mp3     '
+      echo
+      $VISUAL $(fzf)
+    else
+      echo $(pwd)
+      $VISUAL -o $(fzf -f $1)
+    fi
+  )
   echo
-
 }

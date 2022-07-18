@@ -1,20 +1,45 @@
 #!/bin/bash
 
 # TODO use this in the main moto script
+# TODO add 'usage' message
 
-if [[ $# -eq 1 && $1 = "-l" ]] ; then
-  echo "cg jp rz"
+base_container_name() {
+  case $1 in
+    cg) echo "cycle-gear-redline-webapp" ;;
+    jp) echo  "jp-cycles-redline-webapp" ;;
+    rz) echo   "revzilla-redline-webapp" ;;
+    *)  exit 1
+  esac
   exit 0
-elif [[ $# -eq 1 ]] ; then
-  app_abbreviation="$1"
-else
-  exit 1
-fi
+}
 
-case $app_abbreviation in
-  cg) echo "cycle-gear-redline-webapp" ;;
-  jp) echo  "jp-cycles-redline-webapp" ;;
-  rz) echo   "revzilla-redline-webapp" ;;
-  *) exit 1
-esac
-exit 0
+# MAIN SCRIPT
+#######################################
+
+while getopts "lz" opt; do
+  case $opt in
+    l)
+      # "LIST"
+      echo "cg jp rz"
+      exit 0
+      ;;
+    z)
+      # ADD ZLA_ prefix and _1 suffix to name
+      # TODO I don't like the -z option. Choose a different letter?
+      use_prefix='true'
+      ;;
+    *) echo "$0: Error" >&2
+      exit 1
+      ;;
+  esac
+done
+shift $((OPTIND-1))
+
+if [[ $# -ne 1 ]] ; then
+  echo "$0: Error" >&2
+  exit 1
+elif [[ $use_prefix == 'true' ]] ; then
+  echo "zla_$(base_container_name $1)_1"
+else
+  echo "$(base_container_name $1)"
+fi

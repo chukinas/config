@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
+# TODO add an -L option to suppress the logs
+# TODO maybe this should go into the container command
+
 . $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Restart containers'
@@ -23,17 +27,6 @@ Container Short Names:
 EOF
 }
 
-# TODO add an -L option to suppress the logs
-# TODO this command isn't working for some reason
-# TODO this command shouldn't take arguments. Instead, it should only take options.
-# TODO weeeellll.... is that true? Or does it just take an arbitrary number, and each arg has to be one of ...
-#   cg
-#   jp
-#   rz
-#   redline
-#   all (default)
-# TODO maybe this should go into the container command
-
 _comoto_cli_command_completion() {
   local valid_args=$($COMOTO_CLI_ROOT/lib/container_name -l)
   [[ $# -gt 1 ]] && return 1
@@ -41,25 +34,15 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
-
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
-    # TODO extract path into the library
-    subcommand="(cd $(comoto_cli path monorepo) && docker-compose down && docker-compose up -d) && comoto_cli logs"
-  elif [[ $# -gt 1 ]] ; then
-    print_usage_error
-    exit 1
-  elif container_name=$($COMOTO_CLI_ROOT/lib/container_name $1) ; then
-    # TODO check for bad abbrev
-    # TODO this isn't working
-    subcommand="(comoto_cli cd monorepo docker restart $container_name) && comoto_cli logs $container_name"
+    subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
+  elif [[ $# -eq 1 ]] && container_name=$($COMOTO_CLI_ROOT/lib/container_name -z $1) ; then
+    subcommand="(comoto_cli cd monorepo && docker restart $container_name) && comoto_cli logs"
   else
     print_usage_error
     exit 1
   fi
 
-  # TODO I shouldn't have to wrap this in quotes?
   print_and_eval_command "$subcommand"
-
-  # TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
 }
