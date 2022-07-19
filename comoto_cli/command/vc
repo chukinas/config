@@ -55,6 +55,7 @@ _vc_new_branch() {
     git push --set-upstream origin $branch_name
     # TODO next steps that could be automated:
     #   create PR
+    #   set title (e.g. NERD-2212 Fix Dialyzer Warning)
     #   echo Jira link for each copy-paste into description
     #   Add labels
   fi
@@ -103,7 +104,7 @@ _comoto_cli_command_execute() {
       fi
       ;;
     new)
-      _vc_new_branch $*
+      _vc_new_branch "$@"
       ;;
     *)
       print_usage_error
@@ -114,7 +115,7 @@ _comoto_cli_command_execute() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_args="checkout view checkin"
+  local valid_args="checkout view checkin new"
   [[ $# -gt 1 ]] && return 1
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
   # TODO add completion for the subcommands

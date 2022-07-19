@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# TODO this should be merged into db?
+
+_comoto_cli_command_summary='Get your gcloud password (for e.g. connecting to staging db)'
+_comoto_cli_command_usage='comoto_cli gcloudlogin'
+
+_comoto_cli_command_help() {
+  cat <<EOF
+
+Options:
+  -h, --help      Print this help and exit
+
+Examples
+  comoto_cli gcloudlogin
+
+EOF
+}
+
+. $COMOTO_CLI_ROOT/lib/print
+
+_comoto_cli_command_completion() {
+  COMPREPLY=( $(compgen -W '' -- "$cur_word"))
+}
+
+# curl -s https://icanhazip.com
+
+_comoto_cli_command_execute() {
+  # TODO improve this by copying it to the clipboard?
+  print_and_eval_command 'gcloud auth print-access-token'
+}
