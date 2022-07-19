@@ -1,6 +1,7 @@
 #!/bin/bash
 
 # TODO this is started but still doesn't really work
+# TODO this should be made part of the pr script
 
 filter_string="$1"
 

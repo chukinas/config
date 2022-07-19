@@ -6,25 +6,6 @@
 # cat bash_functions.sh | grep ^function | sed 's/function //' | sed 's/(.*//' | grep -v ^_.*help$
 
 . $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
-
-_comoto_cli_command_summary='Get your gcloud password (for e.g. connecting to staging db)'
-_comoto_cli_command_usage='comoto_cli gcloudlogin'
-
-_comoto_cli_command_help() {
-  cat <<EOF
-
-Options:
-  -h, --help      Print this help and exit
-  -s              Setup
-  -b              Access the shell of a given pod
-                  (requires fzf)
-
-Examples
-  comoto_cli kube -a
-
-EOF
-}
-
 . $COMOTO_CLI_ROOT/lib/print
 
 _kubepodlist="$COMOTO_CLI_ROOT/.store/kubepodlist"
@@ -71,35 +52,8 @@ _comoto_cli_kube_generatepodlist() {
   rm $tempstore
 }
 
-_comoto_cli_command_completion() {
-  COMPREPLY=( $(compgen -W '-s -b' -- "$cur_word"))
-}
-
-# not used right now
-_comoto_cli_command_execute() {
-
-  OPTIND=1
-  while getopts "sb" opt; do
-    case $opt in
-      s)
-        _comoto_cli_kube_setup
-        return
-        ;;
-      b)
-        # Shell
-        _comoto_cli_kube_generatepodlist
-        local podname=$(fzf < "$_kubepodlist")
-        print_and_eval_command --include-type "kube-bash $podname"
-        return
-        ;;
-      *) echo "$0: error" >&2; exit 1
-    esac
-  done
-}
-
 # USAGE
-#   $0 bash --pr PR_NUMBER ecom|cg|jp|rz
-#   $0 bash --current-pr   ecom|cg|jp|rz
+#   $0 bash [--pr PR_NUMBER] CONTAINER_ABBREV
 
 # MAIN SCRIPT
 #######################################
@@ -113,11 +67,12 @@ shift
 
 if [[ $1 == '--pr' ]] ; then
   shift
-  kube_bash_pr_arg="pr-$2"
+  kube_bash_pr_arg="pr-$1"
   shift
 fi
 
 case $1 in
+  # TODO DRY this out?
   ecom) container_name='ecom-webapp';;
   cg) container_name='cycle-gear-redline-webapp';;
   jp) container_name='jp-cycles-redline-webapp';;

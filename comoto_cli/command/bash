@@ -82,6 +82,11 @@ _comoto_cli_command_execute() {
         local pr_number="$2"
         shift
         ;;
+      --current-pr)
+        env='staging'
+        local pr_number="$($COMOTO_CLI_ROOT/lib/pr current)"
+        echo "current pr: $pr_number"
+        ;;
       *) break ;;
     esac
     shift
@@ -98,7 +103,7 @@ _comoto_cli_command_execute() {
       ;;
     staging)
       if [[ -n $pr_number ]] ; then
-        $COMOTO_CLI_ROOT/lib/kube bash --pr $pr_number "$container_short_name" "$non_interactive_command"
+        print_and_eval_command "$COMOTO_CLI_ROOT/lib/kube bash --pr '$pr_number' '$container_short_name' $non_interactive_command"
       else
         $COMOTO_CLI_ROOT/lib/kube bash "$container_short_name" "$non_interactive_command"
       fi
