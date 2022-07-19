@@ -1,0 +1,96 @@
+#!/bin/bash
+
+# https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
+#
+# view all functions that aren't help functions
+# cat bash_functions.sh | grep ^function | sed 's/function //' | sed 's/(.*//' | grep -v ^_.*help$
+
+
+_comoto_cli_command_summary='Get your gcloud password (for e.g. connecting to staging db)'
+_comoto_cli_command_usage='comoto_cli gcloudlogin'
+
+_comoto_cli_command_help() {
+  cat <<EOF
+
+Options:
+  -h, --help      Print this help and exit
+  -s              Setup
+  -b              Access the shell of a given pod
+                  (requires fzf)
+
+Examples
+  comoto_cli kube -a
+
+EOF
+}
+
+. $COMOTO_CLI_ROOT/lib/print
+
+_kubepodlist="$COMOTO_CLI_ROOT/.store/kubepodlist"
+
+_comoto_cli_kube_setup() {
+
+  # Get the required auth plugin
+  # gke-gcloud-auth-plugin is needed to use -c
+  # https://cloud.google.com/blog/products/containers-kubernetes/kubectl-auth-changes-in-gke
+  # This was the initial recommendation of gcloud:
+  # print_and_eval_command "gcloud components install gke-gcloud-auth-plugin"
+  # didn't work, so using this (also recommended by the article, and also called out in the cli error):
+  print_and_eval_command "sudo apt-get install google-cloud-sdk-gke-gcloud-auth-plugin"
+
+  # Log in
+  print_and_eval_command "gcloud auth login"
+  # TODO is there a way to check to see if we're already logged in?
+
+  # Get cluster credentials
+  print_and_eval_command "gcloud container clusters get-credentials $(gcloud container clusters list --project revzilla-staging --format 'value(NAME)') --region us-central1 --project revzilla-staging"
+
+  # Give the staging cluster a convenient name ('staging')
+  # Before making this script public, add some smarts for making sure this hasn't already been done.
+  # Maybe check that a 'staging'-named cluster already exists?
+  print_and_eval_command "kubectl config get-contexts"
+  context_name="$(kubectl config get-contexts --output name)"
+  echo
+  echo "Current context name: $context_name"
+  echo "Renaming '$context_name' to 'staging':"
+  print_and_eval_command "kubectl config rename-context $context_name staging"
+  echo
+  echo "Verify that the name of the context is 'staging':"
+  print_and_eval_command "kubectl config get-contexts"
+
+  # View the staging pods in all their glory
+  kubectl get pods
+}
+
+_comoto_cli_kube_generatepodlist() {
+  rm $_kubepodlist
+  local tempstore="${_kubepodlist}temp"
+  kubectl get pods --output name > "$tempstore"
+  sed 's/pod\///' $tempstore > $_kubepodlist
+  rm $tempstore
+}
+
+_comoto_cli_command_completion() {
+  COMPREPLY=( $(compgen -W '-s -b' -- "$cur_word"))
+}
+
+_comoto_cli_command_execute() {
+
+  OPTIND=1
+  while getopts "sb" opt; do
+    case $opt in
+      s)
+        _comoto_cli_kube_setup
+        return
+        ;;
+      b)
+        # Shell
+        _comoto_cli_kube_generatepodlist
+        local podname=$(fzf < "$_kubepodlist")
+        print_and_eval_command "kube-bash $podname"
+        return
+        ;;
+      *) echo "$0: error" >&2; exit 1
+    esac
+  done
+}
