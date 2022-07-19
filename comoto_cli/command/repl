@@ -27,11 +27,29 @@ EOF
 # TODO add autocomplete
 # TODO error out when given an invalid $1
 _comoto_cli_command_execute() {
-  case $1 in
-    # TODO is this correct or should this be in the "bash" command?
-    ecom) subcommand="ecom-bash" ;;
-    cg|jp|rz) subcommand="$1-iex" ;;
-    *) print_usage_error && exit 1
+  the_env='dev'
+  OPTIND=1
+  while getopts "ds" opt; do
+    case $opt in
+      d)  the_env='dev' ;;
+      s)  the_env='staging' ;;
+      *) echo "$0: error" >&2; exit 1
+    esac
+  done
+  shift $((OPTIND-1))
+
+  case $the_env in
+    dev)
+      case $1 in
+        # TODO is this correct or should this be in the "bash" command?
+        ecom) subcommand="ecom-bash" ;;
+        cg|jp|rz) subcommand="$1-iex" ;;
+        *) print_usage_error && exit 1
+      esac
+      ;;
+    staging)
+      subcommand="kube-iex $($COMOTO_CLI_ROOT/lib/container_name)"
+      ;;
   esac
 
   print_and_eval_command --include-type "$subcommand"

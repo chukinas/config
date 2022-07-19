@@ -38,7 +38,7 @@ _comoto_cli_command_execute() {
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
   elif [[ $# -eq 1 ]] && container_name=$($COMOTO_CLI_ROOT/lib/container_name -z $1) ; then
-    subcommand="(comoto_cli cd monorepo && docker restart $container_name) && comoto_cli logs"
+    subcommand="docker restart $container_name && comoto_cli logs $1"
   else
     print_usage_error
     exit 1

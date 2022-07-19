@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_comoto_cli_command_summary='Open a terminal to a container'
+_comoto_cli_command_summary='Bash into a shell of local container or k8s pod'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
 
 . $COMOTO_CLI_ROOT/lib/print
@@ -8,17 +8,51 @@ _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMA
 
 _comoto_cli_command_help() {
   print_help_h2 Options
-  print_help_li '-h, --help  Print this help and exit'
-  print_help_li '-p          Echo the command to stoud; do not execute'
+  print_help_li '-h, --help       Print this help and exit'
+  # TODO change this to -X (for no-execute) and -x (for yes, execute) ?
+  print_help_li '-p               Echo the command to stoud; do not execute'
+  print_help_li '-s, --staging    Bash into staging cluster via kubernetes'
+  print_help_li '--pr=PR_NUMBER   Bash into PR-specific staging cluster'
   print_help_h2 Container Short Names
-  print_help_li 'ecom        The Ruby Ecom/Admin app'
-  print_help_li 'cg          Cycle Gear webapp'
-  print_help_li 'jp          J&P Cycles webapp'
-  print_help_li 'rz          RevZilla   webapp'
+  print_help_li 'ecom             The Ruby Ecom/Admin app'
+  print_help_li 'cg               Cycle Gear webapp'
+  print_help_li 'jp               J&P Cycles webapp'
+  print_help_li 'rz               RevZilla   webapp'
   print_help_h2 Examples
-  print_help_li 'comoto_cli bash rz         # Bash into local RevZilla container. Local session.'
-  print_help_li "comoto_cli bash cg whoami  # echos 'deploy' then exits"
+  print_help_li 'comoto_cli bash rz             # Bash into local RevZilla container. Local session.'
+  print_help_li "comoto_cli bash cg whoami      # echos 'deploy' then exits"
+  # TODO dynamically generate the name of the pod
+  print_help_li "comoto_cli bash --staging rz   # Bash into revzilla webapp staging pod"
+  print_help_li "comoto_cli bash --pr 1234 rz   # Bash into revzilla webapp staging pod for PR 1234"
   echo
+}
+
+# bash into local container
+# arg 1: container short name
+# arg 2 (optional) command to be executed in non-interactive shell
+_comoto_cli_bash_local() {
+  local container_name
+  case $1 in
+    ecom       ) container_name=$ZV_ECOM;;
+    cg         ) container_name=$ZV_CG  ;;
+    jp         ) container_name=$ZV_JP  ;;
+    rz         ) container_name=$ZV_RZ  ;;
+    *          ) print_usage_error && return 1
+  esac
+  shift
+
+  # If commands were passed, run execute them in the container,
+  # otherwise enter an interactive shell.
+  local bash_arg
+  if [[ -z $1 ]] ; then
+    # No args -> Interactive shell
+    bash_arg="TERM=xterm-color bash -l"
+  else
+    # Args -> execute in non-Interactive shell
+    bash_arg="$@"
+  fi
+
+  print_and_eval_command "docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
 }
 
 _comoto_cli_command_completion() {
@@ -33,38 +67,42 @@ _comoto_cli_command_completion() {
 
 _comoto_cli_command_execute() {
   local print_only='false'
-  if [[ $1 == '-p' ]] ; then
-    print_only='true'
+  local env='dev'
+
+  while :; do
+    case "${1-}" in
+      -p)
+        print_only='true'
+        ;;
+      -s|--staging)
+        env='staging'
+        ;;
+      --pr)
+        env='staging'
+        local pr_number="$2"
+        shift
+        ;;
+      *) break ;;
+    esac
     shift
-  fi
+  done
 
   # Get the container identifier
-  local container_name
-  case $1 in
-    ecom       ) container_name=$ZV_ECOM;;
-    cg         ) container_name=$ZV_CG  ;;
-    jp         ) container_name=$ZV_JP  ;;
-    rz         ) container_name=$ZV_RZ  ;;
-    *          ) print_usage_error && exit 1
-  esac
-
-  # If commands were passed, run execute them in the container,
-  # otherwise enter an interactive shell.
-  local bash_arg
+  local container_short_name="$1"
   shift
-  if [[ -z $1 ]] ; then
-    # Interactive shell
-    bash_arg="TERM=xterm-color bash -l"
-  else
-    # Non-Interactive shell
-    bash_arg="$@"
-  fi
+  local non_interactive_command="$@"
 
-  cmd="docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
-  if [[ $print_only == 'true' ]] ; then
-    echo "$cmd"
-  else
-    print_and_eval_command "$cmd"
-  fi
+  case $env in
+    dev)
+      _comoto_cli_bash_local "$container_short_name" "$non_interactive_command"
+      ;;
+    staging)
+      if [[ -n $pr_number ]] ; then
+        $COMOTO_CLI_ROOT/lib/kube bash --pr $pr_number "$container_short_name" "$non_interactive_command"
+      else
+        $COMOTO_CLI_ROOT/lib/kube bash "$container_short_name" "$non_interactive_command"
+      fi
+      ;;
+  esac
 
 }

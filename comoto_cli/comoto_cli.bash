@@ -55,14 +55,14 @@ _comoto_cli_help() {
 
   # Print the COMMAND summaries
   print_help_h2 Commands
-  for file in $COMOTO_CLI_ROOT/command/*
+  for command_name in $($COMOTO_CLI_ROOT/lib/command list)
   do
     local filename=$(basename $file)
     # TODO handle for missing summary
     unset _comoto_cli_command_summary
-    . $file
-    local whitespace_to_append=$((3 + $max_char_count - ${#filename}))
-    local command_name_with_whitespace=$(printf "%s%*s" "$filename" "$whitespace_to_append" '')
+    . $($COMOTO_CLI_ROOT/lib/command path $command_name)
+    local whitespace_to_append=$((3 + $max_char_count - ${#command_name}))
+    local command_name_with_whitespace=$(printf "%s%*s" "$command_name" "$whitespace_to_append" '')
     print_help_li "$command_name_with_whitespace$_comoto_cli_command_summary"
   done
 

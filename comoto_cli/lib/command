@@ -18,6 +18,9 @@
 #   2. If that command is a file, return path to that file
 #   3. If that command is a dir, return path to DIR/_main
 
+# EXAMPLES
+#   $COMOTO_CLI_ROOT/lib/command list     # prints out: bash bounce cd check ........
+
 #######################################
 # MAIN SCRIPT
 #######################################

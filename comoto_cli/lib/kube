@@ -5,6 +5,7 @@
 # view all functions that aren't help functions
 # cat bash_functions.sh | grep ^function | sed 's/function //' | sed 's/(.*//' | grep -v ^_.*help$
 
+. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
 
 _comoto_cli_command_summary='Get your gcloud password (for e.g. connecting to staging db)'
 _comoto_cli_command_usage='comoto_cli gcloudlogin'
@@ -74,6 +75,7 @@ _comoto_cli_command_completion() {
   COMPREPLY=( $(compgen -W '-s -b' -- "$cur_word"))
 }
 
+# not used right now
 _comoto_cli_command_execute() {
 
   OPTIND=1
@@ -87,10 +89,41 @@ _comoto_cli_command_execute() {
         # Shell
         _comoto_cli_kube_generatepodlist
         local podname=$(fzf < "$_kubepodlist")
-        print_and_eval_command "kube-bash $podname"
+        print_and_eval_command --include-type "kube-bash $podname"
         return
         ;;
       *) echo "$0: error" >&2; exit 1
     esac
   done
 }
+
+# USAGE
+#   $0 bash --pr PR_NUMBER ecom|cg|jp|rz
+#   $0 bash --current-pr   ecom|cg|jp|rz
+
+# MAIN SCRIPT
+#######################################
+
+# For now, there's only one available command, 'bash'.
+# More will be added later, but for now all we have to do is check for that arg
+if [[ $1 != 'bash' ]] ; then
+  exit 1
+fi
+shift
+
+if [[ $1 == '--pr' ]] ; then
+  shift
+  kube_bash_pr_arg="pr-$2"
+  shift
+fi
+
+case $1 in
+  ecom) container_name='ecom-webapp';;
+  cg) container_name='cycle-gear-redline-webapp';;
+  jp) container_name='jp-cycles-redline-webapp';;
+  rz) container_name='revzilla-redline-webapp';;
+  *) echo "Error! You must pass a valid container name. Got: '$1'" >&2; exit 1
+esac
+shift
+
+print_and_eval_command --include-type "kube-bash $container_name $kube_bash_pr_arg"
