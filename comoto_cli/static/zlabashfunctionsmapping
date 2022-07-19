@@ -1,0 +1,72 @@
+rz,comoto_cli --help,comoto_cli --help
+container-restart
+container-log
+container-bash
+container-stats
+container-log-purge
+vault-prod-diff
+vault-dev-diff
+docker-compose-sync-reset
+delete-pr-staging
+ecom-bash,comoto_cli bash ecom,comoto_cli bash --help
+ecom-debug
+ecom-console
+ecom-load-test-schema
+ecom-test
+ecom-assets
+sass-now
+postgres-dump-restore
+postgres-psql
+cg-bash,comoto_cli bash cg,comoto_cli bash --help
+cg-iex,comoto_cli repl cg,comoto_cli repl --help
+cg-load-test-schema
+cg-mix-credo
+cg-mix-coveralls
+cg-mix-coveralls-detail
+cg-mix-coveralls-app
+cg-mix-coveralls-detail-app
+cg-mix-test
+cg-mix-test-app
+cg-product-catalog-reindex
+cg-brunch
+cg-portal-brunch
+cg-format
+jp-bash,comoto_cli bash jp,comoto_cli bash --help
+jp-iex,comoto_cli repl rz,comoto_cli repl --help
+rz-bash,comoto_cli bash rz,comoto_cli bash --help
+rz-iex,comoto_cli repl rz,comoto_cli repl --help
+rz-load-test-schema
+rz-mix-credo
+rz-mix-coveralls
+rz-mix-coveralls-detail
+rz-mix-coveralls-app
+rz-mix-coveralls-detail-app
+rz-mix-test
+rz-mix-test-app
+rz-product-catalog-reindex
+rz-brunch
+rz-seed-product-service
+rz-format
+pods
+watch-pods
+cron-pods
+watch-cron-pods
+cg-podsh
+rz-podsh
+ecom-podsh
+cron-status
+gcloud-prod
+gcloud-staging
+kube-prod
+kube-staging
+kube-conf
+kube-bash
+cron-me
+kube-iex
+kube-irb
+cd_zla
+cd_k8s
+cd_ans
+create_migration
+pg-tunnel
+ecom-generate-test-seed
