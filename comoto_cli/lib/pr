@@ -6,6 +6,30 @@
 # USAGE
 #   $0 current
 
+# arg 1 (required): filter string
+search_for_pr() {
+  # TODO this is started but still doesn't really work
+  filter_string="$1"
+  shift
+
+  if [[ $# -ne 1 || -z $filter_string ]]; then
+    echo "$0: Error" >&2
+    exit 1
+  fi
+
+  comoto_cli cd monorepo
+  # TODO handle better for when multiple results come back
+  # TODO the gh pr list command has a --search <query> flag that would be useful
+  pr_number="$(comoto_cli cd monorepo > /dev/null && gh pr list | grep $filter_string | cut -f1)"
+  pr_count=$(echo $pr_number | wc -w)
+
+  if [[ $pr_count -eq 1 ]]; then
+    echo $pr_number
+  else
+    echo "filter_string of $filter_string is too broad, results in $pr_count matches. Try again." >&2
+  fi
+}
+
 # MAIN SCRIPT
 #######################################
 
@@ -13,6 +37,8 @@
 # More will be added later, but for now all we have to do is check for that arg
 if [[ $1 == 'current' ]] ; then
   echo "$(gh pr view | grep '^number:' | head -n 1 | cut -f2)"
+elif [[ $1 == 'search' ]] ; then
+  search_for_pr "$2"
 else
   exit 1
 fi
