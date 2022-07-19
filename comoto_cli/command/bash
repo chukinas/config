@@ -8,16 +8,15 @@ _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMA
 
 _comoto_cli_command_help() {
   print_help_h2 Options
-  print_help_li '-h, --help       Print this help and exit'
-  # TODO change this to -X (for no-execute) and -x (for yes, execute) ?
-  print_help_li '-p               Echo the command to stoud; do not execute'
-  print_help_li '-s, --staging    Bash into staging cluster via kubernetes'
-  print_help_li '--pr=PR_NUMBER   Bash into PR-specific staging cluster'
+  print_help_li '-h, --help         Print this help and exit'
+  print_help_li '-X, --no-execute   Echo the command to stoud; do not execute'
+  print_help_li '-s, --staging      Bash into staging cluster via kubernetes'
+  print_help_li '--pr=PR_NUMBER     Bash into PR-specific staging cluster'
   print_help_h2 Container Short Names
-  print_help_li 'ecom             The Ruby Ecom/Admin app'
-  print_help_li 'cg               Cycle Gear webapp'
-  print_help_li 'jp               J&P Cycles webapp'
-  print_help_li 'rz               RevZilla   webapp'
+  print_help_li 'ecom               The Ruby Ecom/Admin app'
+  print_help_li 'cg                 Cycle Gear webapp'
+  print_help_li 'jp                 J&P Cycles webapp'
+  print_help_li 'rz                 RevZilla   webapp'
   print_help_h2 Examples
   print_help_li 'comoto_cli bash rz             # Bash into local RevZilla container. Local session.'
   print_help_li "comoto_cli bash cg whoami      # echos 'deploy' then exits"
@@ -71,7 +70,7 @@ _comoto_cli_command_execute() {
 
   while :; do
     case "${1-}" in
-      -p)
+      -X|--no-execute)
         print_only='true'
         ;;
       -s|--staging)
