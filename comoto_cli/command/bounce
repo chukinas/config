@@ -10,6 +10,7 @@ _comoto_cli_command_summary='Restart containers'
 _comoto_cli_command_usage='comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]'
 
 _comoto_cli_command_help() {
+  # TODO refactor help rendering
   cat <<EOF
 
 If no args are given, all containers are down/up'ed via 'docker-compose'.
@@ -23,12 +24,14 @@ Container Short Names:
   cg          Cycle Gear
   jp          J&P Cycles
   rz          RevZilla
+  redline     All three above
 
 EOF
 }
 
 _comoto_cli_command_completion() {
-  local valid_args=$($COMOTO_CLI_ROOT/lib/container_name -l)
+  # TODO should redline be part of the outpus of container_name?
+  local valid_args="redline $($COMOTO_CLI_ROOT/lib/container_name -l)"
   [[ $# -gt 1 ]] && return 1
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
 }
@@ -37,6 +40,8 @@ _comoto_cli_command_execute() {
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
+  elif [[ $# -eq 1 && $1 == 'redline' ]] ; then
+    subcommand="docker restart $($COMOTO_CLI_ROOT/lib/container_name -z cg) $($COMOTO_CLI_ROOT/lib/container_name -z jp) $($COMOTO_CLI_ROOT/lib/container_name -z rz) && comoto_cli logs"
   elif [[ $# -eq 1 ]] && container_name=$($COMOTO_CLI_ROOT/lib/container_name -z $1) ; then
     subcommand="docker restart $container_name && comoto_cli logs $1"
   else
