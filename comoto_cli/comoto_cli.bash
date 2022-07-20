@@ -25,6 +25,10 @@ comoto_cli() {
 alias m=comoto_cli
 export -f comoto_cli
 
-unset -f _comoto_cli_command_completion
-. $COMOTO_CLI_ENTRY_POINT
-complete -F _comoto_cli_command_completion comoto_cli m
+complete_me() {
+  unset -f _comoto_cli_command_completion
+  . $COMOTO_CLI_ENTRY_POINT
+  _comoto_cli_command_completion
+}
+
+complete -F complete_me comoto_cli m
