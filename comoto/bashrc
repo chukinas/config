@@ -1,0 +1,34 @@
+#!/bin/bash
+
+export COMOTO_PROJECT_ROOT="$HOME/projects/comoto"
+# TODO rename ..dir -> JJC_CONFIG_ROOT
+export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
+
+# TODO switch this back once m path is fixed
+# source $(comoto_cli path monorepo)/zlaverse/support/bash_functions.sh
+. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
+. /usr/share/google-cloud-sdk/completion.bash.inc 2>/dev/null
+
+. $COMOTO_CLI_ROOT/comoto_cli.bash
+
+alias cdm='comoto_cli cd monorepo'
+alias cde='comoto_cli cd ecom'
+alias cdr='comoto_cli cd redline'
+# TODO should zla be changed to zlaverse ?
+alias cdz='comoto_cli cd zla'
+alias cdc="cd $COMOTO_PROJECT_ROOT"
+
+# cg-bash-noninteractive()
+# {
+#   # This is the same as `cg-bash` from ~/monorepo/zlaverse/support/bash_functions.sh,
+#   # just without the -ti flags
+#   docker exec -u ${ZV_DEPLOY_UID} $ZV_CG bash -lc "$1"
+# }
+#
+# jc-format-elixir()
+# {
+#   # Expects a single argument: path to file relative to ~/monorepo/redline/
+#   echo "formatting $1"
+#   cg-bash-noninteractive "mix format $1"
+# }
+#

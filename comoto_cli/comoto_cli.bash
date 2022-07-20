@@ -8,14 +8,8 @@
 # TODO see https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
 # TODO https://github.com/revzilla/monorepo/wiki/Dev-Ops
 
-# TODO this shouldn't be hardcoded in here
-export COMOTO_PROJECT_ROOT="$HOME/projects/comoto"
-export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
 export COMOTO_CLI_ZLA_BASH_FUNCTIONS="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh"
 export COMOTO_CLI_ENTRY_POINT="$COMOTO_CLI_ROOT/command/_main"
-
-# TODO this shouldn't live here..
-alias cdc="cd $COMOTO_PROJECT_ROOT"
 
 # Set up github cli command completion
 eval "$(gh completion -s bash)"

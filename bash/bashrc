@@ -12,9 +12,9 @@
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 export JJC_CONFIG_DIR=$(readlink -f $script_dir/..)
 
-source $script_dir/bashrc_general
-source $script_dir/bashrc_personal
-source $script_dir/bashrc_comoto
+. $script_dir/bashrc_general
+. $script_dir/bashrc_personal
+. $JJC_CONFIG_DIR/comoto/bashrc
 
 ########################################
 # Source from other config dirs
