@@ -1,0 +1,77 @@
+#!/bin/bash
+
+# For all command, incl this one:
+# TODO rename _comoto_cli_command_help    -> _comoto_cli_help
+# TODO rename _comoto_cli_command_execute -> _comoto_cli_execute
+
+# TODO used?
+. $COMOTO_CLI_ROOT/lib/ansi_color
+. $COMOTO_CLI_ROOT/lib/print
+
+_comoto_cli_command_summary='Common commands to assist in developing Comoto webapps'
+_comoto_cli_command_usage='comoto_cli [OPTIONS] COMMAND'
+
+# Print the help for 'comoto_cli'
+# Dynamically generates the list of commands and their summaries
+_comoto_cli_command_help() {
+  print_help_h2 Options
+  print_help_li '-h, --help  Print this help and exit'
+
+  # Determine indent for COMMAND summaries
+  # Loop thru command names, find longest one, add 3
+  local max_char_count=0
+  for file in $COMOTO_CLI_ROOT/command/*
+  do
+    local filename=$(basename $file)
+    local char_count=${#filename}
+    if [[ $char_count -gt $max_char_count ]] ; then
+      max_char_count=$char_count
+    fi
+  done
+  local command_summary_indent=$((max_char_count + 3))
+
+  # Print the COMMAND summaries
+  print_help_h2 Commands
+  for command_name in $($COMOTO_CLI_ROOT/lib/command list)
+  do
+    local filename=$(basename $file)
+    # TODO handle for missing summary
+    unset _comoto_cli_command_summary
+    . $($COMOTO_CLI_ROOT/lib/command path $command_name)
+    local whitespace_to_append=$((3 + $max_char_count - ${#command_name}))
+    local command_name_with_whitespace=$(printf "%s%*s" "$command_name" "$whitespace_to_append" '')
+    print_help_li "$command_name_with_whitespace$_comoto_cli_command_summary"
+  done
+
+  print_help_h2 Examples
+  # TODO use the *_ex function in the other helps as well
+  print_help_ex "comoto_cli cd redline        # change to monorepo's redline directory"
+  print_help_ex "comoto_cli check             # run credo and dialyzer in local container"
+  print_help_ex "comoto_cli bash cg           # bash into local Cycle Gear container"
+  print_help_ex "comoto_cli migrate -ul       # migrate-up local db, then lock it"
+  echo
+  echo "Run 'comoto_cli COMMAND --help' for more information on a command"
+  echo
+}
+
+comoto_cli_command_execute() {
+  if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
+    _comoto_cli_help
+    return 0
+  fi
+
+  local command="$1"
+  local potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")"
+  shift
+
+  if [[ ! -f $potential_command_path ]] ; then
+    echo "No such command '$command' (TODO: improve error msg)" >&2
+    return 1
+  elif [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
+    _comoto_cli_render_command_help $potential_command_path
+  else
+    unset -f _comoto_cli_command_execute
+    . $potential_command_path
+    _comoto_cli_command_execute $@
+  fi
+}
