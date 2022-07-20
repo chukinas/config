@@ -37,8 +37,8 @@ EOF
 # TODO `local command` instead?
 commands=""
 
-[[ ! -d $COMOTO_PROJECTS_DIR ]] && echo '$COMOTO_DIR is not set. Make sure your ~/.bashrc sets that environment variable. Exiting.' >&2 && exit 1
-dumps_dir="$COMOTO_PROJECTS_DIR/.db-dumps"
+# TODO move this dir into comoto_cli
+dumps_dir="$COMOTO_PROJECT_ROOT/.db-dumps"
 
 # TODO move this into a subcommand called `dump`
 # TODO I'll define functions like

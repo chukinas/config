@@ -12,9 +12,7 @@
 export COMOTO_CLI_ROOT="$JJC_CONFIG_DIR/comoto_cli"
 
 # TODO this shouldn't be hardcoded in here
-# TODO rename COMOTO_PROJECT_ROOT?
-export COMOTO_PROJECTS_DIR="$HOME/projects/comoto"
-export COMOTO_PROJECT_ROOT=$COMOTO_PROJECTS_DIR
+export COMOTO_PROJECT_ROOT="$HOME/projects/comoto"
 
 
 # TODO this shouldn't live here..

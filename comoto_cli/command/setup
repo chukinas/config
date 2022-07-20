@@ -108,25 +108,25 @@ _comoto_cli_command_execute() {
   #######################################
 
   # User must have first set an environment variable
-  print_header 'Checking for $COMOTO_PROJECTS_DIR environment variable'
-  if [[ -z "$COMOTO_PROJECTS_DIR" ]] ; then
+  print_header 'Checking for $COMOTO_PROJECT_ROOT environment variable'
+  if [[ -z "$COMOTO_PROJECT_ROOT" ]] ; then
     print_info "Not found"
-    print_info 'Set a $COMOTO_PROJECTS_DIR environment variable with a value of the directory you wish to clone all comoto repos into.'
+    print_info 'Set a $COMOTO_PROJECT_ROOT environment variable with a value of the directory you wish to clone all comoto repos into.'
     print_info 'Exiting'
     exit 1
   else
-    print_info "Found: $COMOTO_PROJECTS_DIR"
+    print_info "Found: $COMOTO_PROJECT_ROOT"
   fi
 
   # The directory must exist
-  print_header "Checking for $COMOTO_PROJECTS_DIR"
-  if [[ -d "$COMOTO_PROJECTS_DIR" ]] ; then
+  print_header "Checking for $COMOTO_PROJECT_ROOT"
+  if [[ -d "$COMOTO_PROJECT_ROOT" ]] ; then
     print_info "Found"
   else
     print_info "Not a directory"
-    if print_confirm "Create directory ${COMOTO_PROJECTS_DIR}?" ; then
+    if print_confirm "Create directory ${COMOTO_PROJECT_ROOT}?" ; then
       print_info "Creating directory..."
-      mkdir -p $COMOTO_PROJECTS_DIR
+      mkdir -p $COMOTO_PROJECT_ROOT
       print_info "Done"
     else
       print_info 'Exiting'
@@ -138,7 +138,7 @@ _comoto_cli_command_execute() {
   #######################################
 
   repo_name=monorepo
-  repo_dir="$COMOTO_PROJECTS_DIR/$repo_name"
+  repo_dir="$COMOTO_PROJECT_ROOT/$repo_name"
 
   ensure_forked_monorepo() {
     print_header "Checking for $repo_name fork in your github account"

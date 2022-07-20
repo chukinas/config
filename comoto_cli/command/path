@@ -65,11 +65,11 @@ _comoto_cli_command_execute() {
   fi
 
   case "$where_to" in
-    comoto)   target="$COMOTO_PROJECTS_DIR";;
-    monorepo) target="$COMOTO_PROJECTS_DIR/monorepo";;
-    ecom)     target="$COMOTO_PROJECTS_DIR/monorepo/ecom";;
-    redline)  target="$COMOTO_PROJECTS_DIR/monorepo/redline";;
-    zla)      target="$COMOTO_PROJECTS_DIR/monorepo/zlaverse/dev";;
+    comoto)   target="$COMOTO_PROJECT_ROOT";;
+    monorepo) target="$COMOTO_PROJECT_ROOT/monorepo";;
+    ecom)     target="$COMOTO_PROJECT_ROOT/monorepo/ecom";;
+    redline)  target="$COMOTO_PROJECT_ROOT/monorepo/redline";;
+    zla)      target="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev";;
     *)
       print_usage_error
       exit 1
