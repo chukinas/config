@@ -1,13 +1,30 @@
 #!/bin/bash
 
-# TODO add completion
 #  https://opensource.com/article/18/3/creating-bash-completion-script#:~:text=What%20is%20Bash%20completion%3F,key%20while%20typing%20a%20command.
 #  https://www.gnu.org/software/bash/manual/html_node/Bash-Variables.html#Bash-Variables
 #  This file needs to be sourced by your .bashrc in order for the Comoto CLI to work correctly
 #  https://www.gnu.org/software/bash/manual/html_node/Programmable-Completion.html
 
-echo "here we are"
+# Entry point for <TAB> command completion for 'comoto_cli'
+# TODO does this include --help?
+# https://devmanual.gentoo.org/tasks-reference/completion/index.html
 
-COMPREPLY+=("now")
-COMPREPLY+=("tomorrow")
-COMPREPLY+=("never")
+# Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
+if [[ $COMP_CWORD -eq 1 ]] ; then
+  local cur_word="$2"
+  COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_word"))
+  return 0
+fi
+
+# Complete options or args for the command (e.g. 'comoto_cli logs r<TAB>')
+local cur_command="${COMP_WORDS[1]}"
+local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
+if [[ -f $cur_command_path ]] ; then
+  unset _comoto_cli_command_completion
+  . $cur_command_path
+  # Exclude 'comoto_cli' and the command from the words sent over to the
+  # command's completion function.
+  _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
+else
+  echo -e "\n'${cur_command}' is an invalid command" >&2
+fi

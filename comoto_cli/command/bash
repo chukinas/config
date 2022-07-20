@@ -1,10 +1,11 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+# TODO use the env var instead
+. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
+
 _comoto_cli_command_summary='Bash into a shell of local container or k8s pod'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
-
-. $COMOTO_CLI_ROOT/lib/print
-. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
 
 _comoto_cli_command_help() {
   print_help_h2 Options

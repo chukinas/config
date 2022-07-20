@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO make sure this supersedes comoto_cli.bash
+
 # For all command, incl this one:
 # TODO rename _comoto_cli_command_help    -> _comoto_cli_help
 # TODO rename _comoto_cli_command_execute -> _comoto_cli_execute
