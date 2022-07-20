@@ -22,6 +22,15 @@ EOF
 
 # TODO break this up; it's ridiculously long
 _comoto_cli_command_execute() {
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   current_command='comoto_cli setup'
 
   # TODO decouple this from my personal config script

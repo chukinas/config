@@ -29,10 +29,10 @@ Examples
 EOF
 }
 
-_comoto_cli_command_execute() {
-  echo >&2 'Not yet implemented'
-  return 1
-}
 _comoto_cli_command_completion() {
   echo -n
+}
+
+_comoto_cli_command_execute() {
+  $COMOTO_CLI_ROOT/lib/render_help
 }

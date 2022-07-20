@@ -59,6 +59,14 @@ _comoto_cli_command_execute() {
   # TODO decouple this from my personal config script
   . $COMOTO_CLI_ROOT/lib/print "$current_command"
 
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   if [[ $# -ne 1 ]]; then
     print_usage_error
     exit 1

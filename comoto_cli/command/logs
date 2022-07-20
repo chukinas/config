@@ -52,15 +52,15 @@ _comoto_cli_command_execute() {
   local tail=10
   local print_only='false'
 
-  OPTIND=1
-  while getopts "t:p" opt; do
-    case $opt in
-      t) tail=$OPTARG ;;
-      p) print_only='true' ;;
-      *) echo "$0: error" >&2; exit 1
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -t) tail="$2";shift;;
+      -p) print_only='true';shift;;
+      *) break ;;
     esac
+    shift
   done
-  shift $((OPTIND-1))
 
   app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
 

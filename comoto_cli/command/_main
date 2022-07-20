@@ -93,9 +93,9 @@ _comoto_cli_command_execute() {
   if [[ ! -f $potential_command_path ]] ; then
     echo "No such command '$command' (TODO: improve error msg)" >&2
     return 1
-  elif [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$  ]] ; then
-    _comoto_cli_render_command_help $potential_command_path
+    # TODO extract this out to indivdual functions
   else
+    COMOTO_CLI_COMMAND_PATH="$potential_command_path"
     unset -f _comoto_cli_command_execute
     . $potential_command_path
     _comoto_cli_command_execute $@

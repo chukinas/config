@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
 _comoto_cli_command_summary='Version Control helpers (git and gh wrappers)'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
 
@@ -68,19 +70,19 @@ add_labels_to_pr() {
 }
 
 _comoto_cli_command_execute() {
-  # TODO make sure all commands handle --help
-  if [[ $1 =~ -h ]] ; then
-    _comoto_cli_command_help
-    return 0
-  fi
 
-  . $COMOTO_CLI_ROOT/lib/print
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
 
   subcommand="$1"
   shift
 
   # TODO get rid of that nvim setting that doesn't un-visualize after indenting
-
   # TODO add help that says that the filter string can include either the pr or jira number
   # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
   case $subcommand in

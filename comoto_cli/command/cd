@@ -35,14 +35,16 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
-  # TODO right now, 'comoto_cli cd --hel' produces a blank space, then exits. Should produce error instead
+  local text_only='false'
 
-  if [[ $1 == '-t' ]] ; then
-    local text_only='true'
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -t) text_only='true' ;;
+      *) break ;;
+    esac
     shift
-  else
-    local text_only='false'
-  fi
+  done
 
   if [[ $# -ne 1 ]]; then
     print_usage_error

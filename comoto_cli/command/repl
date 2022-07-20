@@ -28,15 +28,16 @@ EOF
 # TODO error out when given an invalid $1
 _comoto_cli_command_execute() {
   the_env='dev'
-  OPTIND=1
-  while getopts "ds" opt; do
-    case $opt in
-      d)  the_env='dev' ;;
-      s)  the_env='staging' ;;
-      *) echo "$0: error" >&2; exit 1
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -d) the_env='dev';;
+      -s) the_env='staging'
+      *) break ;;
     esac
+    shift
   done
-  shift $((OPTIND-1))
 
   case $the_env in
     dev)

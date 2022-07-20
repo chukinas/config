@@ -17,6 +17,11 @@ _comoto_cli_command_help() {
 }
 
 _comoto_cli_command_execute() {
-  clear
-  _comoto_cli_command_help
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
 }

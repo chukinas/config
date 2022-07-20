@@ -37,6 +37,15 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_command_execute() {
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"

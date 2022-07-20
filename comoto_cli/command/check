@@ -93,6 +93,15 @@ _comoto_cli_command_execute() {
 }
 
 _comoto_cli_command_completion() {
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   local valid_checks=(credo dialyzer)
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
   for i_arg

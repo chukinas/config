@@ -72,6 +72,7 @@ _comoto_cli_command_execute() {
 
   while :; do
     case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; exit 0 ;;
       -X|--no-execute)
         print_only='true'
         ;;

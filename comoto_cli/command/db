@@ -101,6 +101,15 @@ _comoto_cli_db_parse_args() {
 }
 
 _comoto_cli_command_execute() {
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   _comoto_cli_db_parse_args "$*"
 
   for action in "${_comoto_cli_db_actions[@]}"

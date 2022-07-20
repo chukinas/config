@@ -44,9 +44,11 @@ _comoto_cli_command_completion() {
 
 _comoto_cli_command_execute() {
   local confirmation_option='-C'
-  OPTIND=1
-  while getopts "cdlu" opt; do
+
+  while getopts "hcdlu" opt; do
     case $opt in
+      # TODO right now, the --help doesn't work
+      h) $COMOTO_CLI_ROOT/lib/render_help;;
       c) confirmation_option='-c';;
       d) _add_db_migrate_task 'down';;
       l) _add_db_migrate_task 'lock';;
