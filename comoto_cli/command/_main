@@ -59,24 +59,22 @@ _comoto_cli_command_completion() {
   # TODO does this include --help?
   # https://devmanual.gentoo.org/tasks-reference/completion/index.html
 
+  local cur_command="${COMP_WORDS[1]}"
+
   # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
   if [[ $COMP_CWORD -eq 1 ]] ; then
-    local cur_word="$2"
-    COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_word"))
+    COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_command"))
     return 0
   fi
 
   # Complete options or args for the command (e.g. 'comoto_cli logs r<TAB>')
-  local cur_command="${COMP_WORDS[1]}"
-  local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
-  if [[ -f $cur_command_path ]] ; then
+  # TODO this lib script should output the correct error message?
+  if local cur_command_path="$($COMOTO_CLI_ROOT/lib/command path $cur_command)" ; then
     unset _comoto_cli_command_completion
     . $cur_command_path
     # Exclude 'comoto_cli' and the command from the words sent over to the
     # command's completion function.
     _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
-  else
-    echo -e "\n'${cur_command}' is an invalid command" >&2
   fi
 }
 
@@ -87,17 +85,16 @@ _comoto_cli_command_execute() {
   fi
 
   local command="$1"
-  local potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")"
   shift
 
-  if [[ ! -f $potential_command_path ]] ; then
-    echo "No such command '$command' (TODO: improve error msg)" >&2
-    return 1
-    # TODO extract this out to indivdual functions
-  else
+  local potential_command_path
+  if potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")" ; then
     COMOTO_CLI_COMMAND_PATH="$potential_command_path"
     unset -f _comoto_cli_command_execute
     . $potential_command_path
     _comoto_cli_command_execute $@
+  else
+    echo "No such command '$command' (TODO: improve error msg)" >&2
+    return 1
   fi
 }
