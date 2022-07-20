@@ -56,9 +56,35 @@ _comoto_cli_command_help() {
   echo
 }
 
-comoto_cli_command_execute() {
+# Entry point for <TAB> command completion for 'comoto_cli'
+_comoto_cli_command_completion() {
+  # TODO does this include --help?
+  # https://devmanual.gentoo.org/tasks-reference/completion/index.html
+
+  # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
+  if [[ $COMP_CWORD -eq 1 ]] ; then
+    local cur_word="$2"
+    COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_word"))
+    return 0
+  fi
+
+  # Complete options or args for the command (e.g. 'comoto_cli logs r<TAB>')
+  local cur_command="${COMP_WORDS[1]}"
+  local cur_command_path="$COMOTO_CLI_ROOT/command/$cur_command"
+  if [[ -f $cur_command_path ]] ; then
+    unset _comoto_cli_command_completion
+    . $cur_command_path
+    # Exclude 'comoto_cli' and the command from the words sent over to the
+    # command's completion function.
+    _comoto_cli_command_completion "${COMP_WORDS[@]:2}"
+  else
+    echo -e "\n'${cur_command}' is an invalid command" >&2
+  fi
+}
+
+_comoto_cli_command_execute() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
-    _comoto_cli_help
+    $COMOTO_CLI_ROOT/lib/render_help $COMOTO_CLI_COMMAND_PATH
     return 0
   fi
 

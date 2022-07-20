@@ -3,6 +3,9 @@
 # Expects a single argument: path to a command script.
 # Prints the help for that script, then exits.
 
+# NOTE: I take a lot of design cues from the 'docker' cli, especially when it comes to the help/usage messages
+
+
 # TODO make sure this gets called
 
 # CLEAR VARS & SOURCE COMMAND SCRIPT
