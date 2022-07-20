@@ -1,0 +1,31 @@
+#!/bin/bash
+
+# Expects a single argument: path to a command script.
+# Prints the help for that script, then exits.
+
+# TODO make sure this gets called
+
+# CLEAR VARS & SOURCE COMMAND SCRIPT
+command_path="$1"
+unset _comoto_cli_command_summary
+unset -f _comoto_cli_command_help
+. $command_path
+
+# RENDER SUMMARY
+if [[ -n $_comoto_cli_command_summary ]] ; then
+  print_help_h1 $_comoto_cli_command_summary
+else
+  print_help_h1 "${yellowf}${boldon}SCRIPT INCOMPLETE:${boldoff} Make sure $command_path has a ${boldon}_comoto_cli_command_summary${boldoff} variable ${reset}"
+fi
+
+# RENDER USAGE
+print_help_h2 'Usage'
+if [[ -n $_comoto_cli_command_usage ]] ; then
+  print_help_li $_comoto_cli_command_usage
+else
+  # maybe DRY this out?
+  print_help_li "${yellowf}${boldon}SCRIPT INCOMPLETE:${boldoff} Make sure $command_path has a ${boldon}_comoto_cli_command_usage${boldoff} variable ${reset}"
+fi
+
+# RENDER THE REMAINING HELP MSG USING COMMAND's HELP FN
+_comoto_cli_command_help
