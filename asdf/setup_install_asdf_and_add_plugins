@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 command_name=asdf
 
@@ -59,6 +59,6 @@ report_on_installation $command_name
 #######################################
 
 echo 'adding plugins'
-cut -d' ' -f1 $JJC_CONFIG_DIR/asdf/tool-versions | xargs -n 1 asdf plugin add
+cut -d' ' -f1 $JJC_CONFIG_ROOT/asdf/tool-versions | xargs -n 1 asdf plugin add
 # TODO how can I check that this was successful?
 print_success 'plugins installed'

@@ -1,2 +1,2 @@
 # This env var tells ack where to look for its user-specific config
-export ACKRC="$JJC_CONFIG_DIR/ack/ackrc"
+export ACKRC="$JJC_CONFIG_ROOT/ack/ackrc"

@@ -10,23 +10,22 @@
 ########################################
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-export JJC_CONFIG_DIR=$(readlink -f $script_dir/..)
+export JJC_CONFIG_ROOT=$(readlink -f $script_dir/..)
+export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
 
 . $script_dir/bashrc_general
 . $script_dir/bashrc_personal
-. $JJC_CONFIG_DIR/comoto/bashrc
+. $JJC_CONFIG_ROOT/comoto/bashrc
 
 ########################################
 # Source from other config dirs
 ########################################
 
-config_dir=$script_dir/..
-
-source $config_dir/ack/bashrc
-source $config_dir/asdf/bashrc
-source $config_dir/git/bashrc
-source $config_dir/keyboard/bashrc
-source $config_dir/neovim/bashrc
-source $JJC_CONFIG_DIR/fd/bashrc
-source $config_dir/fzf/bashrc
-source $config_dir/datagrip/bashrc
+. $JJC_CONFIG_ROOT/ack/bashrc
+. $JJC_CONFIG_ROOT/asdf/bashrc
+. $JJC_CONFIG_ROOT/git/bashrc
+. $JJC_CONFIG_ROOT/keyboard/bashrc
+. $JJC_CONFIG_ROOT/neovim/bashrc
+. $JJC_CONFIG_ROOT/fd/bashrc
+. $JJC_CONFIG_ROOT/fzf/bashrc
+. $JJC_CONFIG_ROOT/datagrip/bashrc

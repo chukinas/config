@@ -3,7 +3,7 @@
 # .bashrc
 # https://devhints.io/bash
 
-. $JJC_CONFIG_DIR/_setup/helpers.sh
+. $JJC_CONFIG_ROOT/_setup/helpers.sh
 
 print_header "BASHRC SETUP"
 
@@ -12,4 +12,4 @@ print_header "BASHRC SETUP"
 # TODO just do it for the comoto entry point for now. I'll do the personal one later.
 # TODO it should make use of ../lib/create_symlink
 
-$JJC_CONFIG_DIR/lib/create_symlink $JJC_CONFIG_DIR/bash/bashrc_entry_point_comoto ~/.bashrc
+$JJC_CONFIG_LIB/create_symlink $JJC_CONFIG_ROOT/bash/bashrc_entry_point_comoto ~/.bashrc

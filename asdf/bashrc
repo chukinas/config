@@ -1,5 +1,5 @@
 #!/bin/bash
 
-# TODO rename file to $JJC_CONFIG_DIR/asdf/bash ?
+# TODO rename file to $JJC_CONFIG_ROOT/asdf/bash ?
 . $HOME/.asdf/asdf.sh
 . $HOME/.asdf/completions/asdf.bash

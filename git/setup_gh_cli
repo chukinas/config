@@ -2,8 +2,9 @@
 
 # TODO there's a bit of overlap b/w this and comoto cli
 
+# TODO remove the script_dir from here and elsewhere
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 print_subheader $script_dir/setup_gh_cli
 
@@ -15,7 +16,7 @@ else
   echo gh is not installed!
   curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
   echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-  $JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
+  $JJC_CONFIG_LIB/update_apt_only_if_old_cache
   sudo apt install gh
 fi
 

@@ -2,7 +2,7 @@
 
 # TODO rename this file. It's got more than just header stuff
 
-. $JJC_CONFIG_DIR/lib/ansi_color
+. $JJC_CONFIG_LIB/ansi_color
 
 print_title() {
    echo -e $cyanf
@@ -59,7 +59,7 @@ report_on_installation() {
   done
   shift $((OPTIND-1))
 
-  if $JJC_CONFIG_DIR/lib/command_exists $command_name
+  if $JJC_CONFIG_LIB/command_exists $command_name
   then
     print_success "$pretty_print_name is installed"
   else

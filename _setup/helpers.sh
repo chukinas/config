@@ -2,5 +2,5 @@
 
 # TODO remove this file
 
-. $JJC_CONFIG_DIR/lib/ansi_color
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/ansi_color
+. $JJC_CONFIG_LIB/headers

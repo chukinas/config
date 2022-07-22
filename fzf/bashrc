@@ -17,12 +17,10 @@ export FZF_DEFAULT_COMMAND='fdfind --type file --follow'
 # fuzzy find a config file (neovim config or general config, i.e. this repo)
 # and open it in my editor
 vic() {
-  local all_config_dir=$JJC_CONFIG_DIR
-
   echo
-  echo "Searching $all_config_dir"
+  echo "Searching $JJC_CONFIG_ROOT"
   (
-    cd $all_config_dir
+    cd $JJC_CONFIG_ROOT
 
     if [[ $# -eq 0 ]] ; then
       # TODO should this env var be exported?

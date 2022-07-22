@@ -3,10 +3,10 @@
 # FIX replace with ag (silver searcher)
 # FIX would need to update my nvim config
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 command_name=ack
-command_exists() { $JJC_CONFIG_DIR/lib/command_exists $command_name; }
+command_exists() { $JJC_CONFIG_LIB/command_exists $command_name; }
 
 #######################################
 # main script

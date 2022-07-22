@@ -1,15 +1,14 @@
 #!/bin/bash
 
 neovim_dir=$(dirname $0)
-config_dir=$neovim_dir/..
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 print_header 'NEOVIM'
 
 print_subheader "Create symlink"
 # TODO replace this with $JJC_CONFIG_DIR ?
-$config_dir/lib/create_symlink $neovim_dir/config ~/.config/nvim
+$JJC_CONFIG_LIB/create_symlink $neovim_dir/config ~/.config/nvim
 
 print_subheader "Update config module"
 echo "[updating ... TODO]"

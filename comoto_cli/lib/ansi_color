@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# TODO change this to JJC_CONFIG_ROOT
 # TODO when adding COMOTO CLI back into monorepo, break this dependency
 # TODO wrap each jjc lib in a local lib file
-. $JJC_CONFIG_DIR/lib/ansi_color
+. $JJC_CONFIG_LIB/ansi_color

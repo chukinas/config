@@ -79,7 +79,7 @@ _comoto_cli_command_execute() {
   #######################################
 
   print_header 'Checking that apt cache is up to date'
-  $JJC_CONFIG_DIR/lib/update_apt_only_if_old_cache
+  $JJC_CONFIG_LIB/update_apt_only_if_old_cache
 
   # GITHUB CLI SETUP
   #######################################

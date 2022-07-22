@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# TODO combine this with $JJC_CONFIG_DIR/lib?
+# TODO combine this with $JJC_CONFIG_LIB?
 # TODO rename formatter?
 
 # HELPERS FOR PRINTING OUTPUT TO USER
 #######################################
 
-. $JJC_CONFIG_DIR/lib/ansi_color
+. $JJC_CONFIG_LIB/ansi_color
 
 # TODO am i using this anymore?
 if [[ -n "$1" ]]; then

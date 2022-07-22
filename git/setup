@@ -2,7 +2,7 @@
 
 # GIT SETUP
 
-. $JJC_CONFIG_DIR/_setup/helpers.sh
+. $JJC_CONFIG_ROOT/_setup/helpers.sh
 
 # Start Main Script
 ###################
@@ -17,7 +17,7 @@ print_subheader 'set global config'
 # use symlinking instead?
 # how though then to have different settings per computer (e.g. email)?
 git config --global user.name     "chukinas"
-git config --global include.path  $JJC_CONFIG_DIR/git/gitconfig
+git config --global include.path  $JJC_CONFIG_ROOT/git/gitconfig
 echo
 echo '~/.gitconfig:'
 echo
@@ -26,7 +26,7 @@ cat ~/.gitconfig
 # GITHUB CLI
 ###################
 
-bash $JJC_CONFIG_DIR/git/setup_gh_cli
+bash $JJC_CONFIG_ROOT/git/setup_gh_cli
 
 # SSH
 ###################

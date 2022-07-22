@@ -9,10 +9,9 @@ export PNPM_HOME="/home/jc/.local/share/pnpm"
 export PATH="$PNPM_HOME:$PATH"
 # pnpm end
 
-# TODO should this be defined here in this way?
-export JJC_CONFIG_DIR=~/projects/config
-
-source $JJC_CONFIG_DIR/bash/bashrc
+# TODO should this be declared here?
+export JJC_CONFIG_ROOT="$HOME/projects/config"
+. $JJC_CONFIG_ROOT/bash/bashrc
 
 # TODO why is this here?
 # Shouldn't it be in the nvim dir?

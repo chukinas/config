@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 command_name=ag
 
@@ -10,13 +10,13 @@ command_name=ag
 
 print_header "AG (i.e. the Silver Searcher)"
 
-print_subheader $JJC_CONFIG_DIR/ag/setup
+print_subheader $JJC_CONFIG_ROOT/ag/setup
 
 #######################################
 # Install if not already installed
 
 echo 'Looking for ag'
-if $JJC_CONFIG_DIR/lib/command_exists $command_name
+if $JJC_CONFIG_LIB/command_exists $command_name
 then
   echo 'Found'
 else

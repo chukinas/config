@@ -7,7 +7,7 @@
 # TODO replace this with the fuller version
 script_dir="$(dirname $0)";
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 # TODO make this dynamic
 print_subheader $script_dir/setup_install_tools

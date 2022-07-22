@@ -3,14 +3,14 @@
 # set up fd
 # fd is a file finder, a good replacement for find
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 command_name=fdfind
 pretty_print_name=fd
 apt_name='fd-find'
 
 command_exists() {
-   $JJC_CONFIG_DIR/lib/command_exists $command_name
+   $JJC_CONFIG_LIB/command_exists $command_name
 }
 
 #######################################

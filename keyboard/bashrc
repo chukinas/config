@@ -1,2 +1,2 @@
 # Custom keyboard bindings like R-Caps-Lock -> R-Crtl
-xmodmap $JJC_CONFIG_DIR/keyboard/xmodmap
+xmodmap $JJC_CONFIG_ROOT/keyboard/xmodmap

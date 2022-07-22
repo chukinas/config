@@ -2,7 +2,7 @@
 
 # GIT BASHRC
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 gst() {
   clear

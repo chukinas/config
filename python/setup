@@ -3,7 +3,7 @@
 # I install python with asdf, so make sure that's set up first.
 # That's also where i specify the versions of python2 and python3.
 
-. $JJC_CONFIG_DIR/lib/headers
+. $JJC_CONFIG_LIB/headers
 
 print_header 'PYTHON'
 
