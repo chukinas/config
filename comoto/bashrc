@@ -1,7 +1,6 @@
 #!/bin/bash
 
 export COMOTO_PROJECT_ROOT="$HOME/projects/comoto"
-# TODO rename ..dir -> JJC_CONFIG_ROOT
 export COMOTO_CLI_ROOT="$JJC_CONFIG_ROOT/comoto_cli"
 
 # TODO switch this back once m path is fixed

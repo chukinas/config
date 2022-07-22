@@ -1,19 +1,13 @@
 #!/bin/bash
 
-script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-source $script_dir/../_setup/helpers.sh
-
-CONFIG_DIR=$script_dir/..
-NVIM_CONFIG_DIR=$HOME/.config/nvim
+NVIM_CONFIG_ROOT=$HOME/.config/nvim
 
 # cd into nvim config
-alias cdv="cd $NVIM_CONFIG_DIR"
+alias cdv="cd $NVIM_CONFIG_ROOT"
 
 # open nvim in various directories
 alias vi="nvim"
-# alias vi="nvim -u $CONFIG_DIR/neovim/config/init.lua"
-alias vid="cd $CONFIG_DIR;vi;cd -"
-alias viv="cd $NVIM_CONFIG_DIR;vi;cd -"
+alias viv="cd $NVIM_CONFIG_ROOT;vi;cd -"
 
 # set default editor
 export VISUAL=nvim
