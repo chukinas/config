@@ -6,7 +6,7 @@ _comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
 # TODO add the ability to "shut down" just a single container to hopefully improve recompile times for the
 # one that I'm actually interested in
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -33,6 +33,6 @@ _comoto_cli_command_completion() {
   echo -n
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   $COMOTO_CLI_ROOT/lib/render_help
 }

@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# For all command, incl this one:
-# TODO rename _comoto_cli_command_help    -> _comoto_cli_help
-# TODO rename _comoto_cli_command_execute -> _comoto_cli_execute
-
-# TODO used?
-. $COMOTO_CLI_ROOT/lib/ansi_color
 . $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Common commands to assist in developing Comoto webapps'
@@ -13,7 +7,7 @@ _comoto_cli_command_usage='comoto_cli [OPTIONS] COMMAND'
 
 # Print the help for 'comoto_cli'
 # Dynamically generates the list of commands and their summaries
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   print_help_h2 Options
   print_help_li '-h, --help  Print this help and exit'
 
@@ -78,7 +72,7 @@ _comoto_cli_command_completion() {
   fi
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
     $COMOTO_CLI_ROOT/lib/render_help $COMOTO_CLI_ENTRY_POINT
     return 0
@@ -90,9 +84,9 @@ _comoto_cli_command_execute() {
   local potential_command_path
   if potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")" ; then
     COMOTO_CLI_COMMAND_PATH="$potential_command_path"
-    unset -f _comoto_cli_command_execute
+    unset -f _comoto_cli_execute
     . $potential_command_path
-    _comoto_cli_command_execute $@
+    _comoto_cli_execute $@
   else
     echo "No such command '$command' (TODO: improve error msg)" >&2
     return 1

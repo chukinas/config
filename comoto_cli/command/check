@@ -6,7 +6,7 @@
 _comoto_cli_command_summary='Quality-control your code locally, before it gets to Circle CI'
 _comoto_cli_command_usage='comoto_cli check [OPTIONS] [CHECKS]'
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -72,7 +72,7 @@ _add_a_new_command() {
   fi
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   if [[ $# -eq 0 ]] ; then
     echo "arg count: $#"
     comoto_cli check credo dialyzer

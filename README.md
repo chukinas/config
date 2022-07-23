@@ -44,7 +44,7 @@ git submodule update --init --recursive
    - [x] add chrome plugin
 - [x] dropbox: download from site, install with eddy, set up selective sync
 - [x] printer (hardware, optional): connect and print test page
-- [ ] set up flameshot
+- [ ] set up flameshot (see setup)
 - [ ] set up vpn (see https://revzilla.atlassian.net/wiki/spaces/SDKB/pages/2383085763/Remote+Access+-+Connecting+to+Comoto+VPN)
 
 ### Configure

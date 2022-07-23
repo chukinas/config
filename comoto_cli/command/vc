@@ -10,7 +10,7 @@ usage() {
   echo "Usage: $_comoto_cli_command_usage"
 }
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Requires that the github CLI ('gh') be installed!
@@ -69,7 +69,7 @@ add_labels_to_pr() {
   gh pr edit --add-label 'wip' --add-label "team Hellmann's Deep" --add-label 'create staging' --add-label 'selenium tests'
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
 
   while :; do
     case "${1-}" in

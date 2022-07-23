@@ -2,4 +2,6 @@
 
 sudo apt install -y flameshot
 
-# TODO check that this correctly installs things.
+# After setup,
+# 1. add a keyboard shortcut: SHIFT + PRINT_SCREEN -> flameshot gui
+# 2. add green color

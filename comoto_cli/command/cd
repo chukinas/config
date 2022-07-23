@@ -5,7 +5,7 @@
 _comoto_cli_command_summary='Change directory to commonly-used paths like redline and ecom'
 _comoto_cli_command_usage='comoto_cli cd [OPTIONS] PATH_SHORT_NAME'
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -34,7 +34,7 @@ _comoto_cli_command_completion() {
   _comoto_cli_command_completion $*
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   local text_only='false'
 
   while :; do

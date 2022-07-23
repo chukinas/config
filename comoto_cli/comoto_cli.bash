@@ -17,9 +17,9 @@ eval "$(gh completion -s bash)"
 comoto_cli() {
   export COMOTO_CLI_COMMAND_PATH="$COMOTO_CLI_ENTRY_POINT"
 
-  unset -f _comoto_cli_command_execute
+  unset -f _comoto_cli_execute
   . $COMOTO_CLI_COMMAND_PATH
-  _comoto_cli_command_execute $@
+  _comoto_cli_execute $@
 }
 
 alias m=comoto_cli

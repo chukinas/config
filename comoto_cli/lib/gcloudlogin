@@ -5,7 +5,7 @@
 _comoto_cli_command_summary='Get your gcloud password (for e.g. connecting to staging db)'
 _comoto_cli_command_usage='comoto_cli gcloudlogin'
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -25,7 +25,7 @@ _comoto_cli_command_completion() {
 
 # curl -s https://icanhazip.com
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   # TODO improve this by copying it to the clipboard?
   print_and_eval_command 'gcloud auth print-access-token'
 }

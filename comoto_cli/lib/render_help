@@ -17,7 +17,7 @@ else
 fi
 
 unset _comoto_cli_command_summary
-unset -f _comoto_cli_command_help
+unset -f _comoto_cli_help
 . $command_path
 
 # RENDER SUMMARY
@@ -37,4 +37,4 @@ else
 fi
 
 # RENDER THE REMAINING HELP MSG USING COMMAND's HELP FN
-_comoto_cli_command_help
+_comoto_cli_help

@@ -7,7 +7,7 @@
 _comoto_cli_command_summary='Bash into a shell of local container or k8s pod'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   print_help_h2 Options
   print_help_li '-h, --help         Print this help and exit'
   print_help_li '-X, --no-execute   Echo the command to stoud; do not execute'
@@ -66,7 +66,7 @@ _comoto_cli_command_completion() {
   esac
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   local print_only='false'
   local env='dev'
 

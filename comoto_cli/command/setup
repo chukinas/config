@@ -6,7 +6,7 @@ _comoto_cli_command_usage='comoto_cli setup [OPTIONS]'
 # TODO ensure that the ssh key has no pw
 # TODO ensure that you have read (and write?) access to the Comoto-Tech repo?
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -21,7 +21,7 @@ EOF
 #######################################
 
 # TODO break this up; it's ridiculously long
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
 
   while :; do
     case "${1-}" in

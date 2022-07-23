@@ -9,7 +9,7 @@
 _comoto_cli_command_summary='View the logs for one or several containers'
 _comoto_cli_command_usage='comoto_cli logs [OPTIONS] [CONTAINERS]'
 
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   cat <<EOF
 
 Options:
@@ -48,7 +48,7 @@ _comoto_cli_command_completion() {
   COMPREPLY=( $(compgen -W "$option_words $arg_words" -- "${COMP_WORDS[$COMP_CWORD]}") )
 }
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   local tail=10
   local print_only='false'
 

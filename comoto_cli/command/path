@@ -17,7 +17,7 @@ _indent_print() {
 }
 
 # TODO follow this strategy in other commands
-_comoto_cli_command_help() {
+_comoto_cli_help() {
   local comoto_project_root=${COMOTO_PROJECT_ROOT:-"${redf}\$COMOTO_PROJECT_ROOT${reset}"}
   # TODO this should be added to a "checkhealth function"
   if [[ -d $COMOTO_PROJECT_ROOT ]] ; then
@@ -51,7 +51,7 @@ _comoto_cli_command_help() {
 # TODO should `cd` depend on this?
 # TODO rename _comoto_cli_path_execute
 
-_comoto_cli_command_execute() {
+_comoto_cli_execute() {
   local current_command="comoto_cli path"
   local where_to=$1
 
