@@ -53,14 +53,13 @@ _comoto_cli_help() {
 
 # Entry point for <TAB> command completion for 'comoto_cli'
 _comoto_cli_command_completion() {
-  # TODO does this include --help?
   # https://devmanual.gentoo.org/tasks-reference/completion/index.html
 
   local cur_command="${COMP_WORDS[1]}"
 
   # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
   if [[ $COMP_CWORD -eq 1 ]] ; then
-    COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_command"))
+    COMPREPLY=( $(compgen -W "--help $($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_command"))
     return 0
   fi
 
