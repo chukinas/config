@@ -5,7 +5,7 @@
 # view all functions that aren't help functions
 # cat bash_functions.sh | grep ^function | sed 's/function //' | sed 's/(.*//' | grep -v ^_.*help$
 
-. $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
+. $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 . $COMOTO_CLI_ROOT/lib/print
 
 _kubepodlist="$COMOTO_CLI_ROOT/.store/kubepodlist"
