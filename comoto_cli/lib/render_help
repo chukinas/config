@@ -37,4 +37,5 @@ else
 fi
 
 # RENDER THE REMAINING HELP MSG USING COMMAND's HELP FN
+# TODO handle for missing function
 _comoto_cli_help

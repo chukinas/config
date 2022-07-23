@@ -33,7 +33,7 @@ _comoto_cli_execute() {
     case "${1-}" in
       -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
       -d) the_env='dev';;
-      -s) the_env='staging'
+      -s) the_env='staging';;
       *) break ;;
     esac
     shift
