@@ -1,6 +1,7 @@
 #!/bin/bash
 
 . $COMOTO_CLI_ROOT/lib/ansi_color
+. $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Generate fully-qualified paths to common projects'
 _comoto_cli_command_usage='comoto_cli path [OPTIONS] PATH_SHORT_NAME'
@@ -41,8 +42,8 @@ _comoto_cli_help() {
   _indent_print "redline     $comoto_project_root/monorepo/redline"
   _indent_print "zla         $comoto_project_root/monorepo/zlaverse/dev"
   echo
-  _help_header 'Examples'
-  _indent_print "comoto_cli path ecom   # echos out '$(comoto_cli path ecom)'"
+  print_help_h2 'Examples'
+  print_help_ex "comoto_cli path ecom   # echos out '$(comoto_cli path ecom)'"
   echo
 }
 

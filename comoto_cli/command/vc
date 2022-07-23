@@ -27,15 +27,16 @@ Subcommands:
   checkout
   new
   checkin
-
-Examples:
-  comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'
-  comoto_cli vc checkout 'JPR-123'
-
-  # Create and check out new branch 'JPR-123-my-short-description':
-  comoto_cli vc new jpr 123 my short   description
-
 EOF
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex    "comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'"
+  print_help_ex    "comoto_cli vc checkout 'JPR-123'"
+  echo
+  print_help_ex    "# Create and check out new branch 'JPR-123-my-short-description':"
+  print_help_ex    "comoto_cli vc new jpr 123 my short   description"
+
 }
 
 # TODO move these to lib?

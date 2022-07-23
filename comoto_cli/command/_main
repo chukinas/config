@@ -42,7 +42,6 @@ _comoto_cli_help() {
   done
 
   print_help_h2 Examples
-  # TODO use the *_ex function in the other helps as well
   print_help_ex "comoto_cli cd redline        # change to monorepo's redline directory"
   print_help_ex "comoto_cli check             # run credo and dialyzer in local container"
   print_help_ex "comoto_cli bash cg           # bash into local Cycle Gear container"

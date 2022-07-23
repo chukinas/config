@@ -1,10 +1,10 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
 # TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
 # TODO add an -L option to suppress the logs
 # TODO maybe this should go into the container command
-
-. $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Restart containers'
 _comoto_cli_command_usage='comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]'

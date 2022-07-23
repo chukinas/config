@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# TODO if I enter a wrong container abbrev, it shows all. It should throw error instead
-
 . $COMOTO_CLI_ROOT/lib/print
+
+# TODO if I enter a wrong container abbrev, it shows all. It should throw error instead
 
 # TODO -p flag is inconsistent with the print-only flag in at least one other command
 
@@ -22,20 +22,21 @@ Containers:
   jp
   rz
   redline         (not yet implemented)
-
-Examples
-  comoto_cli logs           # View all logs (All redline apps, ecom, services, etc)
-  comoto_cli logs cg        # View logs for Cycle Gear
-  comoto_cli logs redline   # View logs for all redline apps (i.e cg, jp, rz)
-  comoto_cli logs cg rz     # View logs for Cycle Gear and RevZilla
-
-  comoto_cli logs -h        # Print this help
-  comoto_cli logs --help    # Print this help
-
-  comoto_cli logs jp        # View last 10 (the default) J&P Cycles log rows, then stream all incoming
-  comoto_cli logs -t 100 jp # View last 100 J&P Cycles log rows, then stream all incoming
-
 EOF
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex 'comoto_cli logs           # View all logs (All redline apps, ecom, services, etc)'
+  print_help_ex 'comoto_cli logs cg        # View logs for Cycle Gear'
+  print_help_ex 'comoto_cli logs redline   # View logs for all redline apps (i.e cg, jp, rz)'
+  print_help_ex 'comoto_cli logs cg rz     # View logs for Cycle Gear and RevZilla'
+  echo
+  print_help_ex 'comoto_cli logs -h        # Print this help'
+  print_help_ex 'comoto_cli logs --help    # Print this help'
+  echo
+  print_help_ex 'comoto_cli logs jp        # View last 10 (the default) J&P Cycles log rows, then stream all incoming'
+  print_help_ex 'comoto_cli logs -t 100 jp # View last 100 J&P Cycles log rows, then stream all incoming'
+  echo
 }
 
 # TODO should this be a subcommand for container?

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
 _comoto_cli_command_summary='Set up this app and the whole Comoto ecosystem'
 _comoto_cli_command_usage='comoto_cli setup [OPTIONS]'
 

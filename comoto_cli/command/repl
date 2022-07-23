@@ -1,9 +1,9 @@
 #!/bin/bash
 
+. $COMOTO_CLI_ROOT/lib/print
+
 # TODO present user with y/n dialog if the node is already in use.
 # TODO add a -f option for killing ane existing connections to the node
-
-. $COMOTO_CLI_ROOT/lib/print
 
 _comoto_cli_command_summary='Start an Ruby or IEX session in a container'
 _comoto_cli_command_usage='comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME]'
@@ -22,6 +22,11 @@ Container Short Names:
 
 EOF
 # TODO what's the actual name of the ruby repl?
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex "comoto_cli repl rz   # open iex session against local RevZilla container"
+  echo
 }
 
 # TODO add autocomplete

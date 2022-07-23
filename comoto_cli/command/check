@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# TODO add a check for e.g. unused elixir vars. Or really, anything that causes a compilation error with --warnings-as-errors
 . $COMOTO_CLI_ROOT/lib/print
+
+# TODO add a check for e.g. unused elixir vars. Or really, anything that causes a compilation error with --warnings-as-errors
 
 _comoto_cli_command_summary='Quality-control your code locally, before it gets to Circle CI'
 _comoto_cli_command_usage='comoto_cli check [OPTIONS] [CHECKS]'
@@ -15,18 +16,19 @@ Options:
 Checks:
   credo
   dialyzer        (not yet implemented)
-
-Examples
-  comoto_cli check                  # Run all (both credo and dialyzer)
-  comoto_cli check credo            # Run credo only
-  comoto_cli check dialyzer         # Run dialyzer only
-  comoto_cli check credo dialyzer   # Run both credo and dialyzer
-  comoto_cli check -h               # Print this help message
-  comoto_cli check --help           # Print this help message
-
-All checks are run in the local rz container.
-
 EOF
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex 'comoto_cli check                  # Run all (both credo and dialyzer)'
+  print_help_ex 'comoto_cli check credo            # Run credo only'
+  print_help_ex 'comoto_cli check dialyzer         # Run dialyzer only'
+  print_help_ex 'comoto_cli check credo dialyzer   # Run both credo and dialyzer'
+  print_help_ex 'comoto_cli check -h               # Print this help message'
+  print_help_ex 'comoto_cli check --help           # Print this help message'
+  echo
+  echo 'All checks are run in the local rz container.'
+  echo
 }
 
 _credo() {
@@ -73,6 +75,14 @@ _add_a_new_command() {
 }
 
 _comoto_cli_execute() {
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
   if [[ $# -eq 0 ]] ; then
     echo "arg count: $#"
     comoto_cli check credo dialyzer
@@ -93,14 +103,6 @@ _comoto_cli_execute() {
 }
 
 _comoto_cli_command_completion() {
-
-  while :; do
-    case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
-      *) break ;;
-    esac
-    shift
-  done
 
   local valid_checks=(credo dialyzer)
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"

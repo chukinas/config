@@ -17,13 +17,14 @@ Actions:
   -d  Migrate Down
   -u  Migrate Up
   -l  Lock
-
-Examples
-  comoto_cli migrate -lu       # Lock migrations, then migrate up
-  comoto_cli migrate -du       # Migrate down, then immediatedly up
-  comoto_cli migrate -d -u     # Migrate down, then immediatedly up
-
 EOF
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex 'comoto_cli migrate -lu       # Lock migrations, then migrate up'
+  print_help_ex 'comoto_cli migrate -du       # Migrate down, then immediatedly up'
+  print_help_ex 'comoto_cli migrate -d -u     # Migrate down, then immediatedly up'
+  echo
 }
 
 # Accumulate rake tasks to be run in the local ecom shell
@@ -45,17 +46,16 @@ _comoto_cli_command_completion() {
 _comoto_cli_execute() {
   local confirmation_option='-C'
 
-  while getopts "hcdlu" opt; do
-    case $opt in
-      # TODO right now, the --help doesn't work
-      h) $COMOTO_CLI_ROOT/lib/render_help;;
-      c) confirmation_option='-c';;
-      d) _add_db_migrate_task 'down';;
-      l) _add_db_migrate_task 'lock';;
-      u) _add_db_migrate_task 'up';;
-      # TODO add a usage function
-      *) print_usage_error && exit 1
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -c) confirmation_option='-c';;
+      -d) _add_db_migrate_task 'down';;
+      -l) _add_db_migrate_task 'lock';;
+      -u) _add_db_migrate_task 'up';;
+      *) break ;;
     esac
+    shift
   done
 
   print_and_eval_command $confirmation_option "comoto_cli bash ecom '$rake_tasks'"

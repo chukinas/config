@@ -107,6 +107,10 @@ print_help_li() {
 }
 
 print_help_ex() {
-  # TODO should this be `$@` ?
-  echo -e "  \$ $*"
+  if [[ $1 == '-z' ]] ; then
+    shift
+    echo -e "    $@"
+  else
+    echo -e "  \$ $@"
+  fi
 }

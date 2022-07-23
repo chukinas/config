@@ -20,8 +20,12 @@ Path Short Names:
   ecom      $COMOTO_PROJECT_ROOT/monorepo/ecom
   redline   $COMOTO_PROJECT_ROOT/monorepo/redline
   zla       $COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev
-
 EOF
+
+  echo
+  print_help_h2 'Examples'
+  print_help_ex 'comoto_cli cd monorepo   # cd into the monorepo dir'
+  echo
 }
 
 # TODO maybe there shouldn't be a 'path' command. Maybe it should be replaced with -p option in the 'cd' command
