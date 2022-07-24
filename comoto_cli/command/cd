@@ -55,15 +55,14 @@ _comoto_cli_execute() {
     return 1
   fi
 
-  local where_to=$1
+  local cmd path
+  if [[ $# -eq 1 ]] && path=$(comoto_cli path "$1" 2>/dev/null) ; then
+    cmd="cd $path"
+  else
+    print_usage_error
+    return 1
+  fi
 
-  # TODO can this be used in an if so I don't have to do the `test
-  path=$(comoto_cli path $where_to 2>/dev/null)
-  # TODO DRY out usage. I don't want to have to add the target both here and there
-  [[ $? -ne 0 ]] && print_usage_error && exit 1
-
-  cmd="cd $(comoto_cli path $where_to)"
-  # TODO handle for incorrect targets
   if [[ $text_only == 'true' ]] ; then
     echo $cmd
   else
