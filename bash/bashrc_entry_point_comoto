@@ -1,8 +1,7 @@
 #!/bin/bash
 
-# TODO rename this file ../bashrc/entrypoint/comoto
-# TODO maybe while I'm creating all these symlinks... maybe I should just have a symlink at ~/.jjc_config_dir that everything points thru...
+# TODO replace this with profile.comoto
 
-# TODO should this be declared here?
 export JJC_CONFIG_ROOT="$HOME/projects/config"
+export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
 . $JJC_CONFIG_ROOT/bash/bashrc

@@ -2,7 +2,7 @@
 
 # GIT SETUP
 
-. $JJC_CONFIG_ROOT/_setup/helpers.sh
+. $JJC_CONFIG_LIB/headers
 
 # Start Main Script
 ###################

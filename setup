@@ -6,6 +6,7 @@ clear
 
 script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
 export JJC_CONFIG_ROOT=$(readlink -f $script_dir)
+export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
 
 . $JJC_CONFIG_LIB/headers
 

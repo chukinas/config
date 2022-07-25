@@ -3,13 +3,10 @@
 # .bashrc
 # https://devhints.io/bash
 
-. $JJC_CONFIG_ROOT/_setup/helpers.sh
+. $JJC_CONFIG_LIB/headers
 
 print_header "BASHRC SETUP"
 
-# TODO add this to setup
-# TODO this needs to create a symlink from ~/.bashrc to one of the bashrc entry points
-# TODO just do it for the comoto entry point for now. I'll do the personal one later.
-# TODO it should make use of ../lib/create_symlink
-
-$JJC_CONFIG_LIB/create_symlink $JJC_CONFIG_ROOT/bash/bashrc_entry_point_comoto ~/.bashrc
+target_path="$JJC_CONFIG_ROOT/bash/bashrc_entry_point_comoto"
+symlink_path="~/.bashrc"
+$JJC_CONFIG_LIB/create_symlink $target_path $symlink_path

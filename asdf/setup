@@ -8,7 +8,7 @@
 # 3. Install tools
 #######################################
 
-. $JJC_CONFIG_ROOT/_setup/helpers.sh
+. $JJC_CONFIG_LIB/headers
 
 print_header "ASDF"
 

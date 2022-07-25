@@ -1,7 +1,6 @@
 #!/bin/bash
 
-script_dir="$( cd -- "$( dirname -- "${BASH_SOURCE[0]:-$0}"; )" &> /dev/null && pwd 2> /dev/null; )";
-source $script_dir/../_setup/helpers.sh
+. $JJC_CONFIG_LIB/headers
 
 # TODO move all the other comoto / monorepo stuff into here
 # TODO move the datagrip stuff in here
