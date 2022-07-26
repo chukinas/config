@@ -10,6 +10,7 @@
 
 export COMOTO_CLI_ZLA_BASH_FUNCTIONS="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh"
 export COMOTO_CLI_ENTRY_POINT="$COMOTO_CLI_ROOT/command/_main"
+export COMOTO_CLI_LIB="$COMOTO_CLI_ROOT/lib"
 
 # Set up github cli command completion
 eval "$(gh completion -s bash)"

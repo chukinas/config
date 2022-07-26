@@ -1,7 +1,8 @@
 #!/bin/bash
 
 . $COMOTO_CLI_ROOT/lib/print
-. $COMOTO_PROJECT_ZLA_BASH_FUNCTIONS
+# TODO needed?
+. $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 
 _comoto_cli_command_summary='Bash into a shell of local container or k8s pod'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'

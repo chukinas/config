@@ -17,15 +17,14 @@ export FZF_DEFAULT_COMMAND='fdfind --type file --follow'
 # fuzzy find a config file (neovim config or general config, i.e. this repo)
 # and open it in my editor
 vic() {
-  echo
-  echo "Searching $JJC_CONFIG_ROOT"
   (
     cd $JJC_CONFIG_ROOT
-
     if [[ $# -eq 0 ]] ; then
       # TODO should this env var be exported?
       # TODO the main setup should include creating this file
       # Of course that'll have to come after clonig the neovim config
+      echo
+      echo "Searching $JJC_CONFIG_ROOT"
       echo
       echo "USAGE:"
       echo 'Token   Match type                  Description                         '

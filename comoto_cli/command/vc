@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Version Control helpers (git and gh wrappers)'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
