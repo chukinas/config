@@ -6,15 +6,18 @@ _comoto_cli_command_summary='Initial setup of a local database and migration hel
 _comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
 
 _comoto_cli_help() {
+  # TODO reimplement
   cat <<EOF
 
 Options:
   -h, --help      Print this help and exit
 
 Setup commands:
-  setup     Download a sanitized db
-  restore   Restore (?)
-  reindex   Reindex (?)
+  setup       Download a sanitized db
+  restore     Restore (?)
+  reindex     Reindex (?)
+  privileges  Elevate your user account privileges.
+              Returns you the code to paste into datagrip
 EOF
 # TODO should the migrations come under a subcommand?
 # TODO and all the various setup stuff under a 'setup' subcommand?
@@ -24,6 +27,7 @@ EOF
   print_help_ex "comoto_cli db setup"
   print_help_ex "comoto_cli db restore"
   print_help_ex "comoto_cli db reindex"
+  print_help_ex "comoto_cli db privileges   # generates SQL code you can paste into datagrip"
   echo
 }
 
@@ -94,6 +98,35 @@ _comoto_cli_db_parse_args() {
   fi
 }
 
+_comoto_cli_add_user_accounts() {
+  local email_address='jonathan.chukinas@revzilla.com'
+  if ! print_confirm "Is this your account address: $email_address?" ; then
+    echo exiting >&2
+    return 1
+  fi
+  if ! print_confirm "You must have created used accounts before executing. Have you?" ; then
+    echo exiting >&2
+    return 1
+  fi
+  echo
+  echo "-- Make yourself an admin"
+  echo "UPDATE users SET role_id = 2 WHERE email_address = '$email_address';"
+  for site_id in 1 4 16
+  do
+    echo
+    echo "-- give yourself permissions for site $site_id"
+    echo "INSERT INTO user_permission_sections (user_id, permission_section_id, site_id)"
+    echo "  SELECT (SELECT id FROM users WHERE email_address = '$email_address' and site_id = $site_id), ps.id, $site_id"
+    echo "  FROM permission_sections ps;"
+  done
+  echo
+}
+
+_comoto_cli_command_completion() {
+  local cur_word="${COMP_WORDS[$COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "privileges setup restore reindex" -- "$cur_word"))
+}
+
 _comoto_cli_execute() {
 
   while :; do
@@ -103,6 +136,11 @@ _comoto_cli_execute() {
     esac
     shift
   done
+
+  if [[ $# -eq 1 && $1 == 'privileges' ]] ; then
+    _comoto_cli_add_user_accounts
+    return 0
+  fi
 
   _comoto_cli_db_parse_args "$*"
 
@@ -117,9 +155,4 @@ _comoto_cli_execute() {
   done
   # TODO break migrations out into subcommand
   print_and_eval_command $commands
-}
-
-_comoto_cli_command_completion() {
-  local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-  COMPREPLY=( $(compgen -W "setup restore reindex" -- "$cur_word"))
 }
