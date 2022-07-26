@@ -40,7 +40,7 @@ vic() {
       $VISUAL $(fzf)
     else
       echo $(pwd)
-      $VISUAL -o $(fzf -f $1)
+      $VISUAL -o $(fzf -f "$1" | head -1)
     fi
   )
   echo
