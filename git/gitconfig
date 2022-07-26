@@ -8,6 +8,7 @@
     autosquash = true
 
 [alias]
+    default = !git rev-parse --abbrev-ref ${1:-origin}/HEAD && :
     lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
     all = lol --all
     latest = all -20

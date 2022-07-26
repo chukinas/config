@@ -11,36 +11,45 @@ usage() {
 }
 
 _comoto_cli_help() {
-  cat <<EOF
-
-Requires that the github CLI ('gh') be installed!
-
-The filter string is used to find a PR number.
-Then the corresponding gh command is called.
-It assumes the repo is the monorepo.
-
-Options:
-  -h, --help  Print this help and exit
-
-Subcommands:
-  view
-  checkout
-  new
-  checkin
-EOF
-
-  echo
+  print_help_h2 'Options'
+  print_help_li '-h, --help  Print this help and exit'
+  print_help_h2 'Subcommands'
+  print_help_li 'new'
+  print_help_li 'checkout   '
+  print_help_li 'view       ?'
+  print_help_li 'checkin    If Credo and Dialyzer checks pass, then push'
   print_help_h2 'Examples'
   print_help_ex    "comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'"
   print_help_ex    "comoto_cli vc checkout 'JPR-123'"
   echo
   print_help_ex    "# Create and check out new branch 'JPR-123-my-short-description':"
   print_help_ex    "comoto_cli vc new jpr 123 my short   description"
+  echo
+  echo "Requires that the github CLI ('gh') be installed."
+  echo
+  echo "The filter string is used to find a PR number."
+  echo "Then the corresponding gh command is called."
+  echo "It assumes the repo is the monorepo."
+  echo
+}
 
+# TODO move these to lib?
+_vc_ticket_number() {
+  local project_prefix="${1^^}"   # all caps
+  local issue_number="$2"         # digits
+  echo "$project_prefix-$issue_number"
+}
+
+# Drop first two args, Capitalize all remaining
+_vc_title() {
+  shift
+  shift
+  echo "${@^}"
 }
 
 # TODO move these to lib?
 _vc_new_branch_text() {
+  # TODO call out to _vc_ticket_number
   local project_prefix="$(echo "$1" | tr '[:lower:]' '[:upper:]')"
   shift
   local issue_number="$1"
@@ -50,18 +59,32 @@ _vc_new_branch_text() {
 }
 
 _vc_new_branch() {
+  # TODO should these be $@ instead?
   local branch_name=$(_vc_new_branch_text $*)
+  local ticket_number=$(_vc_ticket_number $*)
+  local ticket_title=$(_vc_title $*)
   . $COMOTO_CLI_ROOT/lib/print
   # TODO this is printing something weird
-  if print_confirm "Create new branch? '$branch_name'" ; then
-    git checkout -b $branch_name
-    git push --set-upstream origin $branch_name
-    # TODO next steps that could be automated:
-    #   create PR
-    #   set title (e.g. NERD-2212 Fix Dialyzer Warning)
-    #   echo Jira link for each copy-paste into description
-    #   Add labels
-  fi
+  # if print_confirm "Create new branch? '$branch_name'" ; then
+  #   git checkout -b $branch_name
+  #   git push --set-upstream origin $branch_name
+  # fi
+  # TODO make a better title (i.e. remove the dashes from short desc)
+  # TODO add in selections so I can unselect staging and selenium tests
+  # gh pr create --title "$ticket_number $ticket_title" \
+  #   --label "wip" \
+  #   --label "team Hellmann's Deep" \
+  #   --label "create staging" \
+  #   --label "selenium tests"
+  echo
+  echo "JIRA link:"
+  echo -n '`'
+  echo -n $ticket_title
+  echo -n '` '
+  echo "[$ticket_number](https://revzilla.atlassian.net/browse/${ticket_number})"
+  echo
+  echo
+  gh pr view --web
 }
 
 add_labels_to_pr() {
@@ -89,7 +112,7 @@ _comoto_cli_execute() {
   case $subcommand in
     checkin)
       # TODO what happens if this is run when not in monorepo?
-      print_and_eval_command "comoto_cli check && git push -f && git latest && gh pr checks --watch --interval"
+      print_and_eval_command "comoto_cli check && git push -f && gst"
       ;;
     checkout|view)
       filter_string="$1"
