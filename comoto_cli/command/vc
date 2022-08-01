@@ -93,6 +93,13 @@ add_labels_to_pr() {
   gh pr edit --add-label 'wip' --add-label "team Hellmann's Deep" --add-label 'create staging' --add-label 'selenium tests'
 }
 
+_comoto_cli_command_completion() {
+  local valid_args="checkout view checkin new"
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+  # TODO add completion for the subcommands
+}
+
 _comoto_cli_execute() {
 
   while :; do
@@ -138,11 +145,4 @@ _comoto_cli_execute() {
       ;;
   esac
 
-}
-
-_comoto_cli_command_completion() {
-  local valid_args="checkout view checkin new"
-  [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
-  # TODO add completion for the subcommands
 }
