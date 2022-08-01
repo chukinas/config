@@ -18,11 +18,11 @@ Setup commands:
   reindex     Reindex (?)
   privileges  Elevate your user account privileges.
               Returns you the code to paste into datagrip
+  pw          Password for connecting to db in DataGrip
 EOF
 # TODO should the migrations come under a subcommand?
 # TODO and all the various setup stuff under a 'setup' subcommand?
 
-  echo
   print_help_h2 Examples
   print_help_ex "comoto_cli db setup"
   print_help_ex "comoto_cli db restore"
@@ -137,9 +137,21 @@ _comoto_cli_execute() {
     shift
   done
 
-  if [[ $# -eq 1 && $1 == 'privileges' ]] ; then
-    _comoto_cli_add_user_accounts
-    return 0
+  if [[ $# -eq 1 ]] ; then
+    case $1 in
+      privileges)
+        _comoto_cli_add_user_accounts
+        return 0
+        ;;
+      pw)
+        echo
+        echo "copy and paste this password into datagrip:"
+        echo
+        gcloud auth print-access-token
+        echo
+        return 0
+        ;;
+    esac
   fi
 
   _comoto_cli_db_parse_args "$*"
@@ -148,9 +160,9 @@ _comoto_cli_execute() {
   do
     echo $action
     case $action in
-      setup) _get_local_sanitized_db ;;
-      restore) _restore_db_from_dump ;;
-      reindex) cg-product-catalog-reindex ;;
+      setup)    _get_local_sanitized_db ;;
+      restore)  _restore_db_from_dump ;;
+      reindex)  cg-product-catalog-reindex ;;
     esac
   done
   # TODO break migrations out into subcommand
