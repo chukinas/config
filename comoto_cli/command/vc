@@ -63,19 +63,23 @@ _vc_new_branch() {
   local branch_name=$(_vc_new_branch_text $*)
   local ticket_number=$(_vc_ticket_number $*)
   local ticket_title=$(_vc_title $*)
-  . $COMOTO_CLI_ROOT/lib/print
   # TODO this is printing something weird
+  # echo "New branch name: '$branch_name'"
+  # echo "ticket number: '$ticket_number'"
+  # echo "ticket title: '$ticket_title'"
   # if print_confirm "Create new branch? '$branch_name'" ; then
   #   git checkout -b $branch_name
   #   git push --set-upstream origin $branch_name
   # fi
   # TODO make a better title (i.e. remove the dashes from short desc)
   # TODO add in selections so I can unselect staging and selenium tests
-  # gh pr create --title "$ticket_number $ticket_title" \
-  #   --label "wip" \
-  #   --label "team Hellmann's Deep" \
-  #   --label "create staging" \
-  #   --label "selenium tests"
+  # TODO this step fails because there needs to be at least one new commit
+  # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
+   gh pr create --title "$ticket_number $ticket_title" \
+     --label "wip" \
+     --label "team Hellmann's Deep" \
+     --label "create staging" \
+     --label "selenium tests"
   echo
   echo "JIRA link:"
   echo -n '`'
