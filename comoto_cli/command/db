@@ -124,7 +124,7 @@ _comoto_cli_add_user_accounts() {
 
 _comoto_cli_command_completion() {
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-  COMPREPLY=( $(compgen -W "privileges setup restore reindex" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "privileges setup restore reindex pw" -- "$cur_word"))
 }
 
 _comoto_cli_execute() {

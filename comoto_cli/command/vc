@@ -67,19 +67,28 @@ _vc_new_branch() {
   # echo "New branch name: '$branch_name'"
   # echo "ticket number: '$ticket_number'"
   # echo "ticket title: '$ticket_title'"
-  # if print_confirm "Create new branch? '$branch_name'" ; then
-  #   git checkout -b $branch_name
-  #   git push --set-upstream origin $branch_name
-  # fi
-  # TODO make a better title (i.e. remove the dashes from short desc)
-  # TODO add in selections so I can unselect staging and selenium tests
-  # TODO this step fails because there needs to be at least one new commit
-  # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
-   gh pr create --title "$ticket_number $ticket_title" \
-     --label "wip" \
-     --label "team Hellmann's Deep" \
-     --label "create staging" \
-     --label "selenium tests"
+
+  (
+    comoto_cli cd monorepo
+    if print_confirm "Create new branch? '$branch_name'" ; then
+      git checkout -b $branch_name
+      git push --set-upstream origin $branch_name
+    fi
+    touch temp_file
+    git add temp_file
+    git commit -m"$ticket_number [temp] delete me"
+    # TODO make a better title (i.e. remove the dashes from short desc)
+    # TODO add in selections so I can unselect staging and selenium tests
+    # TODO this step fails because there needs to be at least one new commit
+    # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
+     gh pr create --title "$ticket_number $ticket_title" \
+       --label "wip" \
+       --label "team Hellmann's Deep" \
+       --label "create staging" \
+       --label "selenium tests"
+     git rumif
+  )
+
   echo
   echo "JIRA link:"
   echo -n '`'
@@ -126,19 +135,16 @@ _comoto_cli_execute() {
       print_and_eval_command "comoto_cli check && git push -f && gst"
       ;;
     checkout|view)
-      filter_string="$1"
-      echo filter string: $filter_string
-      if [[ $# -eq 1 && -n $filter_string ]]
-      then
-        comoto_cli cd monorepo
-        # TODO handle better for when multiple results come back
-        pr_number="$(gh pr list | grep $filter_string | cut -f1)"
-        echo PR number: $pr_number
-        gh pr $subcommand $pr_number
-      else
+      if [[ $# -ne 1 ]] ; then
         print_usage_error
         exit 1
       fi
+      comoto_cli cd monorepo
+      echo my arg: $1
+      pr_number="$($COMOTO_CLI_LIB/pr search $1)"
+      echo PR number: $pr_number
+      gh pr $subcommand $pr_number
+      [[ $subcommand == checkout ]] && print_confirm 'migrate db?' && comoto_cli migrate -u -l
       ;;
     new)
       _vc_new_branch "$@"
