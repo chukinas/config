@@ -1,0 +1,17 @@
+#!/bin/bash
+
+# DESCRIPTION
+#   1. fork a comoto repo
+#   2.
+#   3. add upstream master
+#
+# USAGE
+#   $0
+
+
+# MAIN SCRIPT
+#######################################
+
+comoto_cli cd comoto
+repo_name=$($COMOTO_CLI_LIB/find_comoto_repo)
+gh repo fork $repo_name --clone --remote

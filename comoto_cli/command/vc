@@ -68,26 +68,23 @@ _vc_new_branch() {
   # echo "ticket number: '$ticket_number'"
   # echo "ticket title: '$ticket_title'"
 
-  (
-    comoto_cli cd monorepo
-    if print_confirm "Create new branch? '$branch_name'" ; then
-      git checkout -b $branch_name
-      git push --set-upstream origin $branch_name
-    fi
-    touch temp_file
-    git add temp_file
-    git commit -m"$ticket_number [temp] delete me"
-    # TODO make a better title (i.e. remove the dashes from short desc)
-    # TODO add in selections so I can unselect staging and selenium tests
-    # TODO this step fails because there needs to be at least one new commit
-    # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
-     gh pr create --title "$ticket_number $ticket_title" \
-       --label "wip" \
-       --label "team Hellmann's Deep" \
-       --label "create staging" \
-       --label "selenium tests"
-     git rumif
-  )
+  if print_confirm "Create new branch? '$branch_name'" ; then
+    git checkout -b $branch_name
+    git push --set-upstream origin $branch_name
+  fi
+  touch temp_file
+  git add temp_file
+  git commit -m"$ticket_number [temp] delete me"
+  # TODO make a better title (i.e. remove the dashes from short desc)
+  # TODO add in selections so I can unselect staging and selenium tests
+  # TODO this step fails because there needs to be at least one new commit
+  # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
+   gh pr create --title "$ticket_number $ticket_title" \
+     --label "wip" \
+     --label "team Hellmann's Deep" \
+     --label "create staging" \
+     --label "selenium tests"
+   git rumif
 
   echo
   echo "JIRA link:"

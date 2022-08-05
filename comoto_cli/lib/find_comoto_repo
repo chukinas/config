@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# create a list of all the comoto repos
+# for use with forking etc
+
+# USAGE: $JJC_CONFIG_LIB/find_comoto_repo
+
+repo_names=/tmp/repo_names
+
+if [[ ! -f $repo_names ]] ; then
+  gh repo list Comoto-Tech --limit 200  > /tmp/repos
+  gh repo list revzilla    --limit 200 >> /tmp/repos
+  cat /tmp/repos | cut -f1 > $repo_names
+fi
+
+cat $repo_names | fzf
+# if [[ -n $1 ]] ; then
+#   echo "you are searching for $1"
+# else
+#   cat $repo_names
+# fi
