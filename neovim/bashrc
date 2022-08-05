@@ -10,4 +10,5 @@ alias vi="nvim"
 alias viv="cd $NVIM_CONFIG_ROOT;vi;cd -"
 
 # set default editor
-export VISUAL=nvim
+export VISUAL="$(type -p nvim)"
+export EDITOR="$(type -p nvim)"

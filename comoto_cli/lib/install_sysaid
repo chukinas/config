@@ -1,0 +1,32 @@
+#!/bin/bash
+
+. $COMOTO_CLI_LIB/print
+
+# USAGE
+#   $COMOTO_CLI_LIB/install_sysaid [INSTALL_PATH]
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+download_url='https://comoto.sysaidit.com/download/sysaid.tar.gz'
+sysaid_filedir="$HOME/.comoto/sysaid"
+sysaid_filename='sysaid-linux.sh'
+sysaid_command="$sysaid_filedir/$sysaid_filename https://comoto.sysaidit.com/ comoto DDBC38086161CF89"
+cronjob="0 0 * * * $sysaid_command > /dev/null 2&>1"
+
+# Download and extract
+rm -rf "$sysaid_filedir"
+mkdir -p "$sysaid_filedir"
+print_and_eval_command "curl $download_url --silent | tar -z --extract --directory $sysaid_filedir"
+print_and_eval_command "ls -AlF $sysaid_filedir"
+
+# Execute once now
+print_and_eval_command "sudo $sysaid_command"
+
+# Execute daily
+echo -e "\nAdding this cronjob:\n\t$cronjob\n"
+(crontab -l 2>/dev/null; echo "$cronjob")| crontab -
+echo "Here is your current crontab:"
+crontab -l
+echo -e "\nTo edit, 'crontab -e'\n"
