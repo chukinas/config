@@ -5,11 +5,6 @@
 _comoto_cli_command_summary='Version Control helpers (git and gh wrappers)'
 _comoto_cli_command_usage='comoto_cli bash [OPTIONS] CONTAINER_SHORT_NAME [COMMANDS]'
 
-# TODO DRY this function
-usage() {
-  echo "Usage: $_comoto_cli_command_usage"
-}
-
 _comoto_cli_help() {
   print_help_h2 'Options'
   print_help_li '-h, --help  Print this help and exit'

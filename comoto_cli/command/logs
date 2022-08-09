@@ -45,7 +45,7 @@ EOF
 _comoto_cli_command_completion() {
   # TODO introduce logic for excluding the options once we're started on the args
   option_words="--help -t -p"
-  arg_words="cg jp rz redline"
+  arg_words="cg jp rz redline jrms"
   COMPREPLY=( $(compgen -W "$option_words $arg_words" -- "${COMP_WORDS[$COMP_CWORD]}") )
 }
 
@@ -63,14 +63,23 @@ _comoto_cli_execute() {
     shift
   done
 
-  app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
+  case "$1" in
+    jrms)
+      cd_into_dir="cd $JP_REPLATFORM_MIGRATION_SERVICE_PROJECT_ROOT"
+      app_name="$JP_REPLATFORM_MIGRATION_SERVICE_SERVICE"
+      ;;
+    *)
+      cd_into_dir="$(comoto_cli cd -t monorepo)"
+      app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
+      ;;
+  esac
 
   case $? in
     0|1) ;;
     *) echo print_usage_error && exit 1
   esac
 
-  cmd="($(comoto_cli cd -t monorepo) && docker-compose logs -f --tail=$tail $app_name)"
+  cmd="($cd_into_dir && docker-compose logs -f --tail=$tail $app_name)"
   if [[ $print_only == 'true' ]] ; then
     echo "$cmd"
   else

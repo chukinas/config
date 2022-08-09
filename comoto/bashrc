@@ -17,6 +17,10 @@ alias cdr='comoto_cli cd redline'
 alias cdz='comoto_cli cd zla'
 alias cdc="cd $COMOTO_PROJECT_ROOT"
 
+# JPR
+. $COMOTO_PROJECT_ROOT/jp-replatform-migration-service/scripts/bash_functions.sh
+alias jpiex=jp-replatform-migration-service-iex
+
 # cg-bash-noninteractive()
 # {
 #   # This is the same as `cg-bash` from ~/monorepo/zlaverse/support/bash_functions.sh,
