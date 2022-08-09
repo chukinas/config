@@ -49,12 +49,14 @@ _credo() {
 }
 
 _dialyzer() {
-  # TODO DRY this out?
-  local results_path="$(comoto_cli path monorepo)/dialyzer.txt"
-  echo "Removing $results_path"
-  rm $results_path
+  local monorepo_dir="$(comoto_cli path monorepo)"
+  local results_path="$monorepo_dir/dialyzer.txt"
+  if [[ -f $results_path ]] ; then
+    echo "$results_path already exists. Removing..."
+    rm $results_path
+  fi
   comoto_cli bash rz 'mix dialyzer' | tee $results_path
-  ci_scripts_dir="$(comoto_cli path monorepo)/ci"
+  ci_scripts_dir="$monorepo_dir/ci"
   $ci_scripts_dir/dialyzer_check.sh $results_path $ci_scripts_dir/dialyzer_diff.sh
 
   local exit_code=$?
