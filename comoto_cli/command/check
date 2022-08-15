@@ -15,7 +15,8 @@ Options:
 
 Checks:
   credo
-  dialyzer        (not yet implemented)
+  dialyzer        Static code check. Elixir only.
+  test            Unit test the repo
 EOF
 
   echo
@@ -82,7 +83,7 @@ _add_a_new_command() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_checks=(credo dialyzer)
+  local valid_checks=(credo dialyzer test)
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
   for i_arg
   do
@@ -106,14 +107,25 @@ _comoto_cli_execute() {
   done
 
   if [[ $# -eq 0 ]] ; then
+    # TODO add 'test' here
     print_and_eval_command 'comoto_cli check credo && comoto_cli check dialyzer'
     return $?
-  elif [[ $# -eq 1 && $1 == 'dialyzer' ]] ; then
-    _dialyzer
-    return $?
-  elif [[ $# -eq 1 && $1 == 'credo' ]] ; then
-    comoto_cli bash rz 'mix credo'
-    return $?
+  elif [[ $# -eq 1 ]] ; then
+    case "$1" in
+      credo)
+        comoto_cli bash rz 'mix credo'
+        return $?
+        ;;
+      dialyzer)
+        _dialyzer
+        return $?
+        ;;
+      test)
+        # TODO add test for all other repos
+        jp-replatform-migration-service-test
+        return $?
+        ;;
+    esac
   fi
 
   # for arg
