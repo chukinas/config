@@ -1,0 +1,7 @@
+#!/bin/bash
+
+. $COMOTO_PROJECT_ROOT/jp-replatform-migration-service/scripts/bash_functions.sh
+alias jpiex=jp-replatform-migration-service-iex
+alias jprestart="cd $COMOTO_PROJECT_ROOT/jp-replatform-migration-service && docker-compose stop && docker-compose up -d"
+alias jppush="jp-replatform-migration-service-credo && jp-replatform-migration-service-dialyzer && git push -f"
+alias jprebase="git rebase -i upstream/main"

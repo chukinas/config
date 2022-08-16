@@ -18,8 +18,7 @@ alias cdz='comoto_cli cd zla'
 alias cdc="cd $COMOTO_PROJECT_ROOT"
 
 # JPR
-. $COMOTO_PROJECT_ROOT/jp-replatform-migration-service/scripts/bash_functions.sh
-alias jpiex=jp-replatform-migration-service-iex
+. $JJC_CONFIG_ROOT/comoto/jrms
 
 # cg-bash-noninteractive()
 # {
