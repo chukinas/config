@@ -2,6 +2,13 @@
 
 . $COMOTO_PROJECT_ROOT/jp-replatform-migration-service/scripts/bash_functions.sh
 alias jpiex=jp-replatform-migration-service-iex
-alias jprestart="cd $COMOTO_PROJECT_ROOT/jp-replatform-migration-service && docker-compose stop && docker-compose up -d"
-alias jppush="jp-replatform-migration-service-credo && jp-replatform-migration-service-dialyzer && git push -f"
-alias jprebase="git rebase -i upstream/main"
+alias jrmsbounce="cd $COMOTO_PROJECT_ROOT/jp-replatform-migration-service && docker-compose stop && docker-compose up -d && jp-replatform-migration-service-log"
+alias jrmscheck="\
+  jp-replatform-migration-service-credo \ &&
+  jp-replatform-migration-service-test \ &&
+  jp-replatform-migration-service-dialyzer \
+"
+alias jrmsrebase="git rebaseontolatestmaster main && git latest"
+alias rebase568="git rebase -i origin/JPR-560-execute-CreateDummyProducts && git latest"
+alias rebase569="git rebase -i origin/JPR-568-set-isuptodate && git latest"
+alias jrmsfort="sudo nano /etc/resolv.conf"

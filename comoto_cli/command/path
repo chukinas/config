@@ -41,6 +41,7 @@ _comoto_cli_help() {
   _indent_print "ecom        $comoto_project_root/monorepo/ecom"
   _indent_print "redline     $comoto_project_root/monorepo/redline"
   _indent_print "zla         $comoto_project_root/monorepo/zlaverse/dev"
+  _indent_print "jrms        $comoto_project_root/jp-replatform-migration-service"
   echo
   print_help_h2 'Examples'
   print_help_ex "comoto_cli path ecom   # echos out '$(comoto_cli path ecom)'"
@@ -79,6 +80,7 @@ _comoto_cli_execute() {
     ecom)     target="$COMOTO_PROJECT_ROOT/monorepo/ecom";;
     redline)  target="$COMOTO_PROJECT_ROOT/monorepo/redline";;
     zla)      target="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev";;
+    jrms)     target="$COMOTO_PROJECT_ROOT/jp-replatform-migration-service";;
     *)
       print_usage_error
       exit 1
@@ -87,7 +89,8 @@ _comoto_cli_execute() {
   echo "$target"
 }
 
+# TODO tabbing twice
 _comoto_cli_command_completion() {
   [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "comoto monorepo ecom redline zla" -- "$1") )
+  COMPREPLY=( $(compgen -W "jrms comoto monorepo ecom redline zla" -- "$1") )
 }

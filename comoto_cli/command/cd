@@ -20,6 +20,7 @@ Path Short Names:
   ecom      $COMOTO_PROJECT_ROOT/monorepo/ecom
   redline   $COMOTO_PROJECT_ROOT/monorepo/redline
   zla       $COMOTO_PROJECT_ROOT/monorepo/zlaverse/dev
+  jrms      $COMOTO_PROJECT_ROOT/jp-replatform-migration-service
 EOF
 
   echo

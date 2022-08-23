@@ -79,7 +79,7 @@ _vc_new_branch() {
      --label "team Hellmann's Deep" \
      --label "create staging" \
      --label "selenium tests"
-   git rumif
+   git rebaseontolatestmaster
 
   echo
   echo "JIRA link:"

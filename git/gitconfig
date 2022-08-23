@@ -9,15 +9,20 @@
 
 [alias]
     default = !git rev-parse --abbrev-ref ${1:-origin}/HEAD && :
+    bn = !git m && git checkout -b $1 && git all && :
+
+    # logs
     lol = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)' --abbrev-commit
     all = lol --all
     latest = all -20
-    fixup = commit --fixup HEAD
-    rum = rebase upstream/master
-    rumi = rebase -i upstream/master
-    rumf = !git fetch upstream master && git rebase upstream/master && git all
-    rumif = !git fetch upstream master && git rebase -i upstream/master
-    m = !git fetch upstream master && git checkout master && git merge upstream/master && git push && git latest
-    bn = !git m && git checkout -b $1 && git all && :
-    fix = !git commit --fixup $1 && :
-    s = !git status && git latest && gh pr checks
+
+    # Fixup
+    f = !git commit --fixup $1 && :
+    fh = f HEAD
+
+    # get latest master and rebase onto it
+    rebaseontolatestmaster = !branch=${1:-master} && git fetch upstream $branch && git rebase -i upstream/$branch
+    r = rebaseontolatestmaster
+
+    # get latest master and sync my fork
+    m = !branch=${1:-master} && git fetch upstream $branch && git checkout $branch && git merge upstream/$branch && git push && git latest

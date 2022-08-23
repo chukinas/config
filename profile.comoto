@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Entry Point for bashrc on comoto laptop.
+# To use: symlink $HOME/.bashrc to this file
+
+export JJC_CONFIG_ROOT="$HOME/projects/config"
+export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
+. $JJC_CONFIG_ROOT/bash/bashrc

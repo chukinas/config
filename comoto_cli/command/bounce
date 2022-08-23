@@ -25,13 +25,14 @@ Container Short Names:
   jp          J&P Cycles
   rz          RevZilla
   redline     All three above
+  jrms        JP Replatform App
 
 EOF
 }
 
 _comoto_cli_command_completion() {
   # TODO should redline be part of the outpus of container_name?
-  local valid_args="redline $($COMOTO_CLI_ROOT/lib/container_name -l)"
+  local valid_args="jrms redline $($COMOTO_CLI_ROOT/lib/container_name -l)"
   [[ $# -gt 1 ]] && return 1
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
 }
@@ -48,11 +49,28 @@ _comoto_cli_execute() {
 
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
-    subcommand="(comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && comoto_cli logs"
-  elif [[ $# -eq 1 && $1 == 'redline' ]] ; then
-    subcommand="docker restart $($COMOTO_CLI_ROOT/lib/container_name -z cg) $($COMOTO_CLI_ROOT/lib/container_name -z jp) $($COMOTO_CLI_ROOT/lib/container_name -z rz) && comoto_cli logs"
-  elif [[ $# -eq 1 ]] && container_name=$($COMOTO_CLI_ROOT/lib/container_name -z $1) ; then
-    subcommand="docker restart $container_name && comoto_cli logs $1"
+    subcommand="\
+      (comoto_cli cd jrms && docker-compose down) && \
+      (comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && \
+      (comoto_cli cd jrms && docker-compose up -d) && \
+      comoto_cli logs"
+  elif [[ $# -eq 1 ]] ; then
+    case $1 in
+      redline)
+        subcommand="docker restart $($COMOTO_CLI_ROOT/lib/container_name -z cg) $($COMOTO_CLI_ROOT/lib/container_name -z jp) $($COMOTO_CLI_ROOT/lib/container_name -z rz) && comoto_cli logs"
+        ;;
+      jrms)
+        subcommand="(comoto_cli cd jrms && docker-compose down && docker-compose up -d && jp-replatform-migration-service-log)"
+        ;;
+      *)
+        if container_name=$($COMOTO_CLI_ROOT/lib/container_name -z $1) ; then
+          subcommand="docker restart $container_name && comoto_cli logs $1"
+        else
+          print_usage_error
+          exit 1
+        fi
+        ;;
+    esac
   else
     print_usage_error
     exit 1
