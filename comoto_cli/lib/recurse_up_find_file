@@ -1,0 +1,51 @@
+#!/bin/bash
+
+# USAGE: ./recurse_up_find_file START_DIRECTORY FILENAME
+#
+# Each comoto repo has its own profile,
+# for example, the username and container name for running `comoto_cli bash`
+# This script recurses up the directory tree looking for FILENAME
+# If not found, exits with code 1.
+#
+# EXAMPLE
+# if /home/username/foo exists
+# `$COMOTO_CLI_LIB/recurse_up_find_file $HOME/home/subdirectory foo` will echo out /home/username/foo
+# `$COMOTO_CLI_LIB/recurse_up_find_file /home foo` with echo out an error and exit 1
+
+
+exit_with_error_message() {
+  echo 'you done goofed up' >&2
+  exit 1
+}
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+# There must be two args
+# arg1: valid dir
+# arg2: non-empty
+if [[ $# -ne 2 ]] || [[ ! -d $1 ]] || [[ -z $2 ]]; then
+  exit_with_error_message
+fi
+
+directory=$(readlink -f $1)
+filename="$2"
+
+while [[ "$directory" != '/' ]]
+do
+  if filepath="$directory/$filename" && [[ -f $filepath ]] ; then
+    # SCRIPT SUCCESS
+    echo $filepath
+    exit 0
+  # TODO this is just temporary while this is under my development
+  elif idea_filepath="$directory/.idea/$filename" && [[ -f $idea_filepath ]] ; then
+    # SCRIPT SUCCESS
+    echo $idea_filepath
+    exit 0
+  fi
+  directory=$(dirname $directory)
+done
+
+# SCRIPT FAILED
+exit_with_error_message

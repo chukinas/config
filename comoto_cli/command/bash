@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 # TODO needed?
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 
@@ -25,25 +25,20 @@ _comoto_cli_help() {
   print_help_ex "comoto_cli bash --staging    rz   # Bash into revzilla webapp staging pod"
   print_help_ex "comoto_cli bash --pr 1234    rz   # Bash into revzilla webapp staging pod for PR 1234"
   print_help_ex "comoto_cli bash --current-pr rz   # Bash into revzilla webapp staging pod for PR 1234"
+  print_help_ex "comoto_cli bash                   # Bash into current repo"
   echo
 }
 
 # bash into local container
-# arg 1: container short name
-# arg 2 (optional) command to be executed in non-interactive shell
-_comoto_cli_bash_local() {
-  local container_name
-  case $1 in
-    ecom       ) container_name=$ZV_ECOM;;
-    cg         ) container_name=$ZV_CG  ;;
-    jp         ) container_name=$ZV_JP  ;;
-    rz         ) container_name=$ZV_RZ  ;;
-    *          ) print_usage_error && return 1
-  esac
-  shift
+# arg 1: docker username
+# arg 2: docker container name
+# arg 3 (optional): command to be executed in non-interactive shell
+_local_bash() {
 
-  # If commands were passed, run execute them in the container,
-  # otherwise enter an interactive shell.
+  docker_username="$1"
+  docker_container_name="$2"
+  shift 2
+
   local bash_arg
   if [[ -z $1 ]] ; then
     # No args -> Interactive shell
@@ -52,8 +47,19 @@ _comoto_cli_bash_local() {
     # Args -> execute in non-Interactive shell
     bash_arg="$@"
   fi
+  print_and_eval_command "docker exec -ti -u $docker_username $docker_container_name bash -lc '$bash_arg'"
+}
 
-  print_and_eval_command "docker exec -ti -u deploy $container_name bash -lc '$bash_arg'"
+# arg 1: short name e.g. rz
+_container_name_from_short_name() {
+  case $1 in
+    ecom       ) echo "$ZV_ECOM";;
+    cg         ) echo "$ZV_CG"  ;;
+    jp         ) echo "$ZV_JP"  ;;
+    rz         ) echo "$ZV_RZ"  ;;
+    *          ) print_usage_error && return 1
+  esac
+  return 0
 }
 
 _comoto_cli_command_completion() {
@@ -72,7 +78,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0 ;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0 ;;
       -X|--no-execute)
         print_only='true'
         ;;
@@ -86,7 +92,7 @@ _comoto_cli_execute() {
         ;;
       --current-pr)
         env='staging'
-        local pr_number="$($COMOTO_CLI_ROOT/lib/pr current)"
+        local pr_number="$($COMOTO_CLI_LIB/pr current)"
         echo "current pr: $pr_number"
         ;;
       *) break ;;
@@ -94,21 +100,33 @@ _comoto_cli_execute() {
     shift
   done
 
-  # Get the container identifier
-  local container_short_name="$1"
-  shift
+  if container_name=$(_container_name_from_short_name $1) ; then
+    container_user=deploy
+    container_short_name="$1"
+    shift
+  elif repo_profile=$($COMOTO_CLI_LIB/recurse_up_find_file . comoto_cli_repo_profile) ; then
+    . $repo_profile
+    # TODO handle for missing vars
+    container_user=$comoto_cli_repo_docker_user
+    container_name=$comoto_cli_repo_docker_container
+  else
+    return 1
+  fi
+
   local non_interactive_command="$@"
 
   case $env in
     dev)
-      _comoto_cli_bash_local "$container_short_name" "$non_interactive_command"
+      _local_bash "$container_user" "$container_name" "$non_interactive_command"
       ;;
     staging)
-      if [[ -n $pr_number ]] ; then
-        print_and_eval_command "$COMOTO_CLI_ROOT/lib/kube bash --pr '$pr_number' '$container_short_name' $non_interactive_command"
-      else
-        $COMOTO_CLI_ROOT/lib/kube bash "$container_short_name" "$non_interactive_command"
+      if [[ -z $container_short_name ]] ; then
+        print_usage_error
+        return 1
+      elif [[ -n $pr_number ]] ; then
+        pr_number_option="--pr '$pr_number'"
       fi
+      print_and_eval_command "$COMOTO_CLI_LIB/kube bash $pr_number_option '$container_short_name' $non_interactive_command"
       ;;
   esac
 
