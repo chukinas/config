@@ -6,7 +6,7 @@
 #
 # if COMMAND_PATH is omitted, we use the current $COMOTO_CLI_COMMAND_PATH
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 # CLEAR VARS & SOURCE COMMAND SCRIPT
 declare command_path

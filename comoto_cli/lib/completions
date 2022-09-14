@@ -12,7 +12,7 @@
 # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
 if [[ $COMP_CWORD -eq 1 ]] ; then
   local cur_word="$2"
-  COMPREPLY=( $(compgen -W "$($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "$($COMOTO_CLI_LIB/command list)" -- "$cur_word"))
   return 0
 fi
 

@@ -6,7 +6,7 @@
 # cat bash_functions.sh | grep ^function | sed 's/function //' | sed 's/(.*//' | grep -v ^_.*help$
 
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _kubepodlist="$COMOTO_CLI_ROOT/.store/kubepodlist"
 

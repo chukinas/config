@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 # TODO present user with y/n dialog if the node is already in use.
 # TODO add a -f option for killing ane existing connections to the node
@@ -36,7 +36,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       -d) the_env='dev';;
       -s) the_env='staging';;
       *) break ;;
@@ -54,7 +54,7 @@ _comoto_cli_execute() {
       esac
       ;;
     staging)
-      subcommand="kube-iex $($COMOTO_CLI_ROOT/lib/container_name)"
+      subcommand="kube-iex $($COMOTO_CLI_LIB/container_name)"
       ;;
   esac
 

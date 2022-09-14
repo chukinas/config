@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='No-op for now, but will be the home for logging, bouncing, etc'
 _comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
@@ -37,5 +37,5 @@ _comoto_cli_command_completion() {
 }
 
 _comoto_cli_execute() {
-  $COMOTO_CLI_ROOT/lib/render_help
+  $COMOTO_CLI_LIB/render_help
 }

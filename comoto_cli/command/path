@@ -1,7 +1,7 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/ansi_color
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/ansi_color
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Generate fully-qualified paths to common projects'
 _comoto_cli_command_usage='comoto_cli path [OPTIONS] PATH_SHORT_NAME'
@@ -59,11 +59,11 @@ _comoto_cli_execute() {
 
   # TODO now that this is a function, these out functions are exposed...
   # TODO decouple this from my personal config script
-  . $COMOTO_CLI_ROOT/lib/print "$current_command"
+  . $COMOTO_CLI_LIB/print "$current_command"
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       *) break ;;
     esac
     shift

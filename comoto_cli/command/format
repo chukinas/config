@@ -35,7 +35,7 @@ _comoto_cli_command_completion() {
 _comoto_cli_execute() {
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       *) break ;;
     esac
     shift

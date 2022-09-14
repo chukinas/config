@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Migrate local copy of ecom database'
 _comoto_cli_command_usage='comoto_cli migrate [OPTIONS] ACTIONS'
@@ -48,7 +48,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       -c) confirmation_option='-c';;
       -d) _add_db_migrate_task 'down';;
       -l) _add_db_migrate_task 'lock';;

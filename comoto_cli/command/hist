@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Translate zla bash_functions to comoto_cli commands'
 _comoto_cli_command_usage='comoto_cli hist [ZLA_BASH_FUNCTION]'
@@ -19,7 +19,7 @@ _comoto_cli_help() {
 _comoto_cli_execute() {
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       *) break ;;
     esac
     shift

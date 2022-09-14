@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Change directory to commonly-used paths like redline and ecom'
 _comoto_cli_command_usage='comoto_cli cd [OPTIONS] PATH_SHORT_NAME'
@@ -44,7 +44,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       -t) text_only='true' ;;
       *) break ;;
     esac

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Common commands to assist in developing Comoto webapps'
 _comoto_cli_command_usage='comoto_cli [OPTIONS] COMMAND'
@@ -26,11 +26,11 @@ _comoto_cli_help() {
 
   # Print the COMMAND summaries
   print_help_h2 Commands
-  for command_name in $($COMOTO_CLI_ROOT/lib/command list)
+  for command_name in $($COMOTO_CLI_LIB/command list)
   do
     local filename=$(basename $file)
     unset _comoto_cli_command_summary
-    . $($COMOTO_CLI_ROOT/lib/command path $command_name)
+    . $($COMOTO_CLI_LIB/command path $command_name)
     local whitespace_to_append=$((3 + $max_char_count - ${#command_name}))
     local command_name_with_whitespace=$(printf "%s%*s" "$command_name" "$whitespace_to_append" '')
     if [[ -n $_comoto_cli_command_summary ]] ; then
@@ -59,13 +59,13 @@ _comoto_cli_command_completion() {
 
   # Complete wip command (e.g. 'comoto_cli bou<TAB>' or 'comoto_cli l<TAB>')
   if [[ $COMP_CWORD -eq 1 ]] ; then
-    COMPREPLY=( $(compgen -W "--help $($COMOTO_CLI_ROOT/lib/command list)" -- "$cur_command"))
+    COMPREPLY=( $(compgen -W "--help $($COMOTO_CLI_LIB/command list)" -- "$cur_command"))
     return 0
   fi
 
   # Complete options or args for the command (e.g. 'comoto_cli logs r<TAB>')
   # TODO this lib script should output the correct error message?
-  if local cur_command_path="$($COMOTO_CLI_ROOT/lib/command path $cur_command)" ; then
+  if local cur_command_path="$($COMOTO_CLI_LIB/command path $cur_command)" ; then
     unset _comoto_cli_command_completion
     . $cur_command_path
     # Exclude 'comoto_cli' and the command from the words sent over to the
@@ -76,7 +76,7 @@ _comoto_cli_command_completion() {
 
 _comoto_cli_execute() {
   if [[ $# -eq 0 ]] || [[ $# -eq 1 &&  $1 =~ ^(-h|--help)$ ]] ; then
-    $COMOTO_CLI_ROOT/lib/render_help $COMOTO_CLI_ENTRY_POINT
+    $COMOTO_CLI_LIB/render_help $COMOTO_CLI_ENTRY_POINT
     return 0
   fi
 
@@ -84,7 +84,7 @@ _comoto_cli_execute() {
   shift
 
   local potential_command_path
-  if potential_command_path="$($COMOTO_CLI_ROOT/lib/command path "$command")" ; then
+  if potential_command_path="$($COMOTO_CLI_LIB/command path "$command")" ; then
     COMOTO_CLI_COMMAND_PATH="$potential_command_path"
     unset -f _comoto_cli_execute
     . $potential_command_path

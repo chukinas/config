@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # USAGE
-#   $COMOTO_CLI_ROOT/lib/command list [OPTIONS]
-#   $COMOTO_CLI_ROOT/lib/command path [OPTIONS] COMMAND
+#   $COMOTO_CLI_LIB/command list [OPTIONS]
+#   $COMOTO_CLI_LIB/command path [OPTIONS] COMMAND
 #
 # OPTIONS
 #   -d      Looks in the supplied DIR for the command(s).
@@ -19,7 +19,7 @@
 #   3. If that command is a dir, return path to DIR/_main
 
 # EXAMPLES
-#   $COMOTO_CLI_ROOT/lib/command list     # prints out: bash bounce cd check ........
+#   $COMOTO_CLI_LIB/command list     # prints out: bash bounce cd check ........
 
 #######################################
 # MAIN SCRIPT

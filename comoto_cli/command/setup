@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Set up this app and the whole Comoto ecosystem'
 _comoto_cli_command_usage='comoto_cli setup [OPTIONS]'
@@ -27,7 +27,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       *) break ;;
     esac
     shift
@@ -36,7 +36,7 @@ _comoto_cli_execute() {
   current_command='comoto_cli setup'
 
   # TODO decouple this from my personal config script
-  . $COMOTO_CLI_ROOT/lib/print "$current_command"
+  . $COMOTO_CLI_LIB/print "$current_command"
 
   # COMOTO_CLI_RC
   #######################################

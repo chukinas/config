@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 # TODO if I enter a wrong container abbrev, it shows all. It should throw error instead
 
@@ -55,7 +55,7 @@ _comoto_cli_execute() {
 
   while :; do
     case "${1-}" in
-      -h|--help) $COMOTO_CLI_ROOT/lib/render_help; return 0;;
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
       -t) tail="$2";shift;;
       -p) print_only='true';shift;;
       *) break ;;
@@ -70,7 +70,7 @@ _comoto_cli_execute() {
       ;;
     *)
       cd_into_dir="$(comoto_cli cd -t monorepo)"
-      app_name="$($COMOTO_CLI_ROOT/lib/container_name $1)"
+      app_name="$($COMOTO_CLI_LIB/container_name $1)"
       ;;
   esac
 

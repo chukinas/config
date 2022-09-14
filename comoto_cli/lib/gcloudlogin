@@ -17,7 +17,7 @@ Examples
 EOF
 }
 
-. $COMOTO_CLI_ROOT/lib/print
+. $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_completion() {
   COMPREPLY=( $(compgen -W '' -- "$cur_word"))
