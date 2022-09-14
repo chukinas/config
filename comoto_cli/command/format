@@ -3,7 +3,7 @@
 . $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Format elixir files'
-_comoto_cli_command_usage='comoto_cli format FILEPATH'
+_comoto_cli_command_usage='comoto_cli format [OPTIONS] FILEPATH'
 
 _comoto_cli_help() {
   print_help_h2 'Options'
@@ -14,9 +14,22 @@ _comoto_cli_help() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_args="--help"
-  [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+  if repo_profile=$($COMOTO_CLI_LIB/recurse_up_find_file . comoto_cli_repo_profile) ; then
+    . $repo_profile
+  else
+    print_usage_error
+    return 1
+  fi
+
+  echo "the arg is '$1'"
+  local valid_args="--help $comoto_cli_repo_container_root"
+  if [[ $# -gt 1 ]] ; then
+    return 1
+  else
+    opts=$(compgen -W "$valid_args" -- "$1")
+    paths=$(compgen -o default "$1")
+    COMPREPLY=( $opts $paths )
+  fi
 }
 
 _comoto_cli_execute() {
@@ -28,36 +41,27 @@ _comoto_cli_execute() {
     shift
   done
 
-  subcommand="$1"
-  shift
+  filepath="$(readlink -f "$1")"
+  if [[ ! -f $filepath ]] ; then
+    print_usage_error
+    return 1
+  fi
 
-  # TODO get rid of that nvim setting that doesn't un-visualize after indenting
-  # TODO add help that says that the filter string can include either the pr or jira number
-  # TODO add an echo that warns the user that they're not in the right dir (if that's the case)
-  case $subcommand in
-    checkin)
-      # TODO what happens if this is run when not in monorepo?
-      print_and_eval_command "comoto_cli check && git push -f && gst"
-      ;;
-    checkout|view)
-      if [[ $# -ne 1 ]] ; then
-        print_usage_error
-        exit 1
-      fi
-      comoto_cli cd monorepo
-      echo my arg: $1
-      pr_number="$($COMOTO_CLI_LIB/pr search $1)"
-      echo PR number: $pr_number
-      gh pr $subcommand $pr_number
-      [[ $subcommand == checkout ]] && print_confirm 'migrate db?' && comoto_cli migrate -u -l
-      ;;
-    new)
-      _vc_new_branch "$@"
-      ;;
-    *)
-      print_usage_error
-      exit 1
-      ;;
-  esac
+  if repo_profile=$($COMOTO_CLI_LIB/recurse_up_find_file $(dirname $filepath) comoto_cli_repo_profile) ; then
+    . $repo_profile
+  else
+    print_usage_error
+    return 1
+  fi
 
+  echo "local filepath:       $filepath"
+  echo "local file directory: $(dirname $filepath)"
+  echo "local repo directory: $comoto_cli_repo_dir"
+
+  # TODO this needs to be in the repo profile
+  echo "container filepath:   $(realpath --relative-to=$comoto_cli_repo_dir/lib $filepath)"
+  # echo "relative path:        $comoto_cli_repo_dir"
+  # TODO for jrms: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
 }
+
+# TODO add autocomplete to filepath
