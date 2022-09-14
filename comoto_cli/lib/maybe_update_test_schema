@@ -19,7 +19,7 @@
 #   https://github.com/revzilla/monorepo/wiki/Generate-database-schema-(ecom-schema.sql)-&-test-seed-sql-files-for-tests
 
 schema_path="$(comoto_cli path monorepo)/db/ecom-schema.sql"
-hash_path="$COMOTO_CLI_ROOT/.store/ecom_schema_hash"
+hash_path="$COMOTO_CLI_STORE/ecom_schema_hash"
 hash_dir="$(dirname $hash_path)"
 
 get_last_saved_hash() {

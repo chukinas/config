@@ -8,7 +8,7 @@
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 . $COMOTO_CLI_LIB/print
 
-_kubepodlist="$COMOTO_CLI_ROOT/.store/kubepodlist"
+_kubepodlist="$COMOTO_CLI_STORE/kubepodlist"
 
 _comoto_cli_kube_setup() {
 
