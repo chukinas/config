@@ -29,7 +29,12 @@ EOF
   echo
 }
 
-# TODO add autocomplete
+_comoto_cli_command_completion() {
+  local valid_args="cg jp rz ecom"
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+}
+
 # TODO error out when given an invalid $1
 _comoto_cli_execute() {
   the_env='dev'
@@ -59,10 +64,4 @@ _comoto_cli_execute() {
   esac
 
   print_and_eval_command --include-type "$subcommand"
-}
-
-_comoto_cli_command_completion() {
-  local valid_args="cg jp rz ecom"
-  [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
 }
