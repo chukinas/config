@@ -6,7 +6,7 @@
 # TODO add a -f option for killing ane existing connections to the node
 
 _comoto_cli_command_summary='Start an Ruby or IEX session in a container'
-_comoto_cli_command_usage='comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME]'
+_comoto_cli_command_usage='comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME] [command to be run inside repl]'
 
 _comoto_cli_help() {
   cat <<EOF
@@ -63,5 +63,11 @@ _comoto_cli_execute() {
       ;;
   esac
 
-  print_and_eval_command --include-type "$subcommand"
+
+  shift
+  if [[ $# -eq 0 ]] ; then
+    print_and_eval_command --include-type "$subcommand"
+  else
+    print_and_eval_command --include-type "$subcommand <<< '$*'"
+  fi
 }
