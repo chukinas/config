@@ -2,7 +2,7 @@
 
 . $COMOTO_CLI_LIB/print
 
-_comoto_cli_command_summary='Initial setup of a local database and migration helpers'
+_comoto_cli_command_summary='Set up your local database'
 _comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
 
 _comoto_cli_help() {
@@ -13,18 +13,14 @@ Options:
   -h, --help      Print this help and exit
 
 Setup commands:
-  setup       Download a sanitized db
-  restore     Restore (?)
-  reindex     Reindex (?)
+  restore     Update local db with the latest dump from GCP
+  reindex     Reindex Elasticsearch
   privileges  Elevate your user account privileges.
               Returns you the code to paste into datagrip
   pw          Password for connecting to db in DataGrip
 EOF
-# TODO should the migrations come under a subcommand?
-# TODO and all the various setup stuff under a 'setup' subcommand?
 
   print_help_h2 Examples
-  print_help_ex "comoto_cli db setup"
   print_help_ex "comoto_cli db restore"
   print_help_ex "comoto_cli db reindex"
   print_help_ex "comoto_cli db privileges   # generates SQL code you can paste into datagrip"
@@ -38,61 +34,10 @@ commands=""
 # TODO move this dir into comoto_cli
 dumps_dir="$COMOTO_PROJECT_ROOT/.db-dumps"
 
-# TODO move this into a subcommand called `dump`
-# TODO I'll define functions like
-#  - is_dumps_dir empty
-#  - get_latest_dump
-#  - check_health
-#  - restore
-#  - delete
-_get_local_sanitized_db() {
-
-  # SETUP DUMPS DIR
-  # TODO should probably ask to delete any existing dumps
-  # That's nice. Then there's only ever one dump in there at a time
-  # TODO move this into the initial bashrc for comoto_cli so we don't have to make this check each and every time
-  print_and_eval_command "mkdir -p $dumps_dir"
-
-  # SELECT DUMP
-  # TODO allow the user to select the dump they want to use
-  most_recent_dump=$(gsutil ls 'gs://rz-db-dumps/ecom*' \
-    | sort -r `# most recent one first` \
-    | head -1)
-  echo most_recent_dump: $most_recent_dump
-  selected_dump=$most_recent_dump
-
-  # COPY DUMP
-  # TODO warn the user that this is going to take a while (perhaps one or a few hours). Does (s)he want to proceed?
-  # TODO this print_and_eval_command should prefix with command name
-  # TODO ensure that the other commands do the same
-  print_and_eval_command "gsutil cp $selected_dump $dumps_dir"
-
-  exit 0
-}
-
-# TODO THIS doesn't work ... until I up my containers ... is this true?
-_restore_db_from_dump() {
-  dump_name=$(ls $dumps_dir)
-  if [[ $(ls $dumps_dir | wc -l) -eq 1 ]]
-  then
-    echo 'TODO: ask user to proceed since this is going to take a looong time'
-    # TODO note: this fill hang for a long time at "Removing obsolete dictionary files". THis is ok.
-    # TODO in another window, run: `df -h` to monitor the `/dev/mapper/data-root`
-    print_and_eval_command "postgres-dump-restore $dumps_dir/$dump_name"
-    # TODO remove the backup
-    # TODO part of the health check should be checking to make sure there are no dumps left
-    exit 0
-  else
-    # TODO improve error msg
-    echo "Error: there must be exactly one db dump in $dumps_dir. Run the setup cmd"
-    exit 1
-  fi
-}
-
 _comoto_cli_db_actions=()
 
 _comoto_cli_db_parse_args() {
-  if [[ $# -eq 1 && $1 =~ ^(setup|restore|reindex)$ ]] ; then
+  if [[ $# -eq 1 && $1 =~ ^(restore|reindex)$ ]] ; then
     _comoto_cli_db_actions+=("$1")
     return 0
   fi
@@ -124,7 +69,7 @@ _comoto_cli_add_user_accounts() {
 
 _comoto_cli_command_completion() {
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-  COMPREPLY=( $(compgen -W "privileges setup restore reindex pw" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "privileges restore reindex pw" -- "$cur_word"))
 }
 
 _comoto_cli_execute() {
@@ -160,11 +105,9 @@ _comoto_cli_execute() {
   do
     echo $action
     case $action in
-      setup)    _get_local_sanitized_db ;;
-      restore)  _restore_db_from_dump ;;
+      restore)  $COMOTO_CLI_LIB/db_restore_from_latest_dump ;;
       reindex)  cg-product-catalog-reindex ;;
     esac
   done
-  # TODO break migrations out into subcommand
   print_and_eval_command $commands
 }

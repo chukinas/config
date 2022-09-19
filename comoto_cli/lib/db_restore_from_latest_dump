@@ -1,0 +1,123 @@
+#!/bin/bash
+
+# Each month, the ecom database is sanitized and backed up.
+# These backups are used to create or restore your local db.
+#
+# This script will:
+# 1. Find the latest db dump
+# 2. If an older db dump is found on your drive, you'll be asked to delete it.
+#    If the latest dump isn't already downloaded, it will now be downloaded.
+# 3. Build your local db from the dump.
+# 4. Delete the dump we just downloaded. (You'll be asked to confirm before doing so)
+#
+# This script DOES NOT:
+# - set user permissions
+# -
+#
+# Based on the instruction found here:
+# https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
+#
+# USAGE
+#   $COMOTO_CLI_LIB/db_restore_from_latest_dump
+
+. $COMOTO_CLI_ZLA_BASH_FUNCTIONS
+. $COMOTO_CLI_LIB/print
+
+dumps_dir="$COMOTO_CLI_STORE/db_dumps"
+
+# Get list of available dumps.
+# Determine most recent one.
+determine_dump_to_download() {
+  # Show user all available dumps:
+  print_and_eval_command "gsutil ls 'gs://rz-db-dumps/ecom*'"
+  # Possible future improvement: allow the user to select the dump they want to use
+  local latest_db_dump=$(gsutil ls 'gs://rz-db-dumps/ecom*' \
+    | sort -r `# most recent one first` \
+    | head -1)
+  echo
+  echo Latest db dump: $latest_db_dump
+  echo
+
+  # Example source: gs://rz-db-dumps/ecom-sanitized-20220901000004.dump
+  dump_path_source=$latest_db_dump
+
+  # Example target: <dumps-dir>/ecom-sanitized-20220901000004.dump
+  dump_path_target="$dumps_dir/${latest_db_dump##*/}"
+}
+
+# Delete any old dumps
+# Check that latest dump isn't already downloaded.
+# Download latest dump if needed.
+download_dump() {
+  mkdir -p $dumps_dir
+
+  if [[ -f $dump_path_target ]] ; then
+    echo "$dump_path_target already exists! Skipping download."
+    # Possible future improvement: give user an option to override
+    return 0
+  fi
+
+  # File needs to be downloaded.
+  # Make sure there aren't any old huge dumps sitting in the directory
+  local file_count=$(ls $dumps_dir | wc -l )
+  if [[ $file_count -gt 0 ]] ; then
+    if print_confirm "$dumps_dir must be empty before proceeding. It currently contains $file_count files. Delete?" ; then
+      rm -rf $dumps_dir/*
+    else
+      echo 'Exiting'
+      return 1
+    fi
+  fi
+
+  if print_confirm "Download $dump_path_source? Beware, this can take up to four hours." ; then
+    print_and_eval_command "gsutil cp $dump_path_source $dump_path_target"
+    return 0
+  else
+    echo 'Exiting'
+    return 1
+  fi
+}
+
+restore_db_from_dump() {
+  local db_dumps=($dumps_dir/*.dump)
+  local db_dump_count="${#db_dumps[@]}"
+
+  if [[ $db_dump_count -ne 1 ]] ; then
+    if [[ $db_dump_count -eq 0 ]] ; then
+      echo "Error: no dumps found in $dumps_dir"
+    else
+      echo "Error: there must be exactly one db dump in $dumps_dir, found $db_dump_count:"
+      echo ${db_dumps[@]}
+    fi
+    echo "Exiting"
+    exit 1
+  fi
+
+  local db_dump_to_restore="${db_dumps[0]}"
+  echo "About to restore $db_dump_to_restore"
+  echo '  This can take several hours (sometimes 4+).'
+  echo '  It will hang for a long time at the "Removing obsolete dictionary files" step. This is normal.'
+  echo '  Observe its progress by running `watch -d df -h` in another terminal and monitoring the `/dev/mapper/data-root` Filesystem.'
+  echo '  If if hangs too long at 0% Use, something went wrong and you should try again.'
+  if print_confirm "Proceed?" ; then
+    echo "Current time: $(date)"
+    print_and_eval_command "postgres-dump-restore $db_dump_to_restore"
+  else
+    echo 'Exiting'
+    exit 1
+  fi
+}
+
+remove_downloaded_dumps() {
+  if print_confirm "Remove all downloaded dumps?" ; then
+    print_and_eval_command "rm -rf $dumps_dir"
+  fi
+}
+
+# MAIN SCRIPT
+#######################################
+
+determine_dump_to_download && \
+  download_dump && \
+  restore_db_from_dump && \
+  remove_downloaded_dumps
