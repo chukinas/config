@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Reindex your local Elasticsearch.
+# Run this after restoring your local db from a GCP dump.
+#
+# Based on the instruction found here:
+# https://revzilla.atlassian.net/wiki/spaces/TECH/pages/338919566/Kubernetes+and+Google+Cloud+-+Getting+Started
+#
+# USAGE
+usage="$COMOTO_CLI_LIB/elasticsearch reindex|monitor_reindex"
+
+. $COMOTO_CLI_ZLA_BASH_FUNCTIONS
+. $COMOTO_CLI_LIB/print
+
+print_error_and_exit() {
+  echo "Usage: $usage"
+  echo 'Exiting'
+  exit 1
+}
+
+reindex_general() {
+  if print_confirm "Reindexing Elasticsearch can take between 16-24 hours. Continue?" ; then
+    print_and_eval_command cg-product-catalog-reindex
+  else
+    echo 'Exiting'
+    exit 1
+  fi
+}
+
+reindex_blogs() {
+  local iex_command='Redline.Blog.Elasticsearch.Worker.reindex(nil, Redline.Blog.create_index)'
+  print_and_eval_command "comoto_cli repl rz $iex_command"
+}
+
+monitor() {
+  local monitor_url='http://localhost:9200/_plugin/head/'
+  echo "Open $monitor_url in a browser."
+  echo 'You can set the refresh rate using the `refresh` pulldown menu.'
+  print_and_eval_command "open $monitor_url"
+}
+
+# MAIN SCRIPT
+#######################################
+
+if [[ $# -eq 0 ]] ; then
+  monitor && reindex_general && reindex_blogs
+  exit $?
+elif [[ $# -eq 1 ]] ; then
+  case "$1" in
+    monitor_reindex)
+      monitor
+      exit $?
+      ;;
+    reindex)
+      reindex_general && reindex_blogs
+      exit $?
+      ;;
+  esac
+fi
+
+print_error_and_exit

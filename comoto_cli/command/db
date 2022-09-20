@@ -106,7 +106,7 @@ _comoto_cli_execute() {
     echo $action
     case $action in
       restore)  $COMOTO_CLI_LIB/db_restore_from_latest_dump ;;
-      reindex)  cg-product-catalog-reindex ;;
+      reindex)  $COMOTO_CLI_LIB/elasticsearch ;;
     esac
   done
   print_and_eval_command $commands
