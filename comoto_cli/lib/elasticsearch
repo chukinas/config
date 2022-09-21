@@ -18,9 +18,20 @@ print_error_and_exit() {
   exit 1
 }
 
+log() {
+  $COMOTO_CLI_LIB/db_restore_from_latest_dump log "$1"
+}
+
 reindex_general() {
   if print_confirm "Reindexing Elasticsearch can take between 16-24 hours. Continue?" ; then
-    print_and_eval_command cg-product-catalog-reindex
+    log "begin elasticsearch reindex"
+    if print_and_eval_command cg-product-catalog-reindex ; then
+      log "complete elasticsearch reindex"
+      exit 0
+    else
+      log "failed elasticsearch reindex"
+      exit 1
+    fi
   else
     echo 'Exiting'
     exit 1
@@ -29,7 +40,15 @@ reindex_general() {
 
 reindex_blogs() {
   local iex_command='Redline.Blog.Elasticsearch.Worker.reindex(nil, Redline.Blog.create_index)'
-  print_and_eval_command "comoto_cli repl rz $iex_command"
+  log "begin elasticsearch blog reindex"
+  if print_and_eval_command "comoto_cli repl rz $iex_command" ; then
+    log "complete elasticsearch blog reindex"
+    exit 0
+  else
+    log "failed elasticsearch blog reindex"
+    exit 1
+  fi
+  print_and_eval_command
 }
 
 monitor() {
@@ -39,11 +58,23 @@ monitor() {
   print_and_eval_command "open $monitor_url"
 }
 
+reindex_all() {
+  # this bounce might not be necessary?
+  # I orig put this in here b/c when I opened the monitoring site before starting the actual reindex,
+  # There was no page available b/c my pods weren't up yet.
+  comoto_cli bounce
+  # TODO it could be a problem, waiting for the general reindex to finish first, b/c it seems to literally never end for anyone.
+  # It just runs and runs forever.
+  # Solve this by simply alerting the user to this? Telling them to run the blog reindex later?
+  # What does the confluence doc say?
+  reindex_general && reindex_blogs
+}
+
 # MAIN SCRIPT
 #######################################
 
 if [[ $# -eq 0 ]] ; then
-  monitor && reindex_general && reindex_blogs
+  monitor && reindex_all
   exit $?
 elif [[ $# -eq 1 ]] ; then
   case "$1" in
@@ -52,7 +83,7 @@ elif [[ $# -eq 1 ]] ; then
       exit $?
       ;;
     reindex)
-      reindex_general && reindex_blogs
+      reindex_all
       exit $?
       ;;
   esac

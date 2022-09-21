@@ -23,11 +23,12 @@
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 . $COMOTO_CLI_LIB/print
 
+# TODO rename db_restore?
 dumps_dir="$COMOTO_CLI_STORE/db_dumps"
+logs_path="$dumps_dir/logs"
 
 log() {
   local msg="$1"
-  local logs_path="$dumps_dir/logs"
   mkdir -p $dumps_dir
   echo "[$(date)] $msg" >> $logs_path
 }
@@ -138,7 +139,22 @@ remove_downloaded_dumps() {
 # MAIN SCRIPT
 #######################################
 
-determine_dump_to_download && \
-  download_dump && \
-  restore_db_from_dump && \
-  remove_downloaded_dumps
+if [[ $1 = log && $# -eq 2 ]] ; then
+  # Refactor this out into a separate non-executable script so both this and the elasticsearch can call into it
+  log "$2"
+elif [[ $1 = logs ]] ; then
+  # Refactor this out into a separate non-executable script so both this and the elasticsearch can call into it
+  # TODO add this to comoto_cli dbrestore logs
+  cat $logs_path
+elif [[ $1 = find_latest_dump ]] ; then
+  determine_dump_to_download
+elif [[ $# -eq 0 ]] ; then
+  # default behavior
+  determine_dump_to_download && \
+    download_dump && \
+    restore_db_from_dump && \
+    remove_downloaded_dumps
+else
+  echo Exiting
+  exit 1
+fi
