@@ -6,7 +6,7 @@
 # TODO add a -f option for killing ane existing connections to the node
 
 _comoto_cli_command_summary='Start an Ruby or IEX session in a container'
-_comoto_cli_command_usage='comoto_cli repl [OPTIONS] [CONTAINER_SHORT_NAME] [command to be run inside repl]'
+_comoto_cli_command_usage='comoto_cli repl [OPTIONS] CONTAINER_SHORT_NAME'
 
 _comoto_cli_help() {
   cat <<EOF
@@ -49,13 +49,15 @@ _comoto_cli_execute() {
     shift
   done
 
+  local short_name="$1"
+  shift
   case $the_env in
     dev)
-      case $1 in
+      case $short_name in
         # TODO is this correct or should this be in the "bash" command?
         ecom) subcommand="ecom-bash" ;;
-        cg|jp|rz) subcommand="$1-iex" ;;
-        *) print_usage_error && exit 1
+        cg|jp|rz) subcommand="$short_name-iex" ;;
+        *) print_usage_error && return 1
       esac
       ;;
     staging)
@@ -63,11 +65,22 @@ _comoto_cli_execute() {
       ;;
   esac
 
-
-  shift
   if [[ $# -eq 0 ]] ; then
     print_and_eval_command --include-type "$subcommand"
   else
+    print_usage_error && return 1
+    # TODO this does not work yet
     print_and_eval_command --include-type "$subcommand <<< '$*'"
   fi
+
+  exit_status=$?
+  if [[ $exit_status -eq 1 ]] ; then
+    echo
+    echo 'Comoto CLI failure.'
+    echo '  You may have gotten an error that looks like this:'
+    echo '  `Protocol 'inet_tcp': the name console@1dac3874472d seems to be in use by another Erlang node`'
+    echo "  If so, bounce the container via \`comoto_cli bounce $short_name\`."
+  fi
+
+  return $exit_status
 }
