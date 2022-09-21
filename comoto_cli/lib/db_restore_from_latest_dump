@@ -25,6 +25,13 @@
 
 dumps_dir="$COMOTO_CLI_STORE/db_dumps"
 
+log() {
+  local msg="$1"
+  local logs_path="$dumps_dir/logs"
+  mkdir -p $dumps_dir
+  echo "[$(date)] $msg" >> $logs_path
+}
+
 # Get list of available dumps.
 # Determine most recent one.
 determine_dump_to_download() {
@@ -41,8 +48,12 @@ determine_dump_to_download() {
   # Example source: gs://rz-db-dumps/ecom-sanitized-20220901000004.dump
   dump_path_source=$latest_db_dump
 
+  # Example name: ecom-sanitized-20220901000004.dump
+  local dump_name="${latest_db_dump##*/}"
+  log "most recent dump avail on gcp: $dump_name"
+
   # Example target: <dumps-dir>/ecom-sanitized-20220901000004.dump
-  dump_path_target="$dumps_dir/${latest_db_dump##*/}"
+  dump_path_target="$dumps_dir/$dump_name"
 }
 
 # Delete any old dumps
@@ -70,8 +81,13 @@ download_dump() {
   fi
 
   if print_confirm "Download $dump_path_source? Beware, this can take up to four hours." ; then
-    print_and_eval_command "gsutil cp $dump_path_source $dump_path_target"
-    return 0
+    if print_and_eval_command "gsutil cp $dump_path_source $dump_path_target" ; then
+      log "downloaded $dump_path_target"
+      return 0
+    else
+      log "download failed: $dump_path_target"
+      return 1
+    fi
   else
     echo 'Exiting'
     return 1
@@ -101,7 +117,12 @@ restore_db_from_dump() {
   echo '  If if hangs too long at 0% Use, something went wrong and you should try again.'
   if print_confirm "Proceed?" ; then
     echo "Current time: $(date)"
-    print_and_eval_command "postgres-dump-restore $db_dump_to_restore"
+    log "Begin restoring $db_dump_to_restore"
+    if print_and_eval_command "postgres-dump-restore $db_dump_to_restore" ; then
+      log "Finished restoring $db_dump_to_restore"
+    else
+      log "Failed to restore $db_dump_to_restore"
+    fi
   else
     echo 'Exiting'
     exit 1
@@ -110,7 +131,7 @@ restore_db_from_dump() {
 
 remove_downloaded_dumps() {
   if print_confirm "Remove all downloaded dumps?" ; then
-    print_and_eval_command "rm -rf $dumps_dir"
+    print_and_eval_command "rm $dumps_dir/*.dump"
   fi
 }
 
