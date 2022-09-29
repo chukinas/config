@@ -1,0 +1,111 @@
+#!/bin/bash
+
+# USAGE
+#   $COMOTO_CLI_LIB/github_create_pr JIRA_PROJECT ISSUE_NUMBER [SPACE SEPARATED DESCRIPTION]
+#   $COMOTO_CLI_LIB/command path [OPTIONS] COMMAND
+#
+# EXAMPLE
+#   $COMOTO_CLI_LIB/github_create_pr jpr 123 this is an example ticket
+#   # creates a branch `JPR-123-this-is-an-example-ticket`
+#   # creates a new monorepo pr
+
+. $COMOTO_CLI_LIB/print
+declare issue_id=''
+
+
+# EXAMPLE
+# echo_issue_id jpr 123 my example title
+# => echo 'JPR-123'
+echo_issue_id() {
+  local project_prefix="${1^^}"   # all caps
+  local issue_number="$2"         # digits
+  echo "$project_prefix-$issue_number"
+}
+
+# EXAMPLE
+# echo_branch_name jpr 123 my example title
+# => echo 'JPR-123-my-example-title'
+echo_branch_name() {
+  local ticket_id=$(echo_issue_id $*)
+  shift 2
+  local short_description="$(echo "$*" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
+  echo "$ticket_id-$short_description"
+}
+
+# EXAMPLE
+# capitalize_each_word my example title
+# => echo My Example Title
+capitalize_each_word() {
+  echo "${@^}"
+}
+
+# USAGE
+#   create_pr_body_file ISSUE_ID ISSUE_DESCRIPTION
+# EXAMPLE
+#   create_pr_body_file JPR-123 'My Example Title'
+create_pr_body_file() {
+  local issue_id="$1"
+  local issue_desc="$2"
+  local jira_link_line="[\`$issue_id\` $issue_desc](https://revzilla.atlassian.net/browse/$issue_id)"
+
+  local temp_pr_desc_file=$(mktemp)
+  local monorepo_pr_template="$(comoto_cli path monorepo)/.github/PULL_REQUEST_TEMPLATE.md"
+  cp $monorepo_pr_template $temp_pr_desc_file
+
+  # replace the placeholder jira issue link with the actual one:
+  local replace_logic="/JIRA/c\\$jira_link_line"
+  sed -i "/JIRA/c\\$jira_link_line" "$temp_pr_desc_file"
+
+  echo "$temp_pr_desc_file"
+}
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+# TODO should these be $@ instead?
+issue_id=$(echo_issue_id $*)
+branch=$(echo_branch_name $*)
+shift 2
+
+issue_title="$(capitalize_each_word $*)"
+pr_title="$issue_id $issue_title"
+
+echo
+echo "issue id:    $issue_id"
+echo "issue title: $issue_title"
+echo "branch name: $branch"
+echo "PR title:    $pr_title"
+
+echo
+if print_confirm "Create new branch '$branch'?" ; then
+  git checkout -b $branch
+  # TODO right now this only works for monorepo and other repos that have is named origin
+  # TODO maybe the script could take an option?
+fi
+
+echo
+echo 'creating a temp commit to be deleted later...'
+touch temp_file
+git add temp_file
+git commit -m"$issue_id [temp] delete me later"
+
+echo
+if print_confirm 'Rebase onto latest master?' ; then
+  git rebaseontolatestmaster
+fi
+
+echo
+echo 'setting upstream...'
+git push --set-upstream origin $branch
+
+echo
+if print_confirm 'Create a PR?' ; then
+  gh pr create \
+    --fill \
+    --label "wip" \
+    --label "team Hellmann's Deep" \
+    --body-file "$(create_pr_body_file "$issue_id" "$issue_title")" \
+    --title "$pr_title" \
+    --repo 'revzilla/monorepo'
+fi

@@ -28,76 +28,6 @@ _comoto_cli_help() {
   echo
 }
 
-# TODO move these to lib?
-_vc_ticket_number() {
-  local project_prefix="${1^^}"   # all caps
-  local issue_number="$2"         # digits
-  echo "$project_prefix-$issue_number"
-}
-
-# Drop first two args, Capitalize all remaining
-_vc_title() {
-  shift
-  shift
-  echo "${@^}"
-}
-
-# TODO move these to lib?
-_vc_new_branch_text() {
-  # TODO call out to _vc_ticket_number
-  local project_prefix="$(echo "$1" | tr '[:lower:]' '[:upper:]')"
-  shift
-  local issue_number="$1"
-  shift
-  local short_description="$(echo "$*" | tr '[:upper:]' '[:lower:]' | tr ' ' '-')"
-  echo "$project_prefix-$issue_number-$short_description"
-}
-
-_vc_new_branch() {
-  # TODO should these be $@ instead?
-  local branch_name=$(_vc_new_branch_text $*)
-  local ticket_number=$(_vc_ticket_number $*)
-  local ticket_title=$(_vc_title $*)
-  # TODO this is printing something weird
-  # echo "New branch name: '$branch_name'"
-  # echo "ticket number: '$ticket_number'"
-  # echo "ticket title: '$ticket_title'"
-
-  if print_confirm "Create new branch? '$branch_name'" ; then
-    git checkout -b $branch_name
-    git push --set-upstream origin $branch_name
-  fi
-  touch temp_file
-  git add temp_file
-  git commit -m"$ticket_number [temp] delete me"
-  # TODO make a better title (i.e. remove the dashes from short desc)
-  # TODO add in selections so I can unselect staging and selenium tests
-  # TODO this step fails because there needs to be at least one new commit
-  # So to make this work I'll need to create a new file, commit it, THEN pick up at this step
-   gh pr create --title "$ticket_number $ticket_title" \
-     --label "wip" \
-     --label "team Hellmann's Deep" \
-     --label "create staging" \
-     --label "selenium tests"
-   git rebaseontolatestmaster
-
-  echo
-  echo "JIRA link:"
-  echo -n '`'
-  echo -n $ticket_title
-  echo -n '` '
-  echo "[$ticket_number](https://revzilla.atlassian.net/browse/${ticket_number})"
-  echo
-  echo
-  gh pr view --web
-}
-
-add_labels_to_pr() {
-  # TODO a healthcheck would include checking that gh is installed.
-  # TODO maybe the default labels should be included in ~/.comoto_rc
-  gh pr edit --add-label 'wip' --add-label "team Hellmann's Deep" --add-label 'create staging' --add-label 'selenium tests'
-}
-
 _comoto_cli_command_completion() {
   local valid_args="checkout view checkin new"
   [[ $# -gt 1 ]] && return 1
@@ -139,7 +69,7 @@ _comoto_cli_execute() {
       [[ $subcommand == checkout ]] && print_confirm 'migrate db?' && comoto_cli migrate -u -l
       ;;
     new)
-      _vc_new_branch "$@"
+      $COMOTO_CLI_LIB/github_create_pr "$@"
       ;;
     *)
       print_usage_error
