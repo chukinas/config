@@ -3,47 +3,30 @@
 . $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Set up your local database'
-_comoto_cli_command_usage='comoto_cli db [OPTIONS] SETUP_COMMAND'
+_comoto_cli_command_usage='comoto_cli db [OPTIONS] SUBCOMMAND'
 
 _comoto_cli_help() {
-  # TODO reimplement
-  cat <<EOF
+  print_help_h2 'Options'
+  print_help_li '-h, --help  Print this help and exit'
 
-Options:
-  -h, --help      Print this help and exit
+  print_help_h2 'Subcommands'
+  print_help_li 'from_dump   Update local db with the latest dump from GCP'
+  print_help_li 'reindex     Reindex Elasticsearch'
+  print_help_li 'privileges  Elevate your user account privileges.'
+  print_help_li '            Returns you the code to paste into datagrip'
+  # TODO is this pw subcommand in the right place?
+  print_help_li 'pw          Password for connecting to db in DataGrip'
 
-Setup commands:
-  restore     Update local db with the latest dump from GCP
-  reindex     Reindex Elasticsearch
-  privileges  Elevate your user account privileges.
-              Returns you the code to paste into datagrip
-  pw          Password for connecting to db in DataGrip
-EOF
-
-  print_help_h2 Examples
-  print_help_ex "comoto_cli db restore"
+  print_help_h2 'Examples'
+  print_help_ex "comoto_cli db from_dump"
   print_help_ex "comoto_cli db reindex"
   print_help_ex "comoto_cli db privileges   # generates SQL code you can paste into datagrip"
-  echo
 }
 
 
-# TODO `local command` instead?
-commands=""
-
-# TODO move this dir into comoto_cli
-dumps_dir="$COMOTO_PROJECT_ROOT/.db-dumps"
-
-_comoto_cli_db_actions=()
-
-_comoto_cli_db_parse_args() {
-  if [[ $# -eq 1 && $1 =~ ^(restore|reindex)$ ]] ; then
-    _comoto_cli_db_actions+=("$1")
-    return 0
-  fi
-}
-
+# TODO extract this to lib
 _comoto_cli_add_user_accounts() {
+  # TODO this should be a function in redline that's called in an iex session
   local email_address='jonathan.chukinas@revzilla.com'
   if ! print_confirm "Is this your account address: $email_address?" ; then
     echo exiting >&2
@@ -69,45 +52,33 @@ _comoto_cli_add_user_accounts() {
 
 _comoto_cli_command_completion() {
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
-  COMPREPLY=( $(compgen -W "privileges restore reindex pw" -- "$cur_word"))
+  COMPREPLY=( $(compgen -W "privileges from_dump reindex pw" -- "$cur_word"))
 }
 
 _comoto_cli_execute() {
-
-  while :; do
-    case "${1-}" in
-      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
-      *) break ;;
-    esac
-    shift
-  done
-
-  if [[ $# -eq 1 ]] ; then
-    case $1 in
-      privileges)
-        _comoto_cli_add_user_accounts
-        return 0
-        ;;
-      pw)
-        echo
-        echo "copy and paste this password into datagrip:"
-        echo
-        gcloud auth print-access-token
-        echo
-        return 0
-        ;;
-    esac
-  fi
-
-  _comoto_cli_db_parse_args "$*"
-
-  for action in "${_comoto_cli_db_actions[@]}"
-  do
-    echo $action
-    case $action in
-      restore)  $COMOTO_CLI_LIB/db_restore_from_latest_dump ;;
-      reindex)  $COMOTO_CLI_LIB/elasticsearch ;;
-    esac
-  done
-  print_and_eval_command $commands
+  case "${1-}" in
+    -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
+    privileges)
+      _comoto_cli_add_user_accounts
+      return 0
+      ;;
+    pw)
+      echo
+      echo "copy and paste this password into datagrip:"
+      echo
+      gcloud auth print-access-token
+      echo
+      return 0
+      ;;
+    from_dump)
+      $COMOTO_CLI_LIB/db_restore_from_latest_dump
+      ;;
+    reindex)
+      $COMOTO_CLI_LIB/elasticsearch
+      ;;
+    *)
+      # TODO error
+      break
+      ;;
+  esac
 }

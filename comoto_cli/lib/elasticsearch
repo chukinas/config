@@ -11,6 +11,7 @@ usage="$COMOTO_CLI_LIB/elasticsearch reindex|monitor_reindex"
 
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 . $COMOTO_CLI_LIB/print
+. $COMOTO_CLI_LIB/db_restore
 
 print_error_and_exit() {
   echo "Usage: $usage"
@@ -18,18 +19,16 @@ print_error_and_exit() {
   exit 1
 }
 
-log() {
-  $COMOTO_CLI_LIB/db_restore_from_latest_dump log "$1"
-}
-
 reindex_general() {
-  if print_confirm "Reindexing Elasticsearch can take between 16-24 hours. Continue?" ; then
-    log "begin elasticsearch reindex"
+  if print_confirm "Reindexing Elasticsearch can take between 16-24 hours if this is your first time running it. Continue?" ; then
+    db_restore_log "begin elasticsearch reindex"
     if print_and_eval_command cg-product-catalog-reindex ; then
-      log "complete elasticsearch reindex"
+      # TODO hmmm gonna have to refactor this. That shell function never exits
+      # TODO I'll have to monitor the blogs looking for the correct text string
+      db_restore_log "complete elasticsearch reindex"
       exit 0
     else
-      log "failed elasticsearch reindex"
+      db_restore_log "failed elasticsearch reindex"
       exit 1
     fi
   else
@@ -40,12 +39,12 @@ reindex_general() {
 
 reindex_blogs() {
   local iex_command='Redline.Blog.Elasticsearch.Worker.reindex(nil, Redline.Blog.create_index)'
-  log "begin elasticsearch blog reindex"
-  if print_and_eval_command "comoto_cli repl rz $iex_command" ; then
-    log "complete elasticsearch blog reindex"
+  db_restore_log "begin elasticsearch blog reindex"
+  if print_and_eval_command "rz-iex '$iex_command'" ; then
+    db_restore_log "complete elasticsearch blog reindex"
     exit 0
   else
-    log "failed elasticsearch blog reindex"
+    db_restore_log "failed elasticsearch blog reindex"
     exit 1
   fi
   print_and_eval_command
@@ -78,6 +77,10 @@ if [[ $# -eq 0 ]] ; then
   exit $?
 elif [[ $# -eq 1 ]] ; then
   case "$1" in
+    blog)
+      reindex_blogs
+      exit $?
+      ;;
     monitor_reindex)
       monitor
       exit $?

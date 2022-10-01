@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# TODO rename github_find_comoto_repo
+# TODO do the same for fork_comoto_repo
+
 # create a list of all the comoto repos
 # for use with forking etc
 

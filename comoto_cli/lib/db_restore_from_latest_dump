@@ -22,16 +22,10 @@
 
 . $COMOTO_CLI_ZLA_BASH_FUNCTIONS
 . $COMOTO_CLI_LIB/print
+. $COMOTO_CLI_LIB/db_restore
 
-# TODO rename db_restore?
 dumps_dir="$COMOTO_CLI_STORE/db_dumps"
 logs_path="$dumps_dir/logs"
-
-log() {
-  local msg="$1"
-  mkdir -p $dumps_dir
-  echo "[$(date)] $msg" >> $logs_path
-}
 
 # Get list of available dumps.
 # Determine most recent one.
@@ -51,7 +45,7 @@ determine_dump_to_download() {
 
   # Example name: ecom-sanitized-20220901000004.dump
   local dump_name="${latest_db_dump##*/}"
-  log "most recent dump avail on gcp: $dump_name"
+  db_restore_log "most recent dump avail on gcp: $dump_name"
 
   # Example target: <dumps-dir>/ecom-sanitized-20220901000004.dump
   dump_path_target="$dumps_dir/$dump_name"
@@ -83,10 +77,10 @@ download_dump() {
 
   if print_confirm "Download $dump_path_source? Beware, this can take up to four hours." ; then
     if print_and_eval_command "gsutil cp $dump_path_source $dump_path_target" ; then
-      log "downloaded $dump_path_target"
+      db_restore_log "downloaded $dump_path_target"
       return 0
     else
-      log "download failed: $dump_path_target"
+      db_restore_log "download failed: $dump_path_target"
       return 1
     fi
   else
@@ -118,11 +112,11 @@ restore_db_from_dump() {
   echo '  If if hangs too long at 0% Use, something went wrong and you should try again.'
   if print_confirm "Proceed?" ; then
     echo "Current time: $(date)"
-    log "Begin restoring $db_dump_to_restore"
+    db_restore_log "Begin restoring $db_dump_to_restore"
     if print_and_eval_command "postgres-dump-restore $db_dump_to_restore" ; then
-      log "Finished restoring $db_dump_to_restore"
+      db_restore_log "Finished restoring $db_dump_to_restore"
     else
-      log "Failed to restore $db_dump_to_restore"
+      db_restore_log "Failed to restore $db_dump_to_restore"
     fi
   else
     echo 'Exiting'
@@ -141,11 +135,7 @@ remove_downloaded_dumps() {
 
 if [[ $1 = log && $# -eq 2 ]] ; then
   # Refactor this out into a separate non-executable script so both this and the elasticsearch can call into it
-  log "$2"
-elif [[ $1 = logs ]] ; then
-  # Refactor this out into a separate non-executable script so both this and the elasticsearch can call into it
-  # TODO add this to comoto_cli dbrestore logs
-  cat $logs_path
+  db_restore_log "$2"
 elif [[ $1 = find_latest_dump ]] ; then
   determine_dump_to_download
 elif [[ $# -eq 0 ]] ; then

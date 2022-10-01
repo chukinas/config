@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# This file gets sourced by the two scripts doing the heavy lifting:
+#   db_dumps
+#   elasticsearch
+
+# TODO change this to .../db_restore
+db_restore_dir="$COMOTO_CLI_STORE/db_dumps"
+db_restore_logs_path="$db_restore_dir/logs"
+
+db_restore_log() {
+  local msg="$1"
+  mkdir -p $db_restore_dir
+  echo "[$(date)] $msg" >> $db_restore_logs_path
+}
+
+db_restore_show_logs() {
+  echo
+  echo "Contents of $db_restore_logs_path:"
+  cat $db_restore_logs_path
+  echo
+}
