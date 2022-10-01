@@ -60,7 +60,7 @@ _comoto_cli_execute() {
         subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
         ;;
       jrms)
-        subcommand="(comoto_cli cd jrms && docker-compose down && docker-compose up -d && jp-replatform-migration-service-log)"
+        subcommand="(comoto_cli cd jrms && docker-compose down && docker-compose up -d && etl-log)"
         ;;
       *)
         if container_name=$($COMOTO_CLI_LIB/container_name -z $1) ; then
