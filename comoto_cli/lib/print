@@ -39,6 +39,8 @@ print_confirm() {
   done
 }
 
+# USAGE:
+#   print_and_eval_command COMMAND_STRING(S)
 print_and_eval_command() {
   local include_type  confirm   cmd
 

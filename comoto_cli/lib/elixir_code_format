@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# TODO this should be a standalone script for formatting elixir code
+# TODO this shoulb be called from command/format
+# TODO make it work for monorepo first, then make it more generic for the other repos
+
+# USAGE
+#   $COMOTO_CLI_LIB/elixir_code_format PATH_TO_ELIXIR_FILE
+
+. $COMOTO_CLI_LIB/print
+
+# TODO rename path_to_file_to_be_formatted
+filepath="$(readlink -f "$1")"
+if [[ ! -f $filepath ]] ; then
+  exit 1
+fi
+
+# TODO this seems like it should be extracted to a standalone script
+# if repo_profile=$($COMOTO_CLI_LIB/recurse_up_find_file $(dirname $filepath) comoto_cli_repo_profile) ; then
+#   . $repo_profile
+# else
+#   exit 1
+# fi
+
+# TODO this currently monorepo-centric. Fix that
+# TODO for jrms: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
+comoto_cli_repo_dir="$(comoto_cli path monorepo)"
+container_filepath="$(realpath --relative-to=$comoto_cli_repo_dir/lib $filepath)"
+
+# TODO remove
+echo "local filepath:       $filepath"
+echo "local repo directory: $comoto_cli_repo_dir"
+echo "container filepath:   $container_filepath"
+
+print_and_eval_command "comoto_cli bash rz 'mix format $container_filepath'"
