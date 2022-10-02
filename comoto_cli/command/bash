@@ -13,19 +13,19 @@ _comoto_cli_help() {
   print_help_li '-X, --no-execute   Echo the command to stoud; do not execute'
   print_help_li '-s, --staging      Bash into staging cluster via kubernetes'
   print_help_li '--pr=PR_NUMBER     Bash into PR-specific staging cluster'
-  print_help_li "--current-pr       Bash into current PR\'s staging cluster"
+  print_help_li "--current-pr       Bash into current PR's staging cluster"
   print_help_h2 Container Short Names
   print_help_li 'ecom               The Ruby Ecom/Admin app'
   print_help_li 'cg                 Cycle Gear webapp'
   print_help_li 'jp                 J&P Cycles webapp'
   print_help_li 'rz                 RevZilla   webapp'
   print_help_h2 Examples
-  print_help_ex 'comoto_cli bash rz             # Bash into local RevZilla container. Local session.'
-  print_help_ex "comoto_cli bash cg whoami      # echos 'deploy' then exits"
-  print_help_ex "comoto_cli bash --staging    rz   # Bash into revzilla webapp staging pod"
-  print_help_ex "comoto_cli bash --pr 1234    rz   # Bash into revzilla webapp staging pod for PR 1234"
-  print_help_ex "comoto_cli bash --current-pr rz   # Bash into revzilla webapp staging pod for PR 1234"
-  print_help_ex "comoto_cli bash                   # Bash into current repo"
+  print_help_ex 'comoto_cli bash rz               # Bash into local RevZilla container. Local session.'
+  print_help_ex "comoto_cli bash cg whoami        # echos 'deploy' then exits"
+  print_help_ex "comoto_cli bash --staging    rz  # Bash into revzilla webapp staging pod"
+  print_help_ex "comoto_cli bash --pr 1234    rz  # Bash into revzilla webapp staging pod for PR 1234"
+  print_help_ex "comoto_cli bash --current-pr rz  # Bash into revzilla webapp staging pod for current PR"
+  print_help_ex "comoto_cli bash                  # Bash into current repo"
   echo
 }
 
@@ -34,7 +34,6 @@ _comoto_cli_help() {
 # arg 2: docker container name
 # arg 3 (optional): command to be executed in non-interactive shell
 _local_bash() {
-
   docker_username="$1"
   docker_container_name="$2"
   shift 2
@@ -129,5 +128,4 @@ _comoto_cli_execute() {
       print_and_eval_command "$COMOTO_CLI_LIB/kube bash $pr_number_option '$container_short_name' $non_interactive_command"
       ;;
   esac
-
 }
