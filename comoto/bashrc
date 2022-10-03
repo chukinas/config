@@ -20,7 +20,6 @@ alias cdc="cd $COMOTO_PROJECT_ROOT"
 # ETL
 . $JJC_CONFIG_ROOT/comoto/etl
 
-
 # cg-bash-noninteractive()
 # {
 #   # This is the same as `cg-bash` from ~/monorepo/zlaverse/support/bash_functions.sh,

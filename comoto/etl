@@ -15,3 +15,9 @@ function etl-rebase() {
   )
 }
 # alias etl-fort="sudo nano /etc/resolv.conf"
+
+# Recommended by Owen (SmartLogic)
+export KERL_CONFIGURE_OPTIONS='--disable-debug --withoutjavac'
+export ODS_URL='ecto://sql_etl_stg_read:0d5_3tL_r3aD-5tG@jpcods01stg.systems.maggroup.com:1433/ODS_TO_ADMIN?ssl=true'
+export REDLINE_URL='ecto://postgres:PG92d3vp%40assw0rd@postgres/ecom'
+export GHOST_EXPORT_PATH="$HOME/Downloads/common-tread.ghost.*.json"

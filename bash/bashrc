@@ -23,6 +23,7 @@ export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
 
 . $JJC_CONFIG_ROOT/ack/bashrc
 . $JJC_CONFIG_ROOT/asdf/bashrc
+. $JJC_CONFIG_ROOT/elixir/profile
 . $JJC_CONFIG_ROOT/git/bashrc
 . $JJC_CONFIG_ROOT/keyboard/bashrc
 . $JJC_CONFIG_ROOT/neovim/bashrc
