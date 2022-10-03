@@ -1,0 +1,76 @@
+#!/bin/bash
+
+# TODO rename comoto_cli_config_read ?
+
+# USAGE: $COMOTO_CLI_LIB/comoto_repo_get_config all_aliases
+#
+# CONFIG FILES
+# 1. Must be located inside the repo's .idea directory
+# 2. Must be named comoto_cli_config_*, where '*' is the alias used by comoto cli commands
+#       Example: comoto_cli_config_blarg would contain the configuration for command like `comoto_cli cd blarg`
+# 3. The /.idea directory may contain zero or many such config files
+#       Example: etl repo contains just one: comoto_cli_config_etl
+#                monorepo contains many: comoto_cli_config_rz, comoto_cli_config_jp, comoto_cli_config_ecom, etc
+
+config_paths=()
+
+# arg1: full path to config path
+# if successful, echos, the alias
+alias_from_config_path() {
+  filename=$(basename $config_path)
+  config_alias="${filename##comoto_cli_config_}"
+  case $config_alias in
+    comoto_cli_config)
+      # the config file wasn't appropriately named
+      return 1
+      ;;
+    '')
+      # the config file wasn't appropriately named
+      return 1
+      ;;
+    *)
+      echo $config_alias
+      return 0
+      ;;
+  esac
+}
+
+# no args
+# reads $config_paths and echos space-separated list of aliases, e.g. "etl monorepo rz cg jp"
+all_aliases() {
+  local aliases=()
+  for config_path in ${config_paths[@]};
+  do
+    local cur_alias="$(alias_from_config_path $config_path)"
+    aliases+=($cur_alias)
+  done
+  echo "${aliases[@]}"
+}
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+# FIND ALL CONFIG FILES
+for config_path in $COMOTO_PROJECT_ROOT/*/.idea/comoto_cli_config*
+do
+  if alias=$(alias_from_config_path $config_path) ; then
+    config_paths+=($config_path)
+  fi
+done
+
+if [[ $# -ne 1 ]] ; then
+  echo "$0 must be passed a single arg!"
+  exit 1
+fi
+
+case $1 in
+  all_aliases)
+    all_aliases
+    exit 0
+    ;;
+  *)
+    echo bad!!!
+    exit 1
+    ;;
+esac

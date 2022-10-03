@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO is this needed at all?
 # USAGE: ./recurse_up_find_file START_DIRECTORY FILENAME
 #
 # Each comoto repo has its own profile,
@@ -12,12 +13,6 @@
 # `$COMOTO_CLI_LIB/recurse_up_find_file $HOME/home/subdirectory foo` will echo out /home/username/foo
 # `$COMOTO_CLI_LIB/recurse_up_find_file /home foo` with echo out an error and exit 1
 
-
-exit_with_error_message() {
-  echo 'you done goofed up' >&2
-  exit 1
-}
-
 #######################################
 # MAIN SCRIPT
 #######################################
@@ -26,7 +21,7 @@ exit_with_error_message() {
 # arg1: valid dir
 # arg2: non-empty
 if [[ $# -ne 2 ]] || [[ ! -d $1 ]] || [[ -z $2 ]]; then
-  exit_with_error_message
+  exit 1
 fi
 
 directory=$(readlink -f $1)
@@ -48,4 +43,4 @@ do
 done
 
 # SCRIPT FAILED
-exit_with_error_message
+exit 1
