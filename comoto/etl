@@ -1,0 +1,17 @@
+#!/bin/bash
+
+. $COMOTO_PROJECT_ROOT/etl/scripts/bash_functions.sh
+alias etl-restart="cd $COMOTO_PROJECT_ROOT/etl && docker-compose stop && docker-compose up -d && etl-log"
+alias etl-check="\
+  etl-credo \ &&
+  etl-test \ &&
+  etl-dialyzer \
+"
+
+function etl-rebase() {
+  (
+    comoto_cli cd etl
+    git rebaseontolatestmaster main && git latest
+  )
+}
+# alias etl-fort="sudo nano /etc/resolv.conf"

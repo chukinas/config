@@ -61,7 +61,7 @@ _comoto_cli_execute() {
   # TODO this needs to be in the repo profile
   echo "container filepath:   $(realpath --relative-to=$comoto_cli_repo_dir/lib $filepath)"
   # echo "relative path:        $comoto_cli_repo_dir"
-  # TODO for jrms: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
+  # TODO for etl: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
 }
 
 # TODO add autocomplete to filepath

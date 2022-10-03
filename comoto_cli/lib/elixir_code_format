@@ -23,7 +23,7 @@ fi
 # fi
 
 # TODO this currently monorepo-centric. Fix that
-# TODO for jrms: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
+# TODO for etl: filepaths start with lib/ ...   therefore, remove the "$comoto_cli_repo_dir/jp_replat..."
 comoto_cli_repo_dir="$(comoto_cli path monorepo)"
 container_filepath="$(realpath --relative-to=$comoto_cli_repo_dir/lib $filepath)"
 
