@@ -7,3 +7,24 @@ alias cdst="cd ~/projects/gratuitous_greyhound/apps/statechart"
 # Load private env vars
 # TODO set this up
 source ~/.bashrc_private 2>/dev/null
+
+
+###########################
+# Statechart start
+
+function add_note_to_statechart() {
+  path="$HOME/projects/personal/statechart/README.md"
+  if [[ -n $1 ]] ; then
+    echo "$*" >> $path
+  else
+    cat $path
+  fi
+}
+alias statechart=add_note_to_statechart
+alias cds="cd $HOME/projects/personal/statechart"
+alias sdev="RENDERDEVDOCS=true mix compile --force"
+alias statechartcheck="mix docs && mix format && MIX_ENV=test mix dialyzer && mix test --exclude not_implemented"
+alias s=statechartcheck
+
+# Statechart end
+###########################
