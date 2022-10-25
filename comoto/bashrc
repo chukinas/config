@@ -17,8 +17,9 @@ alias cdr='comoto_cli cd redline'
 alias cdz='comoto_cli cd zla'
 alias cdc="cd $COMOTO_PROJECT_ROOT"
 
-# ETL
+# project
 . $JJC_CONFIG_ROOT/comoto/etl
+. $JJC_CONFIG_ROOT/comoto/image_processing
 
 # cg-bash-noninteractive()
 # {

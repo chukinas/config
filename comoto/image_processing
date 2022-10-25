@@ -1,0 +1,4 @@
+#!/bin/bash
+
+. $COMOTO_PROJECT_ROOT/etl/scripts/bash_functions.sh
+alias cdi='cd $COMOTO_PROJECT_ROOT/image_processing'
