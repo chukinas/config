@@ -26,5 +26,7 @@ alias sdev="RENDERDEVDOCS=true mix compile --force"
 alias statechartcheck="mix docs && mix format && MIX_ENV=test mix dialyzer && mix test --exclude not_implemented"
 alias s=statechartcheck
 
+alias statechartcheck="mix format && mix dialyzer && mix test --exclude not_implemented"
+
 # Statechart end
 ###########################

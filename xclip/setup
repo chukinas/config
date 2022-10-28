@@ -1,0 +1,4 @@
+#!/bin/bash
+# So that neovim can read/write the clipboard
+
+sudo apt-get install -y xclip

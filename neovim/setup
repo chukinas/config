@@ -4,6 +4,8 @@ neovim_dir=$(dirname $0)
 
 . $JJC_CONFIG_LIB/headers
 
+$JJC_CONFIG_DIR/xclip/setup
+
 print_header 'NEOVIM'
 
 print_subheader "Create symlink"

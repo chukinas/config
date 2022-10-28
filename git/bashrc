@@ -13,3 +13,5 @@ gst() {
   done
   echo
 }
+
+alias ga='git latest'
