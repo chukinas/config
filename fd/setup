@@ -1,7 +1,6 @@
 #!/bin/bash
 
-# set up fd
-# fd is a file finder, a good replacement for find
+# See the README.md
 
 . $JJC_CONFIG_LIB/headers
 
