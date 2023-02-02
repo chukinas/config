@@ -27,3 +27,8 @@ alias cdc="cd $COMOTO_PROJECT_ROOT"
 #   # just without the -ti flags
 #   docker exec -u ${ZV_DEPLOY_UID} $ZV_CG bash -lc "$1"
 # }
+
+# TODO move this into monorepo
+ecom-dump-schema() {
+  cg-bash 'cd apps/redline_core_model && mix ecto.dump'
+}
