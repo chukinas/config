@@ -1,0 +1,60 @@
+#!/bin/bash
+
+. $COMOTO_CLI_LIB/print
+
+_comoto_cli_command_summary='Build local monorepo docs'
+_comoto_cli_command_usage='comoto_cli docs [OPTIONS]'
+
+_comoto_cli_help() {
+  print_help_h2 'Options'
+  print_help_li '-h, --help  Print this help and exit'
+}
+
+_comoto_cli_command_completion() {
+  local valid_args="-h --help"
+  [[ $# -gt 1 ]] && return 1
+  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+}
+
+_comoto_cli_execute() {
+  if [[ ]]
+
+  while :; do
+    case "${1-}" in
+      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
+      *) break ;;
+    esac
+    shift
+  done
+
+  if [[ $# -eq 0 ]] ; then
+    # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
+    subcommand="\
+      (comoto_cli cd etl && docker-compose down) && \
+      (comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && \
+      (comoto_cli cd etl && docker-compose up -d) && \
+      comoto_cli logs"
+  elif [[ $# -eq 1 ]] ; then
+    case $1 in
+      redline)
+        subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
+        ;;
+      etl)
+        subcommand="(comoto_cli cd etl && docker-compose down && docker-compose up -d && etl-log)"
+        ;;
+      *)
+        if container_name=$($COMOTO_CLI_LIB/container_name -z $1) ; then
+          subcommand="docker restart $container_name && comoto_cli logs $1"
+        else
+          print_usage_error
+          exit 1
+        fi
+        ;;
+    esac
+  else
+    print_usage_error
+    exit 1
+  fi
+
+  print_and_eval_command "$subcommand"
+}

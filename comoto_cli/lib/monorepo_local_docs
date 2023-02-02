@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Build and view local monorepo docs
+#
+# USAGE
+#   $COMOTO_CLI_LIB/monorepo_local_docs       MONOREPO_CHILD_APP    ... builds all docs, then view child app docs
+#   $COMOTO_CLI_LIB/monorepo_local_docs build                       ... builds all docs
+#   $COMOTO_CLI_LIB/monorepo_local_docs path  MONOREPO_CHILD_APP    ... echo out the path to   the child app docs
+#   $COMOTO_CLI_LIB/monorepo_local_docs view  MONOREPO_CHILD_APP    ...                       view child app docs
+
+. $COMOTO_CLI_ZLA_BASH_FUNCTIONS
+. $COMOTO_CLI_LIB/print
+
+build_docs() {
+  # 20221207 why did I put this here...?
+  # print_and_eval_command "comoto_cli bash rz 'mix deps.get'"
+  print_and_eval_command "comoto_cli bash rz 'mix cmd mix docs -f html'"
+}
+
+child_app_dir() {
+  child_app="$1"
+  if [[ -z $child_app ]] ; then
+    >&2 echo "child_app_dir: requires a non-null arg, got: '$child_app'"
+    return 1
+  fi
+  local child_app_dir="$(comoto_cli path redline)/apps/$1"
+  if [[ -d $child_app_dir ]] ; then
+    echo $child_app_dir
+  else
+    >&2 echo "'$child_app_dir' not a valid dir"
+    return 1
+  fi
+}
+
+path_to_docs() {
+  if child_app_dir="$(child_app_dir $1)" ; then
+    doc_path="$child_app_dir/doc/index.html"
+    if [[ -f $doc_path ]] ; then
+      echo "$doc_path"
+      return 0
+    else
+      >&2 echo "$doc_path not a valid path to docs"
+      return 1
+    fi
+  fi
+  return 1
+}
+
+view_docs() {
+  local doc_dir
+  if doc_dir=$(path_to_docs $1) ; then
+    open $doc_dir
+    return 0
+  fi
+  return 1
+}
+
+# MAIN SCRIPT
+#######################################
+
+if [[ $# -eq 1 && $1 == build ]] ; then
+  build_docs
+elif [[ $# -eq 1 ]] ; then
+  child_app_dir "$1" && build_docs && view "$1"
+elif [[ $# -eq 2 && $1 == path ]] ; then
+  path_to_docs "$2"
+elif [[ $# -eq 2 && $1 == view ]] ; then
+  view_docs "$2"
+else
+  exit 1
+fi
