@@ -2,4 +2,4 @@
 
 # fd
 
-alias fd=fdfind
+alias fd='fdfind -H'
