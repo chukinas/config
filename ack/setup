@@ -2,6 +2,7 @@
 
 # FIX replace with ag (silver searcher)
 # FIX would need to update my nvim config
+# https://beyondgrep.com/feature-comparison
 
 . $JJC_CONFIG_LIB/headers
 
