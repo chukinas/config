@@ -13,8 +13,14 @@ export COMOTO_CLI_ENTRY_POINT="$COMOTO_CLI_ROOT/command/_main"
 export COMOTO_CLI_LIB="$COMOTO_CLI_ROOT/lib"
 export COMOTO_CLI_STORE="$COMOTO_CLI_ROOT/.store"
 
+# This is just for my easy of testing the library scripts:
+export cl=$COMOTO_CLI_LIB
+
 # Set up github cli command completion
 eval "$(gh completion -s bash)"
+
+# Set up kubectl bash completion
+source <(kubectl completion bash)
 
 comoto_cli() {
   export COMOTO_CLI_COMMAND_PATH="$COMOTO_CLI_ENTRY_POINT"
