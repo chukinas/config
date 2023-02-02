@@ -24,6 +24,7 @@ _comoto_cli_help() {
 }
 
 
+# TODO add a note about needing to be connected to VPN
 # TODO extract this to lib
 _comoto_cli_add_user_accounts() {
   # TODO this should be a function in redline that's called in an iex session

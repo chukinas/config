@@ -20,6 +20,11 @@ Container Short Names:
   jp          (IEx)  J&P Cycles
   rz          (IEx)  RevZilla
 
+The above is only for local stuff.
+If you wanna run iex in staging, see
+https://comoto.slack.com/archives/C01S4LYJYH5/p1672861328071149
+https://github.com/revzilla/monorepo/wiki/Dev-Ops#running-a-remote-redline-console-iex-session-like-rz-iex-locally
+
 EOF
 # TODO what's the actual name of the ruby repl?
 

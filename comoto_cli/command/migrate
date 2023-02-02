@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# TODO when I enter m migrate --up I get weird things. Fix it
 . $COMOTO_CLI_LIB/print
 
 _comoto_cli_command_summary='Migrate local copy of ecom database'
