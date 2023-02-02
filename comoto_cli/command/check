@@ -56,7 +56,7 @@ _dialyzer() {
     echo "$results_path already exists. Removing..."
     rm $results_path
   fi
-  comoto_cli bash rz 'mix dialyzer' | tee $results_path
+  comoto_cli bash cg 'MIX_ENV=test mix dialyzer' | tee $results_path
   ci_scripts_dir="$monorepo_dir/ci"
   $ci_scripts_dir/dialyzer_check.sh $results_path $ci_scripts_dir/dialyzer_diff.sh
 
