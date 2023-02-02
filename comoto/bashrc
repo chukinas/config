@@ -27,11 +27,3 @@ alias cdc="cd $COMOTO_PROJECT_ROOT"
 #   # just without the -ti flags
 #   docker exec -u ${ZV_DEPLOY_UID} $ZV_CG bash -lc "$1"
 # }
-#
-# jc-format-elixir()
-# {
-#   # Expects a single argument: path to file relative to ~/monorepo/redline/
-#   echo "formatting $1"
-#   cg-bash-noninteractive "mix format $1"
-# }
-#

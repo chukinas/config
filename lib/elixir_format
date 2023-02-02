@@ -1,0 +1,42 @@
+#!/bin/bash
+
+# Single point of entry for formatting all elixir files on save
+
+# This is my own (JJC) elixir formatting script.
+# It allows me to, in neovim, set an elixir on-save callback
+# that calls this script. If the that file matches a comoto pattern
+# below, we run the formatter in the appropriate bash shell.
+# Otherwise, use the default behavior.
+
+# Uncomment for debugging:
+# log="$(date) $cmd"
+# log_path="$JJC_CONFIG_ROOT/tmp/elixir_format_log.txt"
+# touch $log_path
+# echo $log >> $log_path
+
+# USAGE: $JJC_CONFIG_LIB/elixir_format filepath
+
+local_filepath="$(readlink -f "$1")"
+case $local_filepath in
+  $COMOTO_PROJECT_ROOT/monorepo*)
+    cmd="$ZV_SCRIPTS/redline_format.sh $local_filepath"
+    ;;
+  $COMOTO_PROJECT_ROOT/etl*)
+    local_project_root="$COMOTO_PROJECT_ROOT/etl/etl/"
+    container_filepath="${local_project_root/$local_project_root}"
+    . $COMOTO_PROJECT_ROOT/etl/scripts/bash_functions.sh
+    cmd="etl-bash 'mix format $container_filepath'"
+    ;;
+  *)
+    cmd="mix format $local_filepath"
+    ;;
+esac
+
+eval $cmd
+
+# Uncomment for debugging:
+# exit_code=$?
+# log="$(date) exit_code=$exit_code $cmd"
+# log_path="$JJC_CONFIG_ROOT/tmp/elixir_format_log.txt"
+# touch $log_path
+# echo $log >> $log_path

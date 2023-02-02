@@ -21,3 +21,9 @@ export KERL_CONFIGURE_OPTIONS='--disable-debug --withoutjavac'
 export ODS_URL='ecto://sql_etl_stg_read:0d5_3tL_r3aD-5tG@jpcods01stg.systems.maggroup.com:1433/ODS_TO_ADMIN?ssl=true'
 export REDLINE_URL='ecto://postgres:PG92d3vp%40assw0rd@postgres/ecom'
 export GHOST_EXPORT_PATH="$HOME/Downloads/common-tread.ghost.*.json"
+
+etlproduct-format() {
+  redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/web/models/etl.ex
+  redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/web/models/etl/*
+  redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/test/models/etl/*
+}
