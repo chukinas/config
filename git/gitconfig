@@ -29,3 +29,6 @@
     m = getlastestmaster
 
     # push = !mix format --check-formatted && git push
+
+[diff "sopsdiffer"]
+  textconv = sops -d --config /dev/null

@@ -35,6 +35,10 @@ asdf install rust
 report_on_installation cargo
 report_on_installation rustc
 
+echo 'Checking sops'
+asdf install sops
+report_on_installation sops
+
 echo 'Checking erlang'
 asdf install erlang
 report_on_installation erl
