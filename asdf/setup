@@ -15,6 +15,6 @@ print_header "ASDF"
 bash $JJC_CONFIG_ROOT/asdf/setup_install_asdf_and_add_plugins
 
 # Symlink the global tool-versions file to the one in this dir
-$JJC_CONFIG_LIB/create_symlink $JJC_CONFIG_DIR/asdf/tool-versions $HOME/.tool-versions
+$JJC_CONFIG_LIB/create_symlink $JJC_CONFIG_ROOT/asdf/tool-versions $HOME/.tool-versions
 
 bash $JJC_CONFIG_ROOT/asdf/setup_install_tools
