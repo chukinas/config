@@ -1,29 +1,75 @@
 #!/bin/bash
 
 . $COMOTO_PROJECT_ROOT/etl/scripts/bash_functions.sh
-alias etl-restart="cd $COMOTO_PROJECT_ROOT/etl && docker-compose stop && docker-compose up -d && etl-log"
-alias etl-check="\
-  etl-credo \ &&
-  etl-test \ &&
-  etl-dialyzer \
-"
 
-function etl-rebase() {
+# USAGE
+# $ etl-getlatestgit [-b]
+#
+etl-getlatestgit() {
+  etl-cd
+  local current_git_branch=$(git branch --show-current)
+  echo "Current git branch: $current_git_branch"
+  git fetch upstream main
+  git checkout main
+  git merge upstream/main
+  git push
+
+  if [[ $1 = -b ]]; then
+    git tag jjc_base -f
+  fi
+
+  git checkout $current_git_branch
+  git all
+}
+
+etl-setrebasepoint() {
+  etl-getlatestgit
+  local current_git_branch=$(git branch --show-current)
+  git checkout main
+  git tag -d jjc_base
+  git tag jjc_base
+  git checkout $current_git_branch
+}
+
+etl-rebase() {
   (
-    comoto_cli cd etl
-    git rebaseontolatestmaster main && git latest
+    etl-cd
+    git rebase -i jjc_base
   )
 }
-# alias etl-fort="sudo nano /etc/resolv.conf"
 
-# Recommended by Owen (SmartLogic)
-export KERL_CONFIGURE_OPTIONS='--disable-debug --withoutjavac'
+etl-forcepushafterchecking() {
+  etl-check && git push -f
+}
+
+export KERL_CONFIGURE_OPTIONS='--disable-debug --without-javac'
 export ODS_URL='ecto://sql_etl_stg_read:0d5_3tL_r3aD-5tG@jpcods01stg.systems.maggroup.com:1433/ODS_TO_ADMIN?ssl=true'
-export REDLINE_URL='ecto://postgres:PG92d3vp%40assw0rd@postgres/ecom'
+export REDLINE_URL='ecto://postgres:PG92d3vp%40assw0rd@localhost:5432/ecom'
 export GHOST_EXPORT_PATH="$HOME/Downloads/common-tread.ghost.*.json"
+
+etlproduct-test() {
+  m bash cg 'mix test apps/redline_core_model/test/models/etl/product*.exs --trace'
+}
 
 etlproduct-format() {
   redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/web/models/etl.ex
   redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/web/models/etl/*
   redline-format $COMOTO_PROJECT_ROOT/monorepo/redline/apps/redline_core_model/test/models/etl/*
 }
+
+etlproduct-rebuild() {
+  comoto_cli migrate -d \
+  && comoto_cli migrate -u \
+  && cg-bash 'cd apps/redline_core_model && mix ecto.dump' \
+  && ecom-load-test-schema \
+  && cg-load-test-schema
+  echo -e "\n\nExit Code: $?\n\n"
+}
+
+etl-vi() {
+  etl-cd
+  nvim
+  cd -
+}
+
+export JJC_BASH_FUNCTION="$COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh"
