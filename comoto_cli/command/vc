@@ -13,9 +13,12 @@ _comoto_cli_help() {
   print_help_li 'checkout   '
   print_help_li 'view       ?'
   print_help_li 'checkin    If Credo and Dialyzer checks pass, then push'
+  print_help_li 'remote NICKNAME GITHUB_USERNAME'
+  print_help_li '           add a monorepo remote to a coworker'
   print_help_h2 'Examples'
   print_help_ex    "comoto_cli vc checkout 'footer'   # Executes: 'gh pr checkout 1234'"
   print_help_ex    "comoto_cli vc checkout 'JPR-123'"
+  print_help_ex    "comoto_cli remote kylie kyliejo721"
   echo
   print_help_ex    "# Create and check out new branch 'JPR-123-my-short-description':"
   print_help_ex    "comoto_cli vc new jpr 123 my short   description"
@@ -29,7 +32,7 @@ _comoto_cli_help() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_args="checkout view checkin new"
+  local valid_args="checkout view checkin new remote"
   [[ $# -gt 1 ]] && return 1
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
   # TODO add completion for the subcommands
@@ -67,6 +70,13 @@ _comoto_cli_execute() {
       echo PR number: $pr_number
       gh pr $subcommand $pr_number
       [[ $subcommand == checkout ]] && print_confirm 'migrate db?' && comoto_cli migrate -u -l
+      ;;
+    remote)
+      comoto_cli cd monorepo
+      nickname=$1
+      username=$2
+      print_and_eval_command "git remote add $nickname git@github.com:$username/monorepo.git"
+      print_and_eval_command "cd -"
       ;;
     new)
       $COMOTO_CLI_LIB/github_create_pr "$@"
