@@ -36,6 +36,34 @@ _comoto_cli_command_completion() {
   COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
 }
 
+dir_is_docker_repo() {
+  dir=${1:?"comoto_cli internal implementation error: dir_is_docker_repo must be given a directory"}
+  if [[ ! -d $dir ]]; then
+    echo "dir_is_docker_repo must be given a valid directory" >&2
+    return 1
+  fi
+
+  docker_compose_filenames=(docker-compose.yml docker-compose.yaml compose.yml compose.yaml)
+  for filename in "${docker_compose_filenames[@]}"
+  do
+    if [[ -f $dir$filename ]]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
+down_all() {
+  echo "DOWNING ALL THINGS"
+  for dir in $COMOTO_PROJECT_ROOT/*/; do
+    if dir_is_docker_repo $dir ; then
+      echo
+      echo "DOWNING $dir"
+      (cd $dir && docker-compose down)
+    fi
+  done
+}
+
 _comoto_cli_execute() {
 
   while :; do
@@ -49,10 +77,14 @@ _comoto_cli_execute() {
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     subcommand="\
-      (comoto_cli cd monorepo && docker-compose down && docker-compose up -d) && \
+      (comoto_cli bounce down_all; comoto_cli cd monorepo && docker-compose up -d) && \
       comoto_cli logs"
   elif [[ $# -eq 1 ]] ; then
     case $1 in
+      down_all)
+        down_all
+        subcommand=""
+        ;;
       redline)
         subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
         ;;
