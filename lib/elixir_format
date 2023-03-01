@@ -18,6 +18,9 @@
 
 local_filepath="$(readlink -f "$1")"
 case $local_filepath in
+  $COMOTO_PROJECT_ROOT/monorepo/monotest*)
+    cmd="mix format $local_filepath"
+    ;;
   $COMOTO_PROJECT_ROOT/monorepo*)
     cmd="$ZV_SCRIPTS/redline_format.sh $local_filepath"
     ;;
