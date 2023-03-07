@@ -77,7 +77,11 @@ _comoto_cli_execute() {
   if [[ $# -eq 0 ]] ; then
     # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
     subcommand="\
+      comoto_cli bash cg 'mix clean' ;\
+      comoto_cli bash jp 'mix clean' ;\
+      comoto_cli bash rz 'mix clean' ;\
       (comoto_cli bounce down_all; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d) && \
+      comoto_cli migrate -u && \
       comoto_cli logs"
   elif [[ $# -eq 1 ]] ; then
     case $1 in
