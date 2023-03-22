@@ -2,109 +2,110 @@
 
 . $COMOTO_CLI_LIB/print
 
-# TODO add the ability to bounce just a single webapp and/or the ability to bounce all three redline apps
-# TODO add an -L option to suppress the logs
-# TODO maybe this should go into the container command
-
 _comoto_cli_command_summary='Restart containers'
-_comoto_cli_command_usage='comoto_cli bounce [OPTIONS] [CONTAINER_SHORT_NAME]'
+_comoto_cli_command_usage='comoto_cli bounce [OPTIONS]'
 
 _comoto_cli_help() {
-  # TODO refactor help rendering
-  cat <<EOF
-
-If no args are given, all containers are down/up'ed via 'docker-compose'.
-If passed a container short name, only that one container is bounced via
-'docker restart'.
-
-Options:
-  -h, --help  Print this help and exit
-
-Container Short Names:
-  cg          Cycle Gear
-  jp          J&P Cycles
-  rz          RevZilla
-  redline     All three above
-
-EOF
+  print_help_h2 'Options'
+  print_help_li '-h                        Print this help and exit'
+  print_help_li '-s [CONTAINER SHORT NAME] bounce just a single [S]ite; otherwise do all'
+  print_help_li '-a                        Run [A]nsible setup before anything else'
+  print_help_li "                            This isn't usually required,"
+  print_help_li "                            but if the normal bounce isn't working,"
+  print_help_li "                            include this step as a nuclear option."
+  print_help_h2 'Container Short Names'
+  print_help_li 'cg          Cycle Gear'
+  print_help_li 'jp          J&P Cycles'
+  print_help_li 'rz          RevZilla'
+  print_help_li 'redline     All three above'
 }
 
 _comoto_cli_command_completion() {
-  # TODO should redline be part of the outpus of container_name?
-  local valid_args="redline $($COMOTO_CLI_LIB/container_name -l)"
-  [[ $# -gt 1 ]] && return 1
-  COMPREPLY=( $(compgen -W "$valid_args" -- "$1") )
+  local valid_opts="-h -a -s"
+  local valid_site_args="cg jp rz redline"
+  local current_word="${COMP_WORDS[$COMP_CWORD]}"
+  COMPREPLY=( $(compgen -W "$valid_opts" -- "$current_word") )
 }
 
-dir_is_docker_repo() {
-  dir=${1:?"comoto_cli internal implementation error: dir_is_docker_repo must be given a directory"}
-  if [[ ! -d $dir ]]; then
-    echo "dir_is_docker_repo must be given a valid directory" >&2
-    return 1
-  fi
 
-  docker_compose_filenames=(docker-compose.yml docker-compose.yaml compose.yml compose.yaml)
-  for filename in "${docker_compose_filenames[@]}"
-  do
-    if [[ -f $dir$filename ]]; then
-      return 0
-    fi
-  done
-  return 1
-}
+# TODO add --help back in
 
-down_all() {
-  echo "DOWNING ALL THINGS"
-  for dir in $COMOTO_PROJECT_ROOT/*/; do
-    if dir_is_docker_repo $dir ; then
-      echo
-      echo "DOWNING $dir"
-      (cd $dir && docker-compose down)
-    fi
-  done
-}
 
 _comoto_cli_execute() {
+  local what_to_bounce=all
+  local do_ansible=""
 
-  while :; do
-    case "${1-}" in
-      -h|--help) $COMOTO_CLI_LIB/render_help; return 0;;
-      *) break ;;
+  # bash-how-to
+  # OPTIND doesn't always get reset
+  # I belive that's because this file isn't an executable
+  OPTIND=1
+  while getopts "has:" opt; do
+    case $opt in
+      h)
+        $COMOTO_CLI_LIB/render_help
+        return 0
+        ;;
+      a)
+        do_ansible=1
+        ;;
+      s)
+        what_to_bounce=$OPTARG
+        ;;
+      *) echo "$0: error" >&2; exit 1
     esac
-    shift
   done
 
-  if [[ $# -eq 0 ]] ; then
-    # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
-    subcommand="\
-      comoto_cli bash cg 'mix clean' ;\
-      comoto_cli bash jp 'mix clean' ;\
-      comoto_cli bash rz 'mix clean' ;\
-      (comoto_cli bounce down_all; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d) && \
-      comoto_cli migrate -u && \
-      comoto_cli logs"
-  elif [[ $# -eq 1 ]] ; then
-    case $1 in
-      down_all)
-        down_all
-        subcommand=""
-        ;;
-      redline)
-        subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
-        ;;
-      *)
-        if container_name=$($COMOTO_CLI_LIB/container_name -z $1) ; then
-          subcommand="docker restart $container_name && comoto_cli logs $1"
-        else
-          print_usage_error
-          exit 1
-        fi
-        ;;
-    esac
-  else
-    print_usage_error
-    exit 1
+  if [[ -n $do_ansible ]]; then
+    (
+      # Add stuff at top of script to throw error if this does not exist
+      cd $ZV_DEV
+      ./linux-setup.sh
+    )
   fi
+
+  case $what_to_bounce in
+    cg)
+      if container_name=$($COMOTO_CLI_LIB/container_name -z cg) ; then
+        subcommand="docker restart $container_name && comoto_cli logs cg"
+      else
+        print_usage_error
+        exit 1
+      fi
+      ;;
+    jp)
+      if container_name=$($COMOTO_CLI_LIB/container_name -z jp) ; then
+        subcommand="docker restart $container_name && comoto_cli logs jp"
+      else
+        print_usage_error
+        exit 1
+      fi
+      ;;
+    rz)
+      if container_name=$($COMOTO_CLI_LIB/container_name -z rz) ; then
+        subcommand="docker restart $container_name && comoto_cli logs rz"
+      else
+        print_usage_error
+        exit 1
+      fi
+      ;;
+    redline)
+      subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
+      ;;
+    all)
+      # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
+      subcommand="\
+        comoto_cli bash cg 'mix clean' ;\
+        comoto_cli bash jp 'mix clean' ;\
+        comoto_cli bash rz 'mix clean' ;\
+        ($COMOTO_CLI_LIB/down_all_containers; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d) && \
+        comoto_cli migrate -u && \
+        cg-load-test-schema && \
+        comoto_cli logs"
+      ;;
+    *)
+      print_usage_error
+      exit 1
+  esac
 
   print_and_eval_command "$subcommand"
 }
