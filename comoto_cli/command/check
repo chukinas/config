@@ -49,7 +49,7 @@ _credo() {
   return $credo_exit_code
 }
 
-_dialyzer() {
+_dialyzer_old() {
   local monorepo_dir="$(comoto_cli path monorepo)"
   local results_path="$monorepo_dir/dialyzer.txt"
   if [[ -f $results_path ]] ; then
@@ -73,6 +73,10 @@ _dialyzer() {
   return $exit_code
 }
 
+_dialyzer_new() {
+  cg-bash 'MIX_ENV=test mix dialyzer'
+}
+
 local commands=''
 _add_a_new_command() {
   if [[ -z $commands ]] ; then
@@ -83,7 +87,7 @@ _add_a_new_command() {
 }
 
 _comoto_cli_command_completion() {
-  local valid_checks=(credo dialyzer test)
+  local valid_checks=(monotest-proxy credo dialyzer test)
   local cur_word="${COMP_WORDS[$COMP_CWORD]}"
   for i_arg
   do
@@ -107,17 +111,20 @@ _comoto_cli_execute() {
   done
 
   if [[ $# -eq 0 ]] ; then
-    # TODO add 'test' here
-    print_and_eval_command 'comoto_cli check credo && comoto_cli check dialyzer'
+    print_and_eval_command 'comoto_cli check credo && comoto_cli check dialyzer && cg-mix-test'
     return $?
   elif [[ $# -eq 1 ]] ; then
     case "$1" in
+      monotest-proxy)
+        cd $COMOTO_PROJECT_ROOT/monorepo/monotest/mitmproxy
+        docker run --rm -it -p 8085:8085 $(docker build -q .)
+        ;;
       credo)
         comoto_cli bash rz 'mix credo'
         return $?
         ;;
       dialyzer)
-        _dialyzer
+        _dialyzer_old
         return $?
         ;;
       test)
