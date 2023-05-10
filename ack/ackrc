@@ -49,3 +49,5 @@ template:ext:eex,leex
 --ignore-dir=doc
 --ignore-dir=cover
 --ignore-file=ext:dump
+# for monotest
+--ignore-dir=browser_logs
