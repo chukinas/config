@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# I hate having to type out the long bash function names.
+# This script provides a shortcut
+
+# USAGE
+#    $JJC_CONFIG_LIB/execute_service_bash_fn SUFFIX [ARGS]
+
+# EXAMPLES
+#     $JJC_CONFIG_LIB/execute_service_bash_fn mix format
+
+path=$(pwd)
+prefix=${path##/*/}
+suffix=$1
+shift
+bash_fn="$prefix-$suffix"
+
+cmd="$bash_fn $@"
+echo "$cmd"
+
+

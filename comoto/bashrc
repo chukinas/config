@@ -32,3 +32,40 @@ alias cdc="cd $COMOTO_PROJECT_ROOT"
 ecom-dump-schema() {
   cg-bash 'cd apps/redline_core_model && mix ecto.dump'
 }
+
+ms() {
+  source $COMOTO_CLI_LIB/print
+  cmd=$($JJC_CONFIG_LIB/execute_service_bash_fn $@)
+  print_and_eval_command "$cmd"
+}
+
+_ms_completions() {
+  # 'prefix' is e.g. product-search-service
+  path=$(pwd)
+  prefix=${path##/*/}
+
+  # 'service functions' are e.g.
+  #   product-search-service-mix
+  #   product-search-service-log
+  #   product-search-service-bash
+  local service_functions=($(compgen -c | grep $prefix))
+
+  # 'function suffixes' are e.g.
+  #   mix
+  #   log
+  #   bash
+  local -a function_suffixes
+  for cmd in "${service_functions[@]}"
+  do
+    suffix=${cmd#$prefix-}
+    function_suffixes+=($suffix)
+  done
+  local suffixes_str="${function_suffixes[@]}"
+
+  # e.g. "mi"
+  local cur_word="${COMP_WORDS[$COMP_CWORD]}"
+
+  COMPREPLY=( $(compgen -W "$suffixes_str" -- "$cur_word"))
+}
+
+complete -F _ms_completions ms
