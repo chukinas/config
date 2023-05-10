@@ -11,6 +11,7 @@ export COMOTO_CLI_ROOT="$JJC_CONFIG_ROOT/comoto_cli"
 . $COMOTO_CLI_ROOT/comoto_cli.bash
 
 alias cdm='comoto_cli cd monorepo'
+alias cdmt='comoto_cli cd monorepo && cd monotest'
 alias cde='comoto_cli cd ecom'
 alias cdr='comoto_cli cd redline'
 # TODO should zla be changed to zlaverse ?
