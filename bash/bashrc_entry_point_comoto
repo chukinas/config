@@ -5,3 +5,8 @@
 export JJC_CONFIG_ROOT="$HOME/projects/config"
 export JJC_CONFIG_LIB="$JJC_CONFIG_ROOT/lib"
 . $JJC_CONFIG_ROOT/bash/bashrc
+source $COMOTO_PROJECT_ROOT/monorepo/zlaverse/support/bash_functions.sh
+source $COMOTO_PROJECT_ROOT/product-service/scripts/bash_functions.sh
+source $COMOTO_PROJECT_ROOT/product-search-service/scripts/bash_functions.sh
+source $COMOTO_PROJECT_ROOT/message-failure-service/scripts/bash_functions.sh
+source /usr/share/google-cloud-sdk/completion.bash.inc
