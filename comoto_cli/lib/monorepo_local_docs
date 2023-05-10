@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO I should be able to use this script to build the docs for monotest as well
+
 # Build and view local monorepo docs
 #
 # USAGE
@@ -14,7 +16,7 @@
 build_docs() {
   # 20221207 why did I put this here...?
   # print_and_eval_command "comoto_cli bash rz 'mix deps.get'"
-  print_and_eval_command "comoto_cli bash rz 'ENV=test mix cmd mix docs -f html'"
+  print_and_eval_command "comoto_cli bash rz 'MIX_ENV=test mix docs -f html'"
 }
 
 child_app_dir() {
