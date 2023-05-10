@@ -30,5 +30,7 @@
 
     # push = !mix format --check-formatted && git push
 
+    pushd = push --set-upstream origin HEAD
+
 [diff "sopsdiffer"]
   textconv = sops -d --config /dev/null
