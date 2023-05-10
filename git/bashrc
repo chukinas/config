@@ -15,3 +15,4 @@ gst() {
 }
 
 alias ga='git latest'
+alias gw='gh pr view -w'
