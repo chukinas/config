@@ -9,10 +9,12 @@ _comoto_cli_help() {
   print_help_h2 'Options'
   print_help_li '-h                        Print this help and exit'
   print_help_li '-s [CONTAINER SHORT NAME] bounce just a single [S]ite; otherwise do all'
+  print_help_li '-b                        remove redline/_build dir'
+  print_help_li '                             This can fill up with junk eventually'
   print_help_li '-a                        Run [A]nsible setup before anything else'
-  print_help_li "                            This isn't usually required,"
-  print_help_li "                            but if the normal bounce isn't working,"
-  print_help_li "                            include this step as a nuclear option."
+  print_help_li "                             This isn't usually required,"
+  print_help_li "                             but if the normal bounce isn't working,"
+  print_help_li "                             include this step as a nuclear option."
   print_help_h2 'Container Short Names'
   print_help_li 'cg          Cycle Gear'
   print_help_li 'jp          J&P Cycles'
@@ -34,12 +36,13 @@ _comoto_cli_command_completion() {
 _comoto_cli_execute() {
   local what_to_bounce=all
   local do_ansible=""
+  local do_remove_redline_build=""
 
   # bash-how-to
   # OPTIND doesn't always get reset
   # I belive that's because this file isn't an executable
   OPTIND=1
-  while getopts "has:" opt; do
+  while getopts "habs:" opt; do
     case $opt in
       h)
         $COMOTO_CLI_LIB/render_help
@@ -48,10 +51,13 @@ _comoto_cli_execute() {
       a)
         do_ansible=1
         ;;
+      b)
+        do_remove_redline_build=1
+        ;;
       s)
         what_to_bounce=$OPTARG
         ;;
-      *) echo "$0: error" >&2; exit 1
+      *) echo "$0: error" >&2; return 1
     esac
   done
 
@@ -62,6 +68,15 @@ _comoto_cli_execute() {
       ./linux-setup.sh
     )
   fi
+
+  if [[ -n $do_remove_redline_build ]]; then
+    (
+      comoto_cli cd redline
+      # rm -rf _build
+    )
+  fi
+
+  echo "What to bounce: ${what_to_bounce}"
 
   case $what_to_bounce in
     cg)
@@ -97,7 +112,7 @@ _comoto_cli_execute() {
         comoto_cli bash cg 'mix clean' ;\
         comoto_cli bash jp 'mix clean' ;\
         comoto_cli bash rz 'mix clean' ;\
-        ($COMOTO_CLI_LIB/down_all_containers; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d) && \
+        ($COMOTO_CLI_LIB/down_all_containers; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d --scale message-failure-service=1) && \
         comoto_cli migrate -u && \
         cg-load-test-schema && \
         comoto_cli logs"
