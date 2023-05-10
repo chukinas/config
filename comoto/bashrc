@@ -69,3 +69,5 @@ _ms_completions() {
 }
 
 complete -F _ms_completions ms
+
+CDPATH=".:$COMOTO_PROJECT_ROOT"
