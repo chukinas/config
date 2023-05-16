@@ -25,7 +25,18 @@
     r = rebaseontolatestmaster
 
     # get latest master and sync my fork
-    getlastestmaster = !branch=${1:-master} && git fetch upstream $branch && git checkout $branch && git merge upstream/$branch && git push && git latest && git checkout -
+    getlastestmaster = !cur_branch=$(git branch --show-current) && \
+        echo "current branch: $cur_branch" && \
+        main_branch=${1:-master} && \
+        echo "main    branch: $main_branch" && \
+        echo && \
+        git fetch upstream $main_branch && \
+        git checkout $main_branch && \
+        git merge upstream/$main_branch && \
+        git push && \
+        git checkout $cur_branch && \
+        :
+
     m = getlastestmaster
 
     # push = !mix format --check-formatted && git push
