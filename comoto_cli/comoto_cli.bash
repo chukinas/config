@@ -40,3 +40,5 @@ complete_me() {
 }
 
 complete -F complete_me comoto_cli m
+
+alias ecom_query=$COMOTO_CLI_LIB/ecom_query
