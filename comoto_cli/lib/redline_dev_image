@@ -1,0 +1,112 @@
+#!/bin/bash
+set -Eeuo pipefail
+
+IMAGE_REPO=gcr.io/revzilla-staging/redline-dev
+TMP_TAG_FILE=/tmp/.comoto_cli_redline_dev_image_tag
+DOCKERFILE_DIR=$COMOTO_PROJECT_ROOT/monorepo/zlaverse/dockerfiles/redline-dev
+DOCKERFILE=$DOCKERFILE_DIR/Dockerfile
+DOCKERCOMPOSE_DIR=$COMOTO_PROJECT_ROOT/monorepo
+DOCKERCOMPOSE=$COMOTO_PROJECT_ROOT/monorepo/docker-compose.yml
+
+function set_tag() {
+  tag=$1
+  echo "writing '$tag' to $TMP_TAG_FILE"
+  echo $tag > $TMP_TAG_FILE
+}
+
+# TODO fail when blank
+function echo_tag() {
+  cat $TMP_TAG_FILE
+}
+
+function echo_full_tag() {
+  echo "$IMAGE_REPO:$(echo_tag)"
+}
+
+function bounce() {
+  cd $DOCKERCOMPOSE_DIR
+  docker-compose down
+  docker volume rm zla_cg-build zla_rz-build zla_jp-build || true
+  docker-compose up -d
+  docker-compose logs -f
+}
+
+function run_interactive() {
+  docker run -it $(echo_full_tag) bash
+}
+
+function build() {
+  cd $DOCKERFILE_DIR
+  cmd="docker build $@ . -t $(echo_full_tag)"
+  echo "Executing '$cmd'"
+  eval "$cmd"
+}
+
+function read_docker_compose() {
+  # https://github.com/mikefarah/yq
+  # https://mikefarah.gitbook.io/yq/operators/unique
+  # TODO how to update values that meet criteria
+  # https://stackoverflow.com/questions/69273004/update-a-specific-object-value-under-yaml-based-on-a-condition-using-yq
+
+  # all images:
+  cmd='.services.[].image'
+
+  # webapps:
+  # cmd='.services.[] | select(.image ~= "redline")'
+
+  docker run -i --rm mikefarah/yq "$cmd" < $DOCKERCOMPOSE
+}
+
+function print_help() {
+  echo Workflow for updating the redline dev image
+  echo
+  echo USAGE
+  echo '  $COMOTO_CLI_LIB/redline_dev_image [OPTIONS]'
+  echo
+  echo OPTIONS
+  echo '  -h  Print this [H]elp'
+  echo '  -s  [S]et the tag (a tag like 20230626)'
+  echo '  -v  [V]iew the current working tag'
+  echo '  -e  Print node and npm v[E]rsions'
+  echo '  -i  Run [I]nteractive container'
+  echo '  -u  bo[U]nce monorepo stack'
+  echo '  -t  echo full [T]ag'
+  echo
+  echo WORKFLOW
+  echo '  - rd -s 20230626'
+}
+
+#######################################
+# MAIN SCRIPT
+#######################################
+
+while getopts "hs:vcbuotliyn" opt; do
+  case $opt in
+    h) print_help;;
+    s) set_tag $OPTARG;;
+    v) echo "Current full tag: '$(echo_full_tag)'";;
+    c) build;;
+    b) build --no-cache;;
+    u) bounce;;
+    # TODO how to run vim from here?
+    o) echo $DOCKERFILE;;
+    t) echo_full_tag;;
+    l) echo "FUTURE FEATURE: add temp 'build' key to docker-compose.yml";;
+    # TODO build: zlaverse/dockerfiles/redline-dev
+    i) run_interactive;;
+    y) read_docker_compose;;
+    a) delete_persisted_redline_build;;
+  esac
+done
+
+
+# When rebuilding elixir 1.12.3 from no cache
+# node  v16.20.1
+# npm   v6.14.12
+
+# WHen build elixir 1.13.4:
+# 6.14.12
+# v18.16.1
+
+
+# FUUUUCK need to check for changed package-lock files!!

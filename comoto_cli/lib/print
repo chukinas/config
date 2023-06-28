@@ -9,7 +9,7 @@
 . $JJC_CONFIG_LIB/ansi_color
 
 # TODO am i using this anymore?
-if [[ -n "$1" ]]; then
+if [[ -n "${1:-}" ]]; then
   current_command="$1: "
 fi
 
