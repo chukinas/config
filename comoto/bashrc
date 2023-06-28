@@ -10,13 +10,12 @@ export COMOTO_CLI_ROOT="$JJC_CONFIG_ROOT/comoto_cli"
 
 . $COMOTO_CLI_ROOT/comoto_cli.bash
 
-alias cdm='comoto_cli cd monorepo'
-alias cdmt='comoto_cli cd monorepo && cd monotest'
-alias cde='comoto_cli cd ecom'
-alias cdr='comoto_cli cd redline'
-# TODO should zla be changed to zlaverse ?
-alias cdz='comoto_cli cd zla'
 alias cdc="cd $COMOTO_PROJECT_ROOT"
+alias cdm="cd $COMOTO_PROJECT_ROOT/monorepo"
+alias cdmt="cd $COMOTO_PROJECT_ROOT/monorepo/monotest"
+alias cdmfs="cd $COMOTO_PROJECT_ROOT/message-failure-service"
+alias cdpss="cd $COMOTO_PROJECT_ROOT/product-search-service"
+alias cdps="cd $COMOTO_PROJECT_ROOT/product-service"
 
 # cg-bash-noninteractive()
 # {
