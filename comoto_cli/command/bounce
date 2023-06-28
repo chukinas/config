@@ -5,6 +5,10 @@
 _comoto_cli_command_summary='Restart containers'
 _comoto_cli_command_usage='comoto_cli bounce [OPTIONS]'
 
+# TODO it would be nice to have a -v|--volumes flag that takes a type of volume to drop
+#   -redline_build
+#   -redline_deps
+#   -javascript
 _comoto_cli_help() {
   print_help_h2 'Options'
   print_help_li '-h                        Print this help and exit'
@@ -15,6 +19,7 @@ _comoto_cli_help() {
   print_help_li "                             This isn't usually required,"
   print_help_li "                             but if the normal bounce isn't working,"
   print_help_li "                             include this step as a nuclear option."
+  print_help_li '-j                        Drop javascript asset volumes'
   print_help_h2 'Container Short Names'
   print_help_li 'cg          Cycle Gear'
   print_help_li 'jp          J&P Cycles'
@@ -35,25 +40,21 @@ _comoto_cli_command_completion() {
 
 _comoto_cli_execute() {
   local what_to_bounce=all
-  local do_ansible=""
+  local do_ansible=1
   local do_remove_redline_build=""
+  local do_remove_assets_build=false
+  local docker_volumes_to_remove=()
 
-  # bash-how-to
-  # OPTIND doesn't always get reset
-  # I belive that's because this file isn't an executable
   OPTIND=1
-  while getopts "habs:" opt; do
+  while getopts "habjs:" opt; do
     case $opt in
       h)
         $COMOTO_CLI_LIB/render_help
         return 0
         ;;
-      a)
-        do_ansible=1
-        ;;
-      b)
-        do_remove_redline_build=1
-        ;;
+      a) do_ansible=0;;
+      j) do_remove_assets_build=true;;
+      b) do_remove_redline_build=1;;
       s)
         what_to_bounce=$OPTARG
         ;;
@@ -61,7 +62,8 @@ _comoto_cli_execute() {
     esac
   done
 
-  if [[ -n $do_ansible ]]; then
+  if [[ $do_ansible = 0 ]]
+  then
     (
       # Add stuff at top of script to throw error if this does not exist
       cd $ZV_DEV
@@ -69,11 +71,32 @@ _comoto_cli_execute() {
     )
   fi
 
-  if [[ -n $do_remove_redline_build ]]; then
+  if [[ -n $do_remove_redline_build ]]
+  then
     (
       comoto_cli cd redline
       # rm -rf _build
     )
+  fi
+
+  if [[ $do_remove_assets_build = true ]]
+  then
+    sites=(cg jp rz)
+    child_apps=(sp ws) # store portal and webstore
+    for site in ${sites[@]}; do
+      for child_app in ${child_apps[@]}; do
+        volume="zla_$site-$child_app-node"
+        docker_volumes_to_remove+=($volume)
+      done
+    done
+  fi
+
+  # TODO add in a flag for removing redline build volumes
+  # docker volume rm zla_cg-build zla_jp-build zla_rz-build;
+  cmd_remove_volumes=''
+  if [[ ${!docker_volumes_to_remove[@]} -gt 0 ]]
+  then
+    cmd_remove_volumes="docker volume rm ${docker_volumes_to_remove[@]};"
   fi
 
   echo "What to bounce: ${what_to_bounce}"
@@ -107,12 +130,8 @@ _comoto_cli_execute() {
       subcommand="docker restart $($COMOTO_CLI_LIB/container_name -z cg) $($COMOTO_CLI_LIB/container_name -z jp) $($COMOTO_CLI_LIB/container_name -z rz) && comoto_cli logs"
       ;;
     all)
-      # TODO make sure all into calls to the cli use `comoto_cli` longform. Add this note to a "contributions" README
       subcommand="\
-        comoto_cli bash cg 'mix clean' ;\
-        comoto_cli bash jp 'mix clean' ;\
-        comoto_cli bash rz 'mix clean' ;\
-        ($COMOTO_CLI_LIB/down_all_containers; comoto_cli cd monorepo && docker-compose pull && docker-compose up -d --scale message-failure-service=1) && \
+        (comoto_cli cd monorepo && docker-compose down && docker-compose pull && $cmd_remove_volumes docker-compose up -d --scale message-failure-service=1) && \
         comoto_cli migrate -u && \
         cg-load-test-schema && \
         comoto_cli logs"
