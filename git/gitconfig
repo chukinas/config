@@ -1,5 +1,6 @@
 [core]
 	  editor = nvim
+    excludesfile = $JJC_CONFIG_ROOT/git/gitignore
 
 [init]
 	  defaultBranch = main
