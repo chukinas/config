@@ -36,7 +36,7 @@ alias_from_config_path() {
 }
 
 # no args
-# reads $config_paths and echos space-separated list of aliases, e.g. "etl monorepo rz cg jp"
+# reads $config_paths and echos space-separated list of aliases, e.g. "monorepo rz cg jp"
 all_aliases() {
   local aliases=()
   for config_path in ${config_paths[@]};

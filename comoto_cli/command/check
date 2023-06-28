@@ -129,7 +129,6 @@ _comoto_cli_execute() {
         ;;
       test)
         # TODO add test for all other repos
-        etl-test
         return $?
         ;;
     esac
