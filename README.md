@@ -7,7 +7,7 @@ This repo contains submodules (at the time of writing: just the neovim config fi
 ### Clone
 
 ```
-$MY_CONFIG=$HOME/projects/config
+MY_CONFIG=$HOME/projects/config
 mkdir -p $MY_CONFIG
 cd $MY_CONFIG
 git clone https://github.com/jonathanchukinas/config.git . --recurse-submodules
@@ -25,7 +25,7 @@ git submodule update --init --recursive
 - When cloning the main repo, do so as normal, then...
   - cd neovim/config
   - git submodule init
-  - # Can we do that using path instead? and then not have to cd into it?
+  - Can we do that using path instead? and then not have to cd into it?
   - git submodule update
 
 ## How to set up new System76 laptop
@@ -64,17 +64,13 @@ git submodule update --init --recursive
 - [ ] asdf/setup.sh
 - [ ] asdf/main.sh
 - [ ] can I configure my System76 terminal via a config file?
-- [ ] rename repo -> config
+- [x] rename repo -> config
 - [ ] install git cli
 - [ ] /neovim
       - setup: symlink to .projections.json
 - [ ] /git
       - setup: symlink to ./gitconfig
 - [ ] add padding to terminal. It's hard to see the text b/c the blue outline
-- [ ] change my gh handle to chukinas
+- [x] change my gh handle to chukinas
 - [ ] address any FIX comments
-
-## Notes
-
-To make a file executable:
-chmod u+x filename
+- [ ] remove sops install for personal machine.
