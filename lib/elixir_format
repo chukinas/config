@@ -32,8 +32,11 @@ esac
 eval $cmd
 
 # Uncomment for debugging:
+
 # exit_code=$?
 # log="$(date) exit_code=$exit_code $cmd"
-# log_path="$JJC_CONFIG_ROOT/tmp/elixir_format_log.txt"
+# log_dir="$JJC_CONFIG_ROOT/tmp"
+# mkdir $log_dir -p
+# log_path="$log_dir/elixir_format_log.txt"
 # touch $log_path
 # echo $log >> $log_path
